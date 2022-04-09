@@ -6,7 +6,7 @@
 #define MAX_LINE 20
 
 char mostrarMenu(){
-
+    return '0';
 }
 char mostarMenuUsuario(){
     printf("¿Desea registarse o iniciar sesión? Indíquelo con los números correspondientes\n");
