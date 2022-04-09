@@ -4,6 +4,8 @@
         "stdlib.h": "c",
         "menu.h": "c",
         "sqlite3.h": "c",
-        "rand.h": "c"
+        "rand.h": "c",
+        "consola.h": "c",
+        "winerror.h": "c"
     }
 }
