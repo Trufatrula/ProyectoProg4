@@ -1,9 +1,23 @@
 #include <stdio.h>
+#include <sqlite3.h>
 #include <stdlib.h>
 #include <string.h>
 #include "menu.h"
 
 #define MAX_LINE 20
+
+void generarTablas(sqlite3 *db){
+    sqlite3_stmt *stmt;
+
+    char sql[] = "CREATE TABLE IF NOT EXISTS Usuario (\
+    Nombre TEXT NOT NULL,\
+	Apellido TEXT,\
+	Nick TEXT NOT NULL,\
+	Contraseña	TEXT,\
+	Salt TEXT NOT NULL,\
+	PRIMARY KEY(Nick)\
+)";
+}
 
 int opcion(char* mensaje, int cantidad, char** opciones) {
     printf("%s:\n", mensaje);
@@ -34,8 +48,8 @@ void menuSesion(){
             break;
 	}
 }
-void registro(){
-
+void registro(sqlite3 *db){
+    
 }
 void inicioSesion(){
 
