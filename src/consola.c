@@ -1,5 +1,6 @@
 #include "consola.h"
 #include <stdio.h>
+#include <sqlite3.h>
 
 #ifdef _WIN32
 

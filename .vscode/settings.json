@@ -2,6 +2,7 @@
     "files.associations": {
         "stdio.h": "c",
         "stdlib.h": "c",
-        "menu.h": "c"
+        "menu.h": "c",
+        "sqlite3.h": "c"
     }
 }

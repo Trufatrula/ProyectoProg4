@@ -12,6 +12,10 @@ file(COPY ${RESOURCE_FILES} DESTINATION ${CMAKE_BINARY_DIR})
 # compile options
 target_compile_options(WordleJALADAdmin PRIVATE -Wall)
 
+# libs
+# sqlite3
+add_subdirectory(libs/sqlite3 EXCLUDE_FROM_ALL)
+target_link_libraries(WordleJALADAdmin PRIVATE sqlite3)
 
 # CMake options
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
