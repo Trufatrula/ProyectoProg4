@@ -8,7 +8,7 @@
 char mostrarMenu(){
     return '0';
 }
-char mostarMenuUsuario(){
+char mostrarMenuUsuario(){
     printf("Desea registarse o iniciar sesion? Indiquelo con los numeros correspondientes\n");
 	printf("1. Registrarse\n");
 	printf("2. Iniciar Sesion\n");
@@ -31,6 +31,11 @@ void clearIfNeeded(char *str, int max_line){
     if ((strlen(str) == max_line-1) && (str[max_line-2] != '\n'))
 		while (getchar() != '\n');
 }
+
+
+
+
+/*
 
 char mostrarMenuJugar()
 {
@@ -68,14 +73,14 @@ char mostrarMenuEstadisticas()
     return *opcion;
 
 }
-
+*/
 char mostrarMenuCuenta(char* usuario)
 {
     printf("-CUENTA DE %s -\n",usuario);
     printf("1. Cambiar nombre usuario\n");
     printf("2. Cambiar contraseña del usuario\n");
     printf("3. Borrar cuenta\n");
-    printf("Pulsa 'q' para volver\n");
+    printf("4. Para volver\n");
     printf("-> \n");
     fflush(stdout);
     char opcion[MAX_LINE];
