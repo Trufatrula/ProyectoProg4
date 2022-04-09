@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include "menu.h"
+#include "consola.h"
 
 int main(void)
 {
+	activarUTF8();
 	char opcion;
 	char opcion2;
 	char usuario;
@@ -33,7 +35,7 @@ int main(void)
 	}while(opcion2 != '4');
 	*/
 	
-	
+	desactivarUTF8();
 	return 0;
 
 }
