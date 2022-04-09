@@ -43,8 +43,8 @@ char mostrarMenuJugar()
     printf("6. Volver\n");
     printf("-> \n");
     fflush(stdout);
-    char opcion[MAX];
-    fgets(opcion, MAX, stdin);
+    char opcion[MAX_LINE];
+    fgets(opcion, MAX_LINE, stdin);
 
     return *opcion;
 
@@ -62,8 +62,8 @@ char mostrarMenuEstadisticas()
     printf("Pulsa 'q' para volver\n");
     printf("-> \n");
     fflush(stdout);
-    char opcion[MAX];
-    fgets(opcion, MAX, stdin);
+    char opcion[MAX_LINE];
+    fgets(opcion, MAX_LINE, stdin);
 
     return *opcion;
 
@@ -78,8 +78,8 @@ char mostrarMenuCuenta(char* usuario)
     printf("Pulsa 'q' para volver\n");
     printf("-> \n");
     fflush(stdout);
-    char opcion[MAX];
-    fgets(opcion, MAX, stdin);
+    char opcion[MAX_LINE];
+    fgets(opcion, MAX_LINE, stdin);
 
     return *opcion;
 
