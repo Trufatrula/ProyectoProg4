@@ -17,6 +17,10 @@ target_compile_options(WordleJALADAdmin PRIVATE -Wall)
 add_subdirectory(libs/sqlite3 EXCLUDE_FROM_ALL)
 target_link_libraries(WordleJALADAdmin PRIVATE sqlite3)
 
+# openssl crypto
+add_subdirectory(libs/openssl EXCLUDE_FROM_ALL)
+target_link_libraries(WordleJALADAdmin PRIVATE crypto)
+
 # CMake options
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
