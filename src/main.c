@@ -1,13 +1,17 @@
 #include <stdio.h>
 
-int main() {
-    printf("Hello world\n");
+int main(void)
+{
+	char opcion;
 
-    return 0;
-
+	do{
+		opcion = mostrarMenu();
+		switch (opcion){
+			case '1':
+				
+			case '2':
+				
+		}
+	}while(opcion != '3');
+	return 0;
 }
-
-
-
-
-
