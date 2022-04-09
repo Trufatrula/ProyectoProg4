@@ -80,7 +80,7 @@ char mostrarMenuCuenta(char* usuario)
     printf("1. Cambiar nombre usuario\n");
     printf("2. Cambiar contraseña del usuario\n");
     printf("3. Borrar cuenta\n");
-    printf("4. Para volver\n");
+    printf("4. Para ºvolver\n");
     printf("-> \n");
     fflush(stdout);
     char opcion[MAX_LINE];

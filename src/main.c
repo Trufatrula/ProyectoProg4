@@ -18,6 +18,7 @@ int main(void)
 		}
 	}while(opcion != '3');
 
+	/*
 	do{
 		opcion2 = mostrarMenuCuenta(&usuario); //Le tenemos que pasar el usuario seleccionado o creado en el menu anterior.
 		switch (opcion2){
@@ -30,5 +31,10 @@ int main(void)
 				break;
 		}
 	}while(opcion2 != '4');
+	*/
+	
+	
 	return 0;
+
+}
 

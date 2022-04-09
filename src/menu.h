@@ -2,7 +2,7 @@
 #define MENUS
 
 char mostrarMenu();
-char mostarMenuUsuario();
+char mostrarMenuUsuario();
 char mostrarMenuJugar();
 char mostrarMenuEstadisticas();
 char mostrarMenuCuenta(char* usuario);
