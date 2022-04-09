@@ -9,12 +9,12 @@ char mostrarMenu(){
     return '0';
 }
 char mostarMenuUsuario(){
-    printf("¿Desea registarse o iniciar sesión? Indíquelo con los números correspondientes\n");
+    printf("Desea registarse o iniciar sesion? Indiquelo con los numeros correspondientes\n");
 	printf("1. Registrarse\n");
-	printf("2. Iniciar Sesión\n");
-	printf("3. Sácame de aquí\n");
+	printf("2. Iniciar Sesion\n");
+	printf("3. Sacame de aqui\n");
 	printf("\n");
-	printf("Opción: ");
+	printf("Opcion: ");
 	fflush(stdout);
 	char linea[MAX_LINE];
 	fgets(linea, MAX_LINE, stdin);
