@@ -5,21 +5,34 @@
 
 #define MAX_LINE 20
 
-char mostrarMenu(){
-    return '0';
+int opcion(char* mensaje, int cantidad, char** opciones) {
+    printf("%s:\n", mensaje);
+    for (int i = 0; i < cantidad; i++) {
+        printf(" %i. %s\n", i + 1, opciones[i]);
+    }
+    int opcion = 0;
+    do {
+        printf("Opción: (1 - %i): ", cantidad);
+        char linea[MAX_LINE];
+        fgets(linea, 20, stdin);
+        sscanf(linea, "%i", &opcion);
+    } while(opcion < 1 || opcion > cantidad);
+    return opcion;
 }
-char mostrarMenuUsuario(){
-    printf("Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes\n");
-	printf("1. Registrarse\n");
-	printf("2. Iniciar Sesión\n");
-	printf("3. Sacame de aqui\n");
-	printf("\n");
-	printf("Opción: ");
-	fflush(stdout);
-	char linea[MAX_LINE];
-	fgets(linea, MAX_LINE, stdin);
-	clearIfNeeded(linea, MAX_LINE);
-	return *linea;
+
+void menuSesion(){
+    char* opciones[] = {"Registrarse", "Iniciar sesión", "Sácame de aquí"};
+    int o = opcion("Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes", 3, opciones);
+	switch (o){
+	    case 0:
+            
+			break;
+	    case 1:
+            
+			break;
+        default:
+            break;
+	}
 }
 void registro(){
 

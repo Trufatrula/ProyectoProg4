@@ -5,20 +5,9 @@
 int main(void)
 {
 	activarUTF8();
-	char opcion;
-	char opcion2;
-	char usuario;
 
-	do{
-		opcion = mostrarMenuUsuario();
-		switch (opcion){
-			case '1':
-            printf("hola");
-				break;
-			case '2':
-				break;
-		}
-	}while(opcion != '3');
+
+	menuSesion();
 
 	/*
 	do{

@@ -1,8 +1,8 @@
 #ifndef MENUS
 #define MENUS
 
-char mostrarMenu();
-char mostrarMenuUsuario();
+int opcion(char* mensaje, int cantidad, char** opciones);
+void menuSesion();
 char mostrarMenuJugar();
 char mostrarMenuEstadisticas();
 char mostrarMenuCuenta(char* usuario);
