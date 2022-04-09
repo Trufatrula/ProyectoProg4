@@ -3,20 +3,23 @@
 
 #ifdef _WIN32
 
+UINT CPANTIGUO;
+
 void activarUTF8(){
-    printf("Wind2us");
+    CPANTIGUO = GetConsoleOutputCP();
+    SetConsoleOutputCP(CP_UTF8);
 }
 void desactivarUTF8(){
-    printf("Desc");
+    SetConsoleOutputCP(CPANTIGUO);
 }
 
 #else
 
 void activarUTF8(){
-    printf("NO Wind2us");
+
 }
 void desactivarUTF8(){
-    printf("NO Desc");
+
 }
 
 #endif
