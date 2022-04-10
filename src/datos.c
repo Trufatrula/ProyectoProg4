@@ -2,8 +2,42 @@
 #include <stdio.h>
 #include <string.h>
 
-int registrarUsuario(sqlite3 *db){
+int registrarUsuario(sqlite3 *db, char* Nombre, char* Apellido, char* Nick, char* Contrasenya){
+    //Aqui calculamos el salt y el token supongo
+    sqlite3_stmt *stmt;
+    char sql[] = "INSERT INTO Usuario (Nombre, Apellido, Nick, Constrasenya, Salt) values (?, ?, ?, ?, ?)";
+    int result = sqlite3_prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL) ;
+    if (result != SQLITE_OK) {
+		printf("Error preparing statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(db));
+		return result;
+	}
 
+	printf("SQL query prepared (INSERT)\n");
+
+    sqlite3_bind_text(stmt, 0, Nombre, strlen(Nombre), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, Apellido, strlen(Apellido), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, Nick, strlen(Nick), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, Contrasenya, strlen(Contrasenya), SQLITE_STATIC);
+    //sqlite3_bind_text(stmt, 4, Salt, strlen(Salt), SQLITE_STATIC);     //Cuando sepa como carallo se calcula lo metemos lol
+
+    result = sqlite3_step(stmt);
+	if (result != SQLITE_DONE) {
+		printf("Error insertando datos\n");
+		return result;
+	}
+
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(db));
+		return result;
+	}
+
+	printf("Statement finalizado (INSERT)\n");
+
+	return SQLITE_OK;
+    
 }
 
 int inicioSesion(sqlite3 *db){
@@ -17,7 +51,7 @@ int generarTablas(sqlite3 *db){
 	Nombre TEXT NOT NULL,\
 	Apellido TEXT,\
 	Nick TEXT NOT NULL,\
-	Contraseña TEXT,\
+	Contrasenya TEXT,\
 	Salt TEXT NOT NULL,\
 	PRIMARY KEY(Nick))";
 
@@ -39,7 +73,7 @@ int generarTablas(sqlite3 *db){
 	FOREIGN KEY(User_Nick) REFERENCES Usuario(Nick) ON DELETE CASCADE,\
 	PRIMARY KEY(User_Nick))";
 
-    int result = sqlite3_prepare_v2(db, sql, strlen(sql)-1, &stmt, NULL) ;
+    int result = sqlite3_prepare_v2(db, sql, strlen(sql)-1, &stmt, NULL) ;  //No estoy seguro del parámetro 3 de la función, si debe ser strlen(sql), strlen(sql)+1, strlen(sql)-1
 
     if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
