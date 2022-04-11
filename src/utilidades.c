@@ -23,7 +23,6 @@ void hexABin(char* entrada, unsigned int size, unsigned char* salida) {
         } else {
             n2 = 0;
         }
-        unsigned char s = (n << 4) | n2;
         salida[i] = (n << 4) | n2;
     }
 }
@@ -31,7 +30,6 @@ void hexABin(char* entrada, unsigned int size, unsigned char* salida) {
 void binAHex(unsigned char* entrada, unsigned int size, char* salida) {
     unsigned long hexLen = size * 2;
     for (unsigned int i = 0, j = 0; i < hexLen; i+=2, j++) {
-        unsigned char a = entrada[j];
         unsigned char n = entrada[j] >> 4, n2 = entrada[j] & 0x0f;
         char c, c2;
         if (n < 0xa) {

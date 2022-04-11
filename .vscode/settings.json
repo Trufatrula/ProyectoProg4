@@ -6,6 +6,7 @@
         "sqlite3.h": "c",
         "rand.h": "c",
         "consola.h": "c",
-        "winerror.h": "c"
+        "winerror.h": "c",
+        "datos.h": "c"
     }
 }

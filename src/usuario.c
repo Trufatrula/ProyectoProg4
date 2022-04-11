@@ -21,3 +21,43 @@ void hashContrasena(char* contrasena, char* salt, char* hash) {
     SHA256_Final(hashBuffer, &context);
     binAHex(hashBuffer, SHA256_DIGEST_LENGTH, hash);
 }
+
+void crearUsuario(Usuario* usuario, char* nombre, char* apellido, char* nickname, char* hash, char* salt, int admin) {
+    usuario->nombre = (char*) malloc(strlen(nombre) + 1);
+    usuario->apellido = (char*) malloc(strlen(apellido) + 1);
+    usuario->nickname = (char*) malloc(strlen(nickname) + 1);
+    usuario->hash = (char*) malloc(strlen(hash) + 1);
+    usuario->salt = (char*) malloc(strlen(salt) + 1);
+    strcpy(usuario->nombre, nombre);
+    strcpy(usuario->apellido, apellido);
+    strcpy(usuario->nickname, nickname);
+    strcpy(usuario->hash, hash);
+    strcpy(usuario->salt, salt);
+    usuario->admin = admin;
+}
+
+void iniciarUsuario(Usuario* usuario, char* nombre, char* apellido, char* nickname, char* contrasena, int admin) {
+    usuario->nombre = (char*) malloc(strlen(nombre) + 1);
+    usuario->apellido = (char*) malloc(strlen(apellido) + 1);
+    usuario->nickname = (char*) malloc(strlen(nickname) + 1);
+    usuario->hash = (char*) malloc(65);
+    usuario->salt = (char*) malloc(33);
+    strcpy(usuario->nombre, nombre);
+    strcpy(usuario->apellido, apellido);
+    strcpy(usuario->nickname, nickname);
+    usuario->admin = admin;
+    generarSalt(usuario->salt);
+    hashContrasena(contrasena, usuario->salt, usuario->hash);
+}
+
+void setContrasena(Usuario* usuario, char* contrasena) {
+    hashContrasena(contrasena, usuario->salt, usuario->hash);
+}
+
+void liberarUsuario(Usuario* usuario) {
+    free(usuario->nombre);
+    free(usuario->apellido);
+    free(usuario->nickname);
+    free(usuario->hash);
+    free(usuario->salt);
+}

@@ -5,7 +5,9 @@
 #include <string.h>
 #include <sqlite3.h>
 
-int registrarUsuario(sqlite3 *db, char* Nombre, char* Apellido, char* Nick, char* Contrasenya, int Admin);
+#include "usuario.h"
+
+int registrarUsuario(sqlite3 *db, Usuario* usuario);
 int inicioSesion(sqlite3 *db);
 int generarTablas(sqlite3 *db);
 int abrirBD(sqlite3 *db);

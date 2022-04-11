@@ -1,9 +1,8 @@
 #include "datos.h"
 #include <stdio.h>
 #include <string.h>
-#include "usuario.h"
 
-int registrarUsuario(sqlite3 *db, char* Nombre, char* Apellido, char* Nick, char* Contrasenya, int Admin){
+int registrarUsuario(sqlite3 *db, Usuario* usuario) {
     //Aqui calculamos el salt y el token supongo
     sqlite3_stmt *stmt;
     char sqlUsuario[] = "INSERT INTO Usuario (Nombre, Apellido, Nick, Constrasenya, Salt, Admin) values (?, ?, ?, ?, ?)";
@@ -13,37 +12,29 @@ int registrarUsuario(sqlite3 *db, char* Nombre, char* Apellido, char* Nick, char
 		printf("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
-
 	printf("SQL query prepared (INSERT)\n");
-
-    char salt[33];
-    generarSalt(salt);
-
-    sqlite3_bind_text(stmt, 0, Nombre, strlen(Nombre), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 1, Apellido, strlen(Apellido), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, Nick, strlen(Nick), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, Contrasenya, strlen(Contrasenya), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 4, salt, strlen(salt), SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 5, Admin);
-
+    sqlite3_bind_text(stmt, 0, usuario->nombre, strlen(usuario->nombre), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, usuario->apellido, strlen(usuario->apellido), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, usuario->nickname, strlen(usuario->nickname), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, usuario->hash, strlen(usuario->hash), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, usuario->salt, strlen(usuario->salt), SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 5, usuario->admin);
     result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
 		printf("Error insertando datos\n");
 		return result;
 	}
-
     result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
 		printf("Error finalizando statement (INSERT)\n");
 		printf("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
-
 	printf("Statement finalizado (INSERT)\n");
-
 	return result;
-    
 }
+
+
 
 int inicioSesion(sqlite3 *db){
     return 0;
@@ -68,9 +59,6 @@ int generarTablas(sqlite3 *db){
         return result;
     }
 
-    printf("Sentencianinsertada satisfactoriamente\n");
-    //free(stmt);
-
     char sqlPuntuacion[] = "CREATE TABLE Puntuacion (\
 	User_Nick TEXT NOT NULL,\
 	Normal_Score INTEGER NOT NULL,\
@@ -85,7 +73,6 @@ int generarTablas(sqlite3 *db){
         return result;
     }
 
-    printf("Sentencianinsertada satisfactoriamente\n");
 
     char sqlDiccionario[] = "CREATE TABLE Diccionario (\
 	Palabra	TEXT NOT NULL,\
@@ -99,8 +86,6 @@ int generarTablas(sqlite3 *db){
         printf("Error al insertar la sentencia\n");
         return result;
     }
-
-    printf("Sentencianinsertada satisfactoriamente\n");
 
     /*
     char sqlToken[] = "CREATE TABLE Token (\
