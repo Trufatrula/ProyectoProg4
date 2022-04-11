@@ -2,8 +2,8 @@
 
 void hexABin(char* entrada, unsigned int size, unsigned char* salida) {
     unsigned int binLen = size / 2;
-    for (unsigned int i = 0; i < binLen; i++) {
-        char c = entrada[2 * i], c2 = entrada[(2 * i) + 1];
+    for (unsigned int i = 0, j = 0; i < binLen; i++, j += 2) {
+        char c = entrada[j], c2 = entrada[j + 1];
         unsigned char n, n2;
         if (c >= '0' && c <= '9') {
             n = c - '0';
@@ -23,23 +23,25 @@ void hexABin(char* entrada, unsigned int size, unsigned char* salida) {
         } else {
             n2 = 0;
         }
-        salida[n] = (n << 8) | n2;
+        unsigned char s = (n << 4) | n2;
+        salida[i] = (n << 4) | n2;
     }
 }
 
 void binAHex(unsigned char* entrada, unsigned int size, char* salida) {
     unsigned long hexLen = size * 2;
-    for (unsigned int i = 0; i < hexLen; i+=2) {
-        unsigned char n = (i = entrada[i / 2] & 0xf0) >> 4 , n2 = entrada[i / 2] & 0x0f;
+    for (unsigned int i = 0, j = 0; i < hexLen; i+=2, j++) {
+        unsigned char a = entrada[j];
+        unsigned char n = entrada[j] >> 4, n2 = entrada[j] & 0x0f;
         char c, c2;
-        if (n < 0xf) {
+        if (n < 0xa) {
             c = n + '0';
         } else if (n < 0x10) {
             c = n + 'a' - 10;
         } else {
             c = '0';
         }
-        if (n2 < 0xf) {
+        if (n2 < 0xa) {
             c2 = n2 + '0';
         } else if (n < 0x10) {
             c2 = n2 + 'a' - 10;
