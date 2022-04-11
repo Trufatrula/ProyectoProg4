@@ -63,7 +63,7 @@ void menuEdicionUsuariosAdmin()
     int o = opcion("De todas esas opciones, ¿Deseas añadir, modificar o borrar el usuario? Indiquelo con los numeros correspondientes", 4, opciones);
 	switch (o){
 	    case 0:
-            
+            menuAñadirUsuarios();
 			break;
 	    case 1:
             
