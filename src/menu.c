@@ -26,7 +26,7 @@ int opcion(char* mensaje, int cantidad, char** opciones) {
 void menuSesion() {
     char* opciones[] = {"Registrarse", "Iniciar sesión", "Sácame de aquí"};
     int o = opcion("¿Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes", 3, opciones);
-	switch (o){
+	switch (o) {
 	    case 0:
             
 			break;
@@ -40,38 +40,44 @@ void menuSesion() {
 
 void menuPrincipal() {
     char* opciones[] = {"Ver lista de usuarios", "Añadir/Modificar/Borrar usuarios existentes", "Ver estadisticas", "Sácame de aquí"};
-    int o = opcion("¿Deseas ver lista de usuarios, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 4, opciones);
-	switch (o){
-	    case 0:
-            
-			break;
-	    case 1:
-            menuEdicionUsuariosAdmin();
-			break;
-        case 2:
-            
-			break;
-        default:
-            break;
-	}
+    int o;
+    do {
+        o = opcion("¿Deseas ver lista de usuarios, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 4, opciones);
+        switch (o) {
+	        case 0:
+
+		    	break;
+	        case 1:
+                menuEdicionUsuariosAdmin();
+		    	break;
+            case 2:
+
+		    	break;
+            default:
+                break;
+	    }
+    } while(o != 3);
 }
 
 void menuEdicionUsuariosAdmin() {
     char* opciones[] = {"Añadir usuarios", "Modificar usuarios existentes", "Borrar usuarios", "Sácame de aquí"};
-    int o = opcion("De todas esas opciones, ¿Deseas añadir, modificar o borrar el usuario? Indiquelo con los numeros correspondientes", 4, opciones);
-	switch (o){
-	    case 0:
-            menuAñadirUsuarios();
-			break;
-	    case 1:
-            
-			break;
-        case 2:
-            
-			break;
-        default:
-            break;
-	}
+    int o;
+    do {
+        o = opcion("De todas esas opciones, ¿Deseas añadir, modificar o borrar el usuario? Indiquelo con los numeros correspondientes", 4, opciones);
+	    switch (o) {
+	        case 0:
+                menuAñadirUsuarios();
+		    	break;
+	        case 1:
+
+		    	break;
+            case 2:
+
+		    	break;
+            default:
+                break;
+	    }
+    } while(o != 3);
 }
 
 void menuAñadirUsuarios() {
