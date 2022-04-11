@@ -7,10 +7,10 @@
 
 #include "usuario.h"
 
-int registrarUsuario(sqlite3 *db, Usuario* usuario);
-int inicioSesion(sqlite3 *db);
-int generarTablas(sqlite3 *db);
-int abrirBD(sqlite3 *db);
-int cerrarBD(sqlite3 *db);
+int registrarUsuario(Usuario* usuario);
+int inicioSesion();
+int generarTablas();
+int abrirBD();
+int cerrarBD();
 
 #endif

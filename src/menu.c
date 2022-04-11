@@ -23,7 +23,7 @@ int opcion(char* mensaje, int cantidad, char** opciones) {
     return opcion;
 }
 
-void menuSesion(){
+void menuSesion() {
     char* opciones[] = {"Registrarse", "Iniciar sesión", "Sácame de aquí"};
     int o = opcion("¿Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes", 3, opciones);
 	switch (o){
@@ -38,8 +38,7 @@ void menuSesion(){
 	}
 }
 
-void menuPrincipal()
-{
+void menuPrincipal() {
     char* opciones[] = {"Ver lista de usuarios", "Añadir/Modificar/Borrar usuarios existentes", "Ver estadisticas", "Sácame de aquí"};
     int o = opcion("¿Deseas ver lista de usuarios, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 4, opciones);
 	switch (o){
@@ -57,8 +56,7 @@ void menuPrincipal()
 	}
 }
 
-void menuEdicionUsuariosAdmin()
-{
+void menuEdicionUsuariosAdmin() {
     char* opciones[] = {"Añadir usuarios", "Modificar usuarios existentes", "Borrar usuarios", "Sácame de aquí"};
     int o = opcion("De todas esas opciones, ¿Deseas añadir, modificar o borrar el usuario? Indiquelo con los numeros correspondientes", 4, opciones);
 	switch (o){
@@ -76,8 +74,7 @@ void menuEdicionUsuariosAdmin()
 	}
 }
 
-void menuAñadirUsuarios()
-{
+void menuAñadirUsuarios() {
     printf("--------------------\nMETA LOS DATOS DEL USUARIO NUEVO\n--------------------\n");
 
     printf("Nombre: ");
@@ -105,12 +102,12 @@ void menuAñadirUsuarios()
 
     Usuario usuario;
     iniciarUsuario(&usuario, nombre, apellido, nickname, contrasenya, o);
-    registrarUsuario(NULL,&usuario);
+    registrarUsuario(&usuario);
     liberarUsuario(&usuario);
     
 }
 
-void clearIfNeeded(char *str, int max_line){
+void clearIfNeeded(char *str, int max_line) {
     if ((strlen(str) == max_line-1) && (str[max_line-2] != '\n'))
 		while (getchar() != '\n');
 }
@@ -153,7 +150,7 @@ char mostrarMenuEstadisticas()
     return *opcion;
 
 }
-*/
+
 char mostrarMenuCuenta(char* usuario)
 {
     printf("-CUENTA DE %s -\n",usuario);
@@ -169,3 +166,4 @@ char mostrarMenuCuenta(char* usuario)
     return *opcion;
 
 }
+*/

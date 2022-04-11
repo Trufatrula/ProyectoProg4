@@ -8,7 +8,6 @@ typedef struct{
     char* hash;
     char* salt;
     int admin;
-
 } Usuario;
 
 void generarSalt(char* salt);
