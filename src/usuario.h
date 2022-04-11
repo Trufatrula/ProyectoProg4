@@ -5,16 +5,11 @@ typedef struct{
     char* nombre;
     char* apellido;
     char* nickname;
-    char*contraseña;
-    char* token;
-    char* salt;
+    int admin;
 
 } Usuario;
 
-char* autentificarUsuario(char* nick){
-    char* token = "";
-
-    return token;
-}
+void generarSalt(char* salt);
+void hashContrasena(char* contrasena, char* salt, char* hash);
 
 #endif

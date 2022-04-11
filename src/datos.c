@@ -1,11 +1,12 @@
 #include "datos.h"
 #include <stdio.h>
 #include <string.h>
+#include "usuario.h"
 
-int registrarUsuario(sqlite3 *db, char* Nombre, char* Apellido, char* Nick, char* Contrasenya){
+int registrarUsuario(sqlite3 *db, char* Nombre, char* Apellido, char* Nick, char* Contrasenya, int Admin){
     //Aqui calculamos el salt y el token supongo
     sqlite3_stmt *stmt;
-    char sqlUsuario[] = "INSERT INTO Usuario (Nombre, Apellido, Nick, Constrasenya, Salt) values (?, ?, ?, ?, ?)";
+    char sqlUsuario[] = "INSERT INTO Usuario (Nombre, Apellido, Nick, Constrasenya, Salt, Admin) values (?, ?, ?, ?, ?)";
     int result = sqlite3_prepare_v2(db, sqlUsuario, strlen(sqlUsuario) + 1, &stmt, NULL) ;
     if (result != SQLITE_OK) {
 		printf("Error preparing statement (INSERT)\n");
@@ -15,11 +16,15 @@ int registrarUsuario(sqlite3 *db, char* Nombre, char* Apellido, char* Nick, char
 
 	printf("SQL query prepared (INSERT)\n");
 
+    char salt[33];
+    generarSalt(salt);
+
     sqlite3_bind_text(stmt, 0, Nombre, strlen(Nombre), SQLITE_STATIC);
     sqlite3_bind_text(stmt, 1, Apellido, strlen(Apellido), SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, Nick, strlen(Nick), SQLITE_STATIC);
     sqlite3_bind_text(stmt, 3, Contrasenya, strlen(Contrasenya), SQLITE_STATIC);
-    //sqlite3_bind_text(stmt, 4, Salt, strlen(Salt), SQLITE_STATIC);     //Cuando sepa como carallo se calcula lo metemos lol
+    sqlite3_bind_text(stmt, 4, salt, strlen(salt), SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 5, Admin);
 
     result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
@@ -53,6 +58,7 @@ int generarTablas(sqlite3 *db){
 	Nick TEXT NOT NULL,\
 	Contrasenya TEXT,\
 	Salt TEXT NOT NULL,\
+    Admin INT NOT NULL,\
 	PRIMARY KEY(Nick))";
 
     int result = sqlite3_prepare_v2(db, sqlUsuarios, strlen(sqlUsuarios)-1, &stmt, NULL) ;

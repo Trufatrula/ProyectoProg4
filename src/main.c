@@ -2,12 +2,12 @@
 #include <sqlite3.h>
 #include "menu.h"
 #include "consola.h"
+#include "usuario.h"
 
 int main(void)
 {
 	activarUTF8();
 
-	return 0;
 	menuSesion();
 
 	/*
