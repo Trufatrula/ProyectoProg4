@@ -5,8 +5,8 @@
 int registrarUsuario(sqlite3 *db, char* Nombre, char* Apellido, char* Nick, char* Contrasenya){
     //Aqui calculamos el salt y el token supongo
     sqlite3_stmt *stmt;
-    char sql[] = "INSERT INTO Usuario (Nombre, Apellido, Nick, Constrasenya, Salt) values (?, ?, ?, ?, ?)";
-    int result = sqlite3_prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL) ;
+    char sqlUsuario[] = "INSERT INTO Usuario (Nombre, Apellido, Nick, Constrasenya, Salt) values (?, ?, ?, ?, ?)";
+    int result = sqlite3_prepare_v2(db, sqlUsuario, strlen(sqlUsuario) + 1, &stmt, NULL) ;
     if (result != SQLITE_OK) {
 		printf("Error preparing statement (INSERT)\n");
 		printf("%s\n", sqlite3_errmsg(db));
@@ -36,18 +36,18 @@ int registrarUsuario(sqlite3 *db, char* Nombre, char* Apellido, char* Nick, char
 
 	printf("Statement finalizado (INSERT)\n");
 
-	return SQLITE_OK;
+	return result;
     
 }
 
 int inicioSesion(sqlite3 *db){
-
+    return 0;
 }
 
 int generarTablas(sqlite3 *db){
     sqlite3_stmt *stmt;
 
-	char sql[] = "CREATE TABLE IF NOT EXISTS Usuario( \
+	char sqlUsuarios[] = "CREATE TABLE IF NOT EXISTS Usuario( \
 	Nombre TEXT NOT NULL,\
 	Apellido TEXT,\
 	Nick TEXT NOT NULL,\
@@ -55,7 +55,7 @@ int generarTablas(sqlite3 *db){
 	Salt TEXT NOT NULL,\
 	PRIMARY KEY(Nick))";
 
-    int result = sqlite3_prepare_v2(db, sql, strlen(sql)-1, &stmt, NULL) ;
+    int result = sqlite3_prepare_v2(db, sqlUsuarios, strlen(sqlUsuarios)-1, &stmt, NULL) ;
 
     if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
@@ -64,16 +64,15 @@ int generarTablas(sqlite3 *db){
 
     printf("Sentencianinsertada satisfactoriamente\n");
     //free(stmt);
-    free(sql);
 
-    char sql[] = "CREATE TABLE Puntuacion (\
+    char sqlPuntuacion[] = "CREATE TABLE Puntuacion (\
 	User_Nick TEXT NOT NULL,\
 	Normal_Score INTEGER NOT NULL,\
 	League_Points INTEGER NOT NULL,\
 	FOREIGN KEY(User_Nick) REFERENCES Usuario(Nick) ON DELETE CASCADE,\
 	PRIMARY KEY(User_Nick))";
 
-    int result = sqlite3_prepare_v2(db, sql, strlen(sql)-1, &stmt, NULL) ;  //No estoy seguro del parámetro 3 de la función, si debe ser strlen(sql), strlen(sql)+1, strlen(sql)-1
+    result = sqlite3_prepare_v2(db, sqlPuntuacion, strlen(sqlPuntuacion)-1, &stmt, NULL) ;  //No estoy seguro del parámetro 3 de la función, si debe ser strlen(sql), strlen(sql)+1, strlen(sql)-1
 
     if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
@@ -81,15 +80,14 @@ int generarTablas(sqlite3 *db){
     }
 
     printf("Sentencianinsertada satisfactoriamente\n");
-    free(sql);
 
-    char sql[] = "CREATE TABLE Diccionario (\
+    char sqlDiccionario[] = "CREATE TABLE Diccionario (\
 	Palabra	TEXT NOT NULL,\
 	Tema TEXT NOT NULL,\
 	Idioma	TEXT NOT NULL,\
 	PRIMARY KEY(Palabra))";
 
-    int result = sqlite3_prepare_v2(db, sql, strlen(sql)-1, &stmt, NULL) ;
+    result = sqlite3_prepare_v2(db, sqlDiccionario, strlen(sqlDiccionario)-1, &stmt, NULL) ;
 
     if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
@@ -97,9 +95,9 @@ int generarTablas(sqlite3 *db){
     }
 
     printf("Sentencianinsertada satisfactoriamente\n");
-    free(sql);
 
-    char sql[] = "CREATE TABLE Token (\
+    /*
+    char sqlToken[] = "CREATE TABLE Token (\
 	User_Nick	TEXT NOT NULL,\
 	Token	TEXT NOT NULL,\
 	PRIMARY KEY(User_Nick))";
@@ -110,6 +108,9 @@ int generarTablas(sqlite3 *db){
     }
 
     sqlite3_finalize(stmt);
+    */
+
+    return result;
 }
 
 int abrirBD(sqlite3 *db){
@@ -118,6 +119,7 @@ int abrirBD(sqlite3 *db){
 		printf("Error al abrir la base de datos\n");
 		return result;
 	}
+    return result;
 }
 
 int cerrarBD(sqlite3 *db){
@@ -127,4 +129,5 @@ int cerrarBD(sqlite3 *db){
 		printf("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
+    return result;
 }

@@ -2,12 +2,21 @@
 #include <sqlite3.h>
 #include "menu.h"
 #include "consola.h"
+#include "utilidades.h"
 
 int main(void)
 {
 	activarUTF8();
 
+	char hex[] = "234ff00dda";
+	unsigned char bin[5] = {0};
+	char backHex[11] = {0};
 
+	hexABin(hex, 10, bin);
+	binAHex(bin, 5, backHex);
+	printf("%s\n", backHex);
+
+	return 0;
 	menuSesion();
 
 	/*
