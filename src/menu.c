@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "menu.h"
+#include "datos.h"
+#include "usuario.h"
 
 #define MAX_LINE 20
 
@@ -86,30 +88,26 @@ void menuAñadirUsuarios()
     printf("Apellido: ");
     char apellido[MAX_LINE];
     fgets(apellido, 20, stdin);
-    clearIfNeeded(nombre,MAX_LINE);
+    clearIfNeeded(apellido,MAX_LINE);
 
     printf("Nombre usuario: ");
-    char usuNombre[MAX_LINE];
-    fgets(usuNombre, 20, stdin);
-    clearIfNeeded(nombre,MAX_LINE);
+    char nickname[MAX_LINE];
+    fgets(nickname, 20, stdin);
+    clearIfNeeded(nickname,MAX_LINE);
 
     printf("Contraseña: ");
-    char contraseña[MAX_LINE];
-    fgets(contraseña, 20, stdin);
-    clearIfNeeded(nombre,MAX_LINE);
+    char contrasenya[MAX_LINE];
+    fgets(contrasenya, 20, stdin);
+    clearIfNeeded(contrasenya,MAX_LINE);
 
-    char* opciones[] = {"Usuario", "Administrador", "Sácame de aquí"};
-    int o = opcion("¿Que tipo de usuario quieres que sea? Indiquelo con los numeros correspondientes", 3, opciones);
-	switch (o){
-	    case 0:
-            
-			break;
-	    case 1:
-            
-			break;
-        default:
-            break;
-	}
+    char* opciones[] = {"Usuario", "Administrador"};
+    int o = opcion("¿Que tipo de usuario quieres que sea? Indiquelo con los numeros correspondientes", 2, opciones);
+
+    Usuario usuario;
+    iniciarUsuario(&usuario, nombre, apellido, nickname, contrasenya, o);
+    registrarUsuario(NULL,&usuario);
+    liberarUsuario(&usuario);
+    
 }
 
 void clearIfNeeded(char *str, int max_line){
