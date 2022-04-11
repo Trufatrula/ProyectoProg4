@@ -23,7 +23,83 @@ int opcion(char* mensaje, int cantidad, char** opciones) {
 
 void menuSesion(){
     char* opciones[] = {"Registrarse", "Iniciar sesión", "Sácame de aquí"};
-    int o = opcion("Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes", 3, opciones);
+    int o = opcion("¿Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes", 3, opciones);
+	switch (o){
+	    case 0:
+            
+			break;
+	    case 1:
+            
+			break;
+        default:
+            break;
+	}
+}
+
+void menuPrincipal()
+{
+    char* opciones[] = {"Ver lista de usuarios", "Añadir/Modificar/Borrar usuarios existentes", "Ver estadisticas", "Sácame de aquí"};
+    int o = opcion("¿Deseas ver lista de usuarios, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 4, opciones);
+	switch (o){
+	    case 0:
+            
+			break;
+	    case 1:
+            menuEdicionUsuariosAdmin();
+			break;
+        case 2:
+            
+			break;
+        default:
+            break;
+	}
+}
+
+void menuEdicionUsuariosAdmin()
+{
+    char* opciones[] = {"Añadir usuarios", "Modificar usuarios existentes", "Borrar usuarios", "Sácame de aquí"};
+    int o = opcion("De todas esas opciones, ¿Deseas añadir, modificar o borrar el usuario? Indiquelo con los numeros correspondientes", 4, opciones);
+	switch (o){
+	    case 0:
+            
+			break;
+	    case 1:
+            
+			break;
+        case 2:
+            
+			break;
+        default:
+            break;
+	}
+}
+
+void menuAñadirUsuarios()
+{
+    printf("--------------------\nMETA LOS DATOS DEL USUARIO NUEVO\n--------------------\n");
+
+    printf("Nombre: ");
+    char nombre[MAX_LINE];
+    fgets(nombre, 20, stdin);
+    clearIfNeeded(nombre,MAX_LINE);
+
+    printf("Apellido: ");
+    char apellido[MAX_LINE];
+    fgets(apellido, 20, stdin);
+    clearIfNeeded(nombre,MAX_LINE);
+
+    printf("Nombre usuario: ");
+    char usuNombre[MAX_LINE];
+    fgets(usuNombre, 20, stdin);
+    clearIfNeeded(nombre,MAX_LINE);
+
+    printf("Contraseña: ");
+    char contraseña[MAX_LINE];
+    fgets(contraseña, 20, stdin);
+    clearIfNeeded(nombre,MAX_LINE);
+
+    char* opciones[] = {"Usuario", "Administrador", "Sácame de aquí"};
+    int o = opcion("¿Que tipo de usuario quieres que sea? Indiquelo con los numeros correspondientes", 3, opciones);
 	switch (o){
 	    case 0:
             
@@ -40,9 +116,6 @@ void clearIfNeeded(char *str, int max_line){
     if ((strlen(str) == max_line-1) && (str[max_line-2] != '\n'))
 		while (getchar() != '\n');
 }
-
-
-
 
 /*
 
