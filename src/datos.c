@@ -1,6 +1,7 @@
 #include "datos.h"
 #include <stdio.h>
 #include <string.h>
+#include "token.h"
 
 sqlite3* __baseDeDatosActual;
 
@@ -8,13 +9,12 @@ int registrarUsuario(Usuario* usuario) {
     //Aqui calculamos el salt y el token supongo
     sqlite3_stmt *stmt;
     char sqlUsuario[] = "INSERT INTO Usuario (Nombre, Apellido, Nick, Constrasenya, Salt, Admin) values (?, ?, ?, ?, ?)";
-    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, strlen(sqlUsuario) + 1, &stmt, NULL) ;
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL) ;
     if (result != SQLITE_OK) {
 		printf("Error preparing statement (INSERT)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-	printf("SQL query prepared (INSERT)\n");
     sqlite3_bind_text(stmt, 0, usuario->nombre, strlen(usuario->nombre), SQLITE_STATIC);
     sqlite3_bind_text(stmt, 1, usuario->apellido, strlen(usuario->apellido), SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, usuario->nickname, strlen(usuario->nickname), SQLITE_STATIC);
@@ -32,20 +32,92 @@ int registrarUsuario(Usuario* usuario) {
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-	printf("Statement finalizado (INSERT)\n");
 	return result;
 }
 
+int actualizarUsuario(Usuario* usuario) {
+    sqlite3_stmt *stmt;
+    char sqlUsuario[] = "UPDATE Usuario SET Nombre = ?, Apellido = ?, Constrasenya = ?, Salt = ?, Admin = ? WHERE Nick = ?";
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL) ;
+    if (result != SQLITE_OK) {
+		printf("Error preparing statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+    sqlite3_bind_text(stmt, 0, usuario->nombre, strlen(usuario->nombre), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, usuario->apellido, strlen(usuario->apellido), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, usuario->hash, strlen(usuario->hash), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, usuario->salt, strlen(usuario->salt), SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 4, usuario->admin);
+    sqlite3_bind_text(stmt, 5, usuario->nickname, strlen(usuario->nickname), SQLITE_STATIC);
+    result = sqlite3_step(stmt);
+	if (result != SQLITE_DONE) {
+		printf("Error insertando datos\n");
+		return result;
+	}
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	return result;
+}
 
+int eliminarUsuario(char* nick) {
+    //ANDONI
+    return 0;
+}
 
-int inicioSesion() {
-    
+int iniciarSesion(char* nick, char* contrasena, char* token) {
+    sqlite3_stmt *stmt;
+    char hashComputado[65];
+    int login = 0;
+    char sqlUsuario[] = "SELECT Constrasenya, Salt FROM Usuario WHERE Nick = ?";
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL) ;
+    if (result != SQLITE_OK) {
+		printf("Error preparing statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+    sqlite3_bind_text(stmt, 5, nick, strlen(nick), SQLITE_STATIC);
+    do {
+        result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW) {
+            char* hash = (char*) sqlite3_column_text(stmt, 0);
+            char* salt = (char*) sqlite3_column_text(stmt, 1);
+            if (strlen(hash) == 64 && strlen(salt) == 32) {
+                hashContrasena(contrasena, salt, hashComputado);
+                if (strcmp(hash, hashComputado) == 0) login = 1;
+            }
+        }
+    } while (result == SQLITE_ROW);
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+    if (login == 1) {
+        //SEGUNDA PARTE, GENERAR NUEVO TOKEN
+    }
+	return result;
+}
+
+int obtenerNickDeToken(char* token) {
+    return 0;
+}
+
+int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
+    return 0;
+}
+
+int autorizar(char* token, char* nick) {
     return 0;
 }
 
 int generarTablas() {
     sqlite3_stmt *stmt;
-
 	char sqlUsuarios[] = "CREATE TABLE IF NOT EXISTS Usuario( \
 	Nombre TEXT NOT NULL,\
 	Apellido TEXT,\
@@ -55,7 +127,7 @@ int generarTablas() {
     Admin INT NOT NULL,\
 	PRIMARY KEY(Nick))";
 
-    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuarios, strlen(sqlUsuarios)-1, &stmt, NULL) ;
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuarios, -1, &stmt, NULL) ;
 
     if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
@@ -69,7 +141,7 @@ int generarTablas() {
 	FOREIGN KEY(User_Nick) REFERENCES Usuario(Nick) ON DELETE CASCADE,\
 	PRIMARY KEY(User_Nick))";
 
-    result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPuntuacion, strlen(sqlPuntuacion)-1, &stmt, NULL) ;  //No estoy seguro del parámetro 3 de la función, si debe ser strlen(sql), strlen(sql)+1, strlen(sql)-1
+    result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPuntuacion, -1, &stmt, NULL) ;  //No estoy seguro del parámetro 3 de la función, si debe ser strlen(sql), strlen(sql)+1, strlen(sql)-1
 
     if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
@@ -83,7 +155,7 @@ int generarTablas() {
 	Idioma	TEXT NOT NULL,\
 	PRIMARY KEY(Palabra))";
 
-    result = sqlite3_prepare_v2(__baseDeDatosActual, sqlDiccionario, strlen(sqlDiccionario)-1, &stmt, NULL) ;
+    result = sqlite3_prepare_v2(__baseDeDatosActual, sqlDiccionario, -1, &stmt, NULL) ;
 
     if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
