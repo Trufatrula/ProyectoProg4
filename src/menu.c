@@ -129,7 +129,7 @@ void menuModificarUsuario()
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre,MAX_LINE);
-
+    
     ////////////////////////////////////////////////////////////////////////
     //Falta funcion para sacar el usuario seleccionado de la base de datos//
     ////////////////////////////////////////////////////////////////////////
@@ -140,12 +140,9 @@ void menuBorrarUsuario()
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre,MAX_LINE);
-
-    ////////////////////////////////////////////////////////////////////////
-    //Falta funcion para sacar el usuario seleccionado de la base de datos//
-    ////////////////////////////////////////////////////////////////////////
+    eliminarUsuario(&nombre);
 }
-void menuVerEstadistidasUsuario()
+void menuVerEstadistidasDeUsuario()
 {
     printf("\nBorrar el usuario que quieres modificar (nickname): ");
     char nombre[MAX_LINE];
