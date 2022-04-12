@@ -1,6 +1,8 @@
 #ifndef MENUS
 #define MENUS
 
+#define MAX_LINE 20
+
 int opcion(char* mensaje, int cantidad, char** opciones);
 void menuSesion();
 void menuPrincipal();
