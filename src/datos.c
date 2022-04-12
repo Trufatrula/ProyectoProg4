@@ -68,7 +68,7 @@ int actualizarUsuario(Usuario* usuario) {
 int eliminarUsuario(char* nick) {
     sqlite3_stmt *stmt;
 	char sqlEliminar[] = "DELETE FROM table	WHERE Nick = ?";
-	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL) ;
+	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlEliminar, -1, &stmt, NULL) ;
 	if (result != SQLITE_OK) {
 		printf("Error preparing statement (UPDATE)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
@@ -142,7 +142,12 @@ int iniciarSesion(char* nick, char* contrasena, char* token) {
 	return SQLITE_ERROR;
 }
 
-int obtenerNickDeToken(char* token) {
+int actualizarToken(char* token) {
+
+	return 0;
+}
+
+int obtenerNickDeToken(char* token, char* nick) {
     return 0;
 }
 
