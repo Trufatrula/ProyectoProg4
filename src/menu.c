@@ -66,7 +66,7 @@ void menuEdicionUsuariosAdmin() {
         o = opcion("De todas esas opciones, ¿Deseas añadir, modificar o borrar el usuario? Indiquelo con los numeros correspondientes", 4, opciones);
 	    switch (o) {
 	        case 0:
-                menuAñadirUsuarios();
+                menuAnyadirUsuarios();
 		    	break;
 	        case 1:
 
@@ -80,7 +80,7 @@ void menuEdicionUsuariosAdmin() {
     } while(o != 3);
 }
 
-void menuAñadirUsuarios() {
+void menuAnyadirUsuarios() {
     printf("--------------------\nMETA LOS DATOS DEL USUARIO NUEVO\n--------------------\n");
 
     printf("Nombre: ");
