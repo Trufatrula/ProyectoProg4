@@ -142,12 +142,17 @@ int iniciarSesion(char* nick, char* contrasena, char* token) {
 		    printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		    return result;
 	    }
-        return result;
+        return SQLITE_OK;
     }
 	return SQLITE_ERROR;
 }
 
-int obtenerNickDeToken(char* token) {
+int actualizarToken(char* token) {
+
+	return 0;
+}
+
+int obtenerNickDeToken(char* token, char* nick) {
     return 0;
 }
 
@@ -195,8 +200,7 @@ int generarTablas() {
 	User_Nick TEXT NOT NULL,\
 	Normal_Score INTEGER NOT NULL,\
 	League_Points INTEGER NOT NULL,\
-	FOREIGN KEY(User_Nick) REFERENCES Usuario(Nick) ON DELETE CASCADE,\
-	PRIMARY KEY(User_Nick))";
+	PRIMARY KEY (User_Nick)) REFERENCES Usuario(Nick) ON DELETE CASCADE";
 
     result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPuntuacion, -1, &stmt, NULL) ;  //No estoy seguro del parámetro 3 de la función, si debe ser strlen(sql), strlen(sql)+1, strlen(sql)-1
 
@@ -209,7 +213,7 @@ int generarTablas() {
 	Palabra	TEXT NOT NULL,\
 	Tema TEXT NOT NULL,\
 	Idioma	TEXT NOT NULL,\
-	PRIMARY KEY(Palabra))";
+	PRIMARY KEY (Palabra))";
 
     result = sqlite3_prepare_v2(__baseDeDatosActual, sqlDiccionario, -1, &stmt, NULL) ;
 
@@ -236,7 +240,8 @@ int generarTablas() {
 	User_Nick	TEXT NOT NULL,\
 	Token TEXT NOT NULL,\
     Expira INTEGER NOT NULL,\
-	PRIMARY KEY(Token))";
+	PRIMARY KEY(Token)),\
+	FOREGIN KEY(User_Nick) REFERENCES Usuario(Nick) ON DELETE CASCADE";
 
     result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL) ;
     if (result != SQLITE_OK) {
