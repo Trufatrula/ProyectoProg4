@@ -7,6 +7,7 @@
         "rand.h": "c",
         "consola.h": "c",
         "winerror.h": "c",
-        "datos.h": "c"
+        "datos.h": "c",
+        "token.h": "c"
     }
 }
