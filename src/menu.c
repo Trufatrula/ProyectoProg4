@@ -129,10 +129,20 @@ void menuModificarUsuario()
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre,MAX_LINE);
+    Usuario usuario;
+    if(obtenerDatosDeUsuario(&usuario, nombre) != 0)
+    {
+        printf("El nombre de usuario no existe");
+    } else {
+        printf("Nombre: %s\n", usuario.nombre);
+        printf("Apellido: %s\n", usuario.apellido);
+        printf("Nickname: %s\n", usuario.nickname);
+        printf("Es admin: %i\n", usuario.admin);
+        char* opciones[] = {"Nombre", "Apellido", "Nick", "Admin"};
+        int o = opcion("¿Que valor quieres cambiar? Indiquelo con los numeros correspondientes", 4, opciones);
     
-    ////////////////////////////////////////////////////////////////////////
-    //Falta funcion para sacar el usuario seleccionado de la base de datos//
-    ////////////////////////////////////////////////////////////////////////
+    }
+
 }
 void menuBorrarUsuario()
 {
@@ -140,7 +150,6 @@ void menuBorrarUsuario()
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre,MAX_LINE);
-    eliminarUsuario(&nombre);
 }
 void menuVerEstadistidasDeUsuario()
 {
@@ -148,12 +157,18 @@ void menuVerEstadistidasDeUsuario()
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre,MAX_LINE);
-
-    ////////////////////////////////////////////////////////////////////////
-    //Falta funcion para sacar el usuario seleccionado de la base de datos//
-    ////////////////////////////////////////////////////////////////////////
+    Usuario usuario;
+    if(obtenerDatosDeUsuario(&usuario, nombre) != 0)
+    {
+        printf("El nombre de usuario no existe");
+    } else {
+        printf("Datos del usuario:\n");
+        printf("Nombre: %s\n", usuario.nombre);
+        printf("Apellido: %s\n", usuario.apellido);
+        printf("Nickname: %s\n", usuario.nickname);
+        printf("Es admin: %i\n", usuario.admin);
+    }
 }
-
 void clearIfNeeded(char *str, int max_line) {
     if ((strlen(str) == max_line-1) && (str[max_line-2] != '\n'))
 		while (getchar() != '\n');
