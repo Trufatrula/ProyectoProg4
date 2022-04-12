@@ -71,14 +71,19 @@ int eliminarUsuario(char* nick) {
 	char sqlEliminar[] = "DELETE FROM table	WHERE Nick = ?";
 	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlEliminar, -1, &stmt, NULL) ;
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (UPDATE)\n");
+		printf("Error preparing statement (DELETE)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
 	sqlite3_bind_text(stmt, 0, nick, strlen(nick), SQLITE_STATIC);
+	result = sqlite3_step(stmt);
+	if (result != SQLITE_DONE) {
+		printf("Error borrando datos\n");
+		return result;
+	}
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizando statement (UPDATE)\n");
+		printf("Error finalizando statement (DELETE)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
