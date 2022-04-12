@@ -39,24 +39,35 @@ void menuSesion() {
 }
 
 void menuPrincipal() {
-    char* opciones[] = {"Ver lista de usuarios", "Añadir/Modificar/Borrar usuarios existentes", "Ver estadisticas", "Sácame de aquí"};
+    char* opciones[] = {"Ver usuario", "Añadir/Modificar/Borrar usuarios existentes", "Ver estadisticas", "Sácame de aquí"};
     int o;
     do {
-        o = opcion("¿Deseas ver lista de usuarios, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 4, opciones);
+        o = opcion("¿Deseas ver usuario, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 4, opciones);
         switch (o) {
 	        case 0:
-
+                menuVerUsuario();
 		    	break;
 	        case 1:
                 menuEdicionUsuariosAdmin();
 		    	break;
             case 2:
-
+                menuVerEstadistidasUsuario();
 		    	break;
             default:
                 break;
 	    }
     } while(o != 3);
+}
+void menuVerUsuario()
+{
+    printf("\nBuscar al usuario por nickname: ");
+    char nombre[MAX_LINE];
+    fgets(nombre, 20, stdin);
+    clearIfNeeded(nombre,MAX_LINE);
+
+    ////////////////////////////////////////////////////////////////////////
+    //Falta funcion para sacar el usuario seleccionado de la base de datos//
+    ////////////////////////////////////////////////////////////////////////
 }
 
 void menuEdicionUsuariosAdmin() {
@@ -69,10 +80,10 @@ void menuEdicionUsuariosAdmin() {
                 menuAnyadirUsuarios();
 		    	break;
 	        case 1:
-
+                menuModificarUsuario();
 		    	break;
             case 2:
-
+                menuBorrarUsuario();
 		    	break;
             default:
                 break;
@@ -88,17 +99,17 @@ void menuAnyadirUsuarios() {
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre,MAX_LINE);
 
-    printf("Apellido: ");
+    printf("\nApellido: ");
     char apellido[MAX_LINE];
     fgets(apellido, 20, stdin);
     clearIfNeeded(apellido,MAX_LINE);
 
-    printf("Nombre usuario: ");
+    printf("\nNombre usuario: ");
     char nickname[MAX_LINE];
     fgets(nickname, 20, stdin);
     clearIfNeeded(nickname,MAX_LINE);
 
-    printf("Contraseña: ");
+    printf("\nContraseña: ");
     char contrasenya[MAX_LINE];
     fgets(contrasenya, 20, stdin);
     clearIfNeeded(contrasenya,MAX_LINE);
@@ -111,6 +122,39 @@ void menuAnyadirUsuarios() {
     registrarUsuario(&usuario);
     liberarUsuario(&usuario);
     
+}
+void menuModificarUsuario()
+{
+    printf("\nSeleccione el usuario que quieres modificar (nickname): ");
+    char nombre[MAX_LINE];
+    fgets(nombre, 20, stdin);
+    clearIfNeeded(nombre,MAX_LINE);
+
+    ////////////////////////////////////////////////////////////////////////
+    //Falta funcion para sacar el usuario seleccionado de la base de datos//
+    ////////////////////////////////////////////////////////////////////////
+}
+void menuBorrarUsuario()
+{
+    printf("\nBorrar el usuario que quieres modificar (nickname): ");
+    char nombre[MAX_LINE];
+    fgets(nombre, 20, stdin);
+    clearIfNeeded(nombre,MAX_LINE);
+
+    ////////////////////////////////////////////////////////////////////////
+    //Falta funcion para sacar el usuario seleccionado de la base de datos//
+    ////////////////////////////////////////////////////////////////////////
+}
+void menuVerEstadistidasUsuario()
+{
+    printf("\nBorrar el usuario que quieres modificar (nickname): ");
+    char nombre[MAX_LINE];
+    fgets(nombre, 20, stdin);
+    clearIfNeeded(nombre,MAX_LINE);
+
+    ////////////////////////////////////////////////////////////////////////
+    //Falta funcion para sacar el usuario seleccionado de la base de datos//
+    ////////////////////////////////////////////////////////////////////////
 }
 
 void clearIfNeeded(char *str, int max_line) {
