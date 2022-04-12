@@ -138,8 +138,45 @@ int obtenerNickDeToken(char* token) {
 }
 
 int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
-    return 0;
+	 sqlite3_stmt *stmt;
+	 int correcto = 0;
+	 char sqlUsuario[] = "SELECT * FROM Usuario WHERE Nick =?";
+	 int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL);
+	 if (result != SQLITE_OK) {
+        printf("Error al insertar la sentencia\n");
+        return result;
+    }
+	sqlite3_bind_text(stmt, 5, nick, strlen(nick), SQLITE_STATIC);
+
+	do {
+        result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW) {
+            char* hash = (char*) sqlite3_column_text(stmt, 3);
+            char* salt = (char*) sqlite3_column_text(stmt, 4);
+            if (strlen(hash) == 64 && strlen(salt) == 32) {
+				char* nombre = (char*) sqlite3_column_text(stmt,0);
+				char* apellido = (char*) sqlite3_column_text(stmt,1);
+				char* nick = (char*) sqlite3_column_text(stmt,2);
+				int admin = sqlite3_column_int(stmt,5);
+				correcto = 1;
+				crearUsuario(usuario,nombre,apellido,nick,hash,salt,admin);
+			}
+        }
+    } while (result == SQLITE_ROW);
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	if (correcto == 1) 
+	{
+		return SQLITE_OK;
+	}
+	return SQLITE_ERROR;
+    
 }
+
 
 int autorizar(char* token, char* nick) {
     return 0;
