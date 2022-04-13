@@ -10,6 +10,7 @@ void menuEdicionUsuariosAdmin();
 void menuAnyadirUsuarios();
 void menuModificarUsuario();
 void menuBorrarUsuario();
+void menuIniciarSesion();
 //void menuVerEstadistidasUsuario();
 //char mostrarMenuEstadisticas();
 //char mostrarMenuCuenta(char* usuario);
