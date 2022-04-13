@@ -27,10 +27,10 @@ void menuSesion() {
     int o = opcion("¿Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes", 3, opciones);
 	switch (o) {
 	    case 0:
-            
+            menuAnyadirUsuarios();
 			break;
 	    case 1:
-            
+            menuIniciarSesion();
 			break;
         default:
             break;
@@ -188,6 +188,20 @@ void menuModificarUsuario() {
         liberarUsuario(&usuario);
     }
 }
+
+void menuIniciarSesion() {
+    printf("\nNombre de usuario (nickname): ");
+    char nombre[MAX_LINE];
+    fgets(nombre, 20, stdin);
+    clearIfNeeded(nombre, MAX_LINE);
+    printf("\nContraseña (nickname): ");
+    char contrasenya[MAX_LINE];
+    fgets(contrasenya, 20, stdin);
+    clearIfNeeded(contrasenya, MAX_LINE);
+    char* opcionCerrar[] = {"No", "Si"};
+    int o = opcion("¿Quieres cerrar la sesion al salir? Indiquelo con los numeros correspondientes", 2, opcionCerrar);
+}
+
 
 void menuBorrarUsuario() {
     printf("\nBorrar el usuario que quieres modificar (nickname): ");
