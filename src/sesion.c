@@ -5,7 +5,7 @@
 char __tokenactual[33];
 
 void establecerToken(char* token){
-    if(strlen(token) == 33){
+    if(strlen(token) == 32){
         strcpy(__tokenactual, token);
     }
 }
@@ -16,7 +16,8 @@ void getToken(char* token){
 
 void guardarToken(char* nomFichero){
     FILE * fichero;
-    fichero = fopen(nomFichero, "r");
+    fichero = fopen(nomFichero, "w");
+    printf(__tokenactual);
     fputs(__tokenactual, fichero);
     fclose(fichero);
 }
