@@ -15,6 +15,7 @@ int cerrarSesion(char* token);
 int actualizarToken(char* token);
 int obtenerNickDeToken(char* token, char* nick);
 int obtenerDatosDeUsuario(Usuario* usuario, char* nick);
+int usuarioExiste(char* nick);
 int autorizar(char* token, char* nick);
 int tokenExiste(char* token);
 int generarTablas();

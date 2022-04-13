@@ -4,6 +4,7 @@
 #include "menu.h"
 #include "datos.h"
 #include "usuario.h"
+#include "sesion.h"
 
 #define MAX_LINE 20
 
@@ -19,7 +20,7 @@ int opcion(char* mensaje, int cantidad, char** opciones) {
         fgets(linea, 20, stdin);
         sscanf(linea, "%i", &opcion);
     } while(opcion < 1 || opcion > cantidad);
-    return opcion;
+    return opcion-1;
 }
 
 void menuSesion() {
@@ -33,12 +34,13 @@ void menuSesion() {
             menuIniciarSesion();
 			break;
         default:
+            printf("Saliendo...");
             break;
 	}
 }
 
 void menuPrincipal() {
-    char* opciones[] = {"Ver/Añadir/Modificar/Borrar usuarios existentes", "Ver estadisticas", "Sácame de aquí"};
+    char* opciones[] = {"Ver y editar usuarios existentes", "Ver estadisticas", "Sácame de aquí"};
     int o;
     do {
         o = opcion("¿Deseas ver usuario, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 3, opciones);
@@ -56,27 +58,6 @@ void menuPrincipal() {
     } while(o != 3);
 }
 
-/*void menuVerUsuario()
-{
-    printf("\nBuscar al usuario por nickname: ");
-    char nombre[MAX_LINE];
-    fgets(nombre, 20, stdin);
-    clearIfNeeded(nombre,MAX_LINE);
-    Usuario usuario;
-    ////////////////////////////////////////////////////////////////////////
-    //Falta funcion para sacar el usuario seleccionado de la base de datos//
-    ////////////////////////////////////////////////////////////////////////
-
-    if(obtenerDatosDeUsuario(&usuario, nombre) != 0)
-    {
-        printf("El nombre de usuario no existe");
-    } else {
-        printf("Nombre: %s\n", usuario.nombre);
-        printf("Apellido: %s\n", usuario.apellido);
-        printf("Es admin: %i\n", usuario.admin);
-    }
-}*/
-
 void menuEdicionUsuariosAdmin() {
     char* opciones[] = {"Añadir usuarios", "Ver/Modificar usuarios existentes", "Borrar usuarios", "Sácame de aquí"};
     int o;
@@ -93,6 +74,7 @@ void menuEdicionUsuariosAdmin() {
                 menuBorrarUsuario();
 		    	break;
             default:
+            printf("Saliendo...");
                 break;
 	    }
     } while(o != 3);
@@ -190,6 +172,7 @@ void menuModificarUsuario() {
 }
 
 void menuIniciarSesion() {
+    char token[33];
     printf("\nNombre de usuario (nickname): ");
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
@@ -200,6 +183,11 @@ void menuIniciarSesion() {
     clearIfNeeded(contrasenya, MAX_LINE);
     char* opcionCerrar[] = {"No", "Si"};
     int o = opcion("¿Quieres cerrar la sesion al salir? Indiquelo con los numeros correspondientes", 2, opcionCerrar);
+    if(iniciarSesion(nombre, contrasenya, token, o) == 0){
+        establecerToken(token);
+    } else {
+        printf("No se ha podido iniciar sesion, compruebe su usuario y contraseña");
+    }
 }
 
 
