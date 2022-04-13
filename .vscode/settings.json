@@ -8,6 +8,7 @@
         "consola.h": "c",
         "winerror.h": "c",
         "datos.h": "c",
-        "token.h": "c"
+        "token.h": "c",
+        "string.h": "c"
     }
 }
