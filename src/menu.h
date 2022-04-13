@@ -4,13 +4,13 @@
 #define MAX_LINE 20
 
 int opcion(char* mensaje, int cantidad, char** opciones);
-void menuSesion();
+int menuSesion();
 void menuPrincipal();
 void menuEdicionUsuariosAdmin();
-void menuAnyadirUsuarios();
+int menuAnyadirUsuarios();
 void menuModificarUsuario();
 void menuBorrarUsuario();
-void menuIniciarSesion();
+int menuIniciarSesion();
 //void menuVerEstadistidasUsuario();
 //char mostrarMenuEstadisticas();
 //char mostrarMenuCuenta(char* usuario);

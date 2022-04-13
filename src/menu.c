@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "menu.h"
 #include "datos.h"
 #include "usuario.h"
@@ -23,27 +24,43 @@ int opcion(char* mensaje, int cantidad, char** opciones) {
     return opcion-1;
 }
 
-void menuSesion() {
+int menuSesion() {
+    if(cargarToken("token.txt") == 0){
+        char token[33];
+        char nick[MAX_LINE];
+        getToken(token);
+        if(obtenerNickDeToken(token, nick) == 0){
+            printf("Sesion automaticamente iniciada como %s\n", nick);
+            return 0;
+        }
+    }
     char* opciones[] = {"Registrarse", "Iniciar sesión", "Sácame de aquí"};
     int o = opcion("¿Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes", 3, opciones);
 	switch (o) {
 	    case 0:
-            menuAnyadirUsuarios();
+            if (menuAnyadirUsuarios() == 0){
+                printf("Iniciar sesión:\n");
+                return menuIniciarSesion();
+            } else {
+                return 1;
+            }
 			break;
 	    case 1:
-            menuIniciarSesion();
+            return menuIniciarSesion();
 			break;
         default:
             printf("Saliendo...");
+            return 1;
             break;
 	}
+    return 0;
 }
 
 void menuPrincipal() {
-    char* opciones[] = {"Ver y editar usuarios existentes", "Ver estadisticas", "Sácame de aquí"};
+    char* opciones[] = {"Ver y editar usuarios existentes", "Ver estadisticas", "Cerrar Sesion y salir", "Salir"};
     int o;
     do {
-        o = opcion("¿Deseas ver usuario, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 3, opciones);
+        o = opcion("¿Deseas ver usuario, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 4, opciones);
         switch (o) {
 	        case 0:
                 menuEdicionUsuariosAdmin();
@@ -52,14 +69,20 @@ void menuPrincipal() {
                 //menuVerEstadistidasUsuario();
                 printf("Aún no implementado\n");
 		    	break;
+            case 2:;
+                char token[33];
+                getToken(token);
+                cerrarSesion(token);
+                unlink("token.txt");
+                break;
             default:
                 break;
 	    }
-    } while(o != 3);
+    } while(o != 2 && o != 3);
 }
 
 void menuEdicionUsuariosAdmin() {
-    char* opciones[] = {"Añadir usuarios", "Ver/Modificar usuarios existentes", "Borrar usuarios", "Sácame de aquí"};
+    char* opciones[] = {"Añadir usuarios", "Ver/Modificar usuarios existentes", "Borrar usuarios", "Salir"};
     int o;
     do {
         o = opcion("De todas esas opciones, ¿Deseas añadir, ver/modificar o borrar el usuario? Indiquelo con los numeros correspondientes", 4, opciones);
@@ -74,13 +97,13 @@ void menuEdicionUsuariosAdmin() {
                 menuBorrarUsuario();
 		    	break;
             default:
-            printf("Saliendo...");
+            printf("Saliendo...\n");
                 break;
 	    }
     } while(o != 3);
 }
 
-void menuAnyadirUsuarios() {
+int menuAnyadirUsuarios() {
     printf("--------------------\nMETA LOS DATOS DEL USUARIO NUEVO\n--------------------\n");
 
     printf("Nombre: ");
@@ -108,8 +131,15 @@ void menuAnyadirUsuarios() {
 
     Usuario usuario;
     iniciarUsuario(&usuario, nombre, apellido, nickname, contrasenya, o);
-    registrarUsuario(&usuario);
+    int resultado = registrarUsuario(&usuario);
     liberarUsuario(&usuario);
+    if(resultado == 1){
+        printf("No se ha podido registrar usuario\n");
+        return 1;
+    } else {
+        printf("Se ha registrado el usuario\n");
+        return 0;
+    }
 }
 
 void menuModificarUsuario() {
@@ -119,13 +149,13 @@ void menuModificarUsuario() {
     clearIfNeeded(nombre, MAX_LINE);
     Usuario usuario;
     if(obtenerDatosDeUsuario(&usuario, nombre) != 0) {
-        printf("El nombre de usuario no existe");
+        printf("El nombre de usuario no existe\n");
     } else {
         printf("Nombre: %s\n", usuario.nombre);
         printf("Apellido: %s\n", usuario.apellido);
         printf("Es admin: %i\n", usuario.admin);
-        char* opciones[] = {"Nombre", "Apellido", "Admin", "Nada"};
-        int o = opcion("¿Que valor quieres cambiar? Indiquelo con los numeros correspondientes", 4, opciones);
+        char* opciones[] = {"Nombre", "Apellido", "Contraseña", "Admin", "Nada"};
+        int o = opcion("¿Que valor quieres cambiar? Indiquelo con los numeros correspondientes", 5, opciones);
         switch (o) {
             case 0:
                 printf("Introduce el nuevo nombre: ");
@@ -171,7 +201,7 @@ void menuModificarUsuario() {
     }
 }
 
-void menuIniciarSesion() {
+int menuIniciarSesion() {
     char token[33];
     printf("\nNombre de usuario (nickname): ");
     char nombre[MAX_LINE];
@@ -185,8 +215,13 @@ void menuIniciarSesion() {
     int o = opcion("¿Quieres cerrar la sesion al salir? Indiquelo con los numeros correspondientes", 2, opcionCerrar);
     if(iniciarSesion(nombre, contrasenya, token, o) == 0){
         establecerToken(token);
+        if(o == 0){
+            guardarToken("token.txt");
+        }
+        return 0;
     } else {
         printf("No se ha podido iniciar sesion, compruebe su usuario y contraseña");
+        return 1;
     }
 }
 
