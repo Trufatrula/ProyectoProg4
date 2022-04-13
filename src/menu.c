@@ -39,19 +39,17 @@ void menuSesion() {
 }
 
 void menuPrincipal() {
-    char* opciones[] = {"Ver usuario", "Añadir/Modificar/Borrar usuarios existentes", "Ver estadisticas", "Sácame de aquí"};
+    char* opciones[] = {"Ver/Añadir/Modificar/Borrar usuarios existentes", "Ver estadisticas", "Sácame de aquí"};
     int o;
     do {
-        o = opcion("¿Deseas ver usuario, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 4, opciones);
+        o = opcion("¿Deseas ver usuario, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 3, opciones);
         switch (o) {
 	        case 0:
-                menuVerUsuario();
-		    	break;
-	        case 1:
                 menuEdicionUsuariosAdmin();
 		    	break;
-            case 2:
-                menuVerEstadistidasUsuario();
+            case 1:
+                //menuVerEstadistidasUsuario();
+                printf("Aún no implementado\n");
 		    	break;
             default:
                 break;
