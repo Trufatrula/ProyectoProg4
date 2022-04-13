@@ -293,7 +293,34 @@ int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
 		return SQLITE_OK;
 	}
 	return SQLITE_ERROR;
-    
+}
+
+int usuarioExiste(char* nick) {
+	sqlite3_stmt *stmt;
+	 int correcto = 0;
+	 char sqlNick[] = "SELECT Nick FROM Usuario WHERE Nick = ?";
+	 int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlNick, -1, &stmt, NULL);
+	 if (result != SQLITE_OK) {
+        printf("Error al insertar la sentencia\n");
+        return result;
+    }
+	sqlite3_bind_text(stmt, 1, nick, strlen(nick), SQLITE_STATIC);
+	do {
+        result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW) {
+            return SQLITE_ERROR;
+        }
+    } while (result == SQLITE_ROW);
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	if (correcto == 1) {
+		return SQLITE_OK;
+	}
+	return SQLITE_OK;
 }
 
 int autorizar(char* token, char* nick) {
