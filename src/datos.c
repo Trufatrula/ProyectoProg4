@@ -17,12 +17,12 @@ int registrarUsuario(Usuario* usuario) {
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-    sqlite3_bind_text(stmt, 0, usuario->nombre, strlen(usuario->nombre), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 1, usuario->apellido, strlen(usuario->apellido), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, usuario->nickname, strlen(usuario->nickname), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, usuario->hash, strlen(usuario->hash), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 4, usuario->salt, strlen(usuario->salt), SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 5, usuario->admin);
+    sqlite3_bind_text(stmt, 1, usuario->nombre, strlen(usuario->nombre), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, usuario->apellido, strlen(usuario->apellido), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, usuario->nickname, strlen(usuario->nickname), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, usuario->hash, strlen(usuario->hash), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, usuario->salt, strlen(usuario->salt), SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 6, usuario->admin);
     result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
 		printf("Error insertando datos\n");
@@ -46,12 +46,12 @@ int actualizarUsuario(Usuario* usuario) {
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-    sqlite3_bind_text(stmt, 0, usuario->nombre, strlen(usuario->nombre), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 1, usuario->apellido, strlen(usuario->apellido), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, usuario->hash, strlen(usuario->hash), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, usuario->salt, strlen(usuario->salt), SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 4, usuario->admin);
-    sqlite3_bind_text(stmt, 5, usuario->nickname, strlen(usuario->nickname), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, usuario->nombre, strlen(usuario->nombre), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, usuario->apellido, strlen(usuario->apellido), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, usuario->hash, strlen(usuario->hash), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, usuario->salt, strlen(usuario->salt), SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 5, usuario->admin);
+    sqlite3_bind_text(stmt, 6, usuario->nickname, strlen(usuario->nickname), SQLITE_STATIC);
     result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
 		printf("Error insertando datos\n");
@@ -75,7 +75,7 @@ int eliminarUsuario(char* nick) {
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-	sqlite3_bind_text(stmt, 0, nick, strlen(nick), SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 1, nick, strlen(nick), SQLITE_STATIC);
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
 		printf("Error borrando datos\n");
@@ -90,7 +90,7 @@ int eliminarUsuario(char* nick) {
 	return result;
 }
 
-int iniciarSesion(char* nick, char* contrasena, char* token) {
+int iniciarSesion(char* nick, char* contrasena, char* token, int expira) {
     sqlite3_stmt *stmt;
     char hashComputado[65];
     int login = 0;
@@ -101,7 +101,7 @@ int iniciarSesion(char* nick, char* contrasena, char* token) {
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-    sqlite3_bind_text(stmt, 5, nick, strlen(nick), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, nick, strlen(nick), SQLITE_STATIC);
     do {
         result = sqlite3_step(stmt);
         if (result == SQLITE_ROW) {
@@ -123,8 +123,14 @@ int iniciarSesion(char* nick, char* contrasena, char* token) {
         char sqlToken[] = "INSERT INTO Token (User_Nick, Token, Expira) VALUES {?, ?, ?)";
         time_t t;
         char token[33];
-        time(&t);
-        generateToken(token);
+		if (expira) {
+			time(&t);
+		} else {
+			t = 0xffffffffffffffff;
+		}
+		do {
+			generateToken(token);
+		} while (tokenExiste(token));
         t += 3600;
         int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL);
         if (result != SQLITE_OK) {
@@ -132,9 +138,9 @@ int iniciarSesion(char* nick, char* contrasena, char* token) {
 		    printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		    return result;
 	    }
-        sqlite3_bind_text(stmt, 0, nick, strlen(nick), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 1, token, strlen(token), SQLITE_STATIC);
-        sqlite3_bind_int64(stmt, 2, t);
+        sqlite3_bind_text(stmt, 1, nick, strlen(nick), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, token, strlen(token), SQLITE_STATIC);
+        sqlite3_bind_int64(stmt, 3, t);
 
         result = sqlite3_step(stmt);
 	    if (result != SQLITE_DONE) {
@@ -187,7 +193,7 @@ int actualizarToken(char* token) {
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-    sqlite3_bind_int64(stmt, 0, t);
+    sqlite3_bind_int64(stmt, 1, t);
     result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
 		printf("Error eliminando datos\n");
@@ -207,15 +213,7 @@ int actualizarToken(char* token) {
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-    sqlite3_bind_int64(stmt, 0, t);
-	sqlite3_bind_int64(stmt, 1, t);
-	sqlite3_bind_text(stmt, 2, token, strlen(token), SQLITE_STATIC);
-    result = sqlite3_step(stmt);
-	if (result != SQLITE_DONE) {
-		printf("Error eliminando datos\n");
-		return result;
-	}
-    result = sqlite3_finalize(stmt);
+    sqlite3_bind_int64(stmt, 1, t);
 	if (result != SQLITE_OK) {
 		printf("Error finalizando statement (DELETE)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
@@ -234,7 +232,7 @@ int obtenerNickDeToken(char* token, char* nick) {
         printf("Error al insertar la sentencia\n");
         return result;
     }
-	sqlite3_bind_text(stmt, 5, nick, strlen(nick), SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 1, token, strlen(token), SQLITE_STATIC);
 	do {
 		result = sqlite3_step(stmt);
 		if(result == SQLITE_ROW) {
@@ -269,7 +267,7 @@ int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
         printf("Error al insertar la sentencia\n");
         return result;
     }
-	sqlite3_bind_text(stmt, 5, nick, strlen(nick), SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 1, nick, strlen(nick), SQLITE_STATIC);
 	do {
         result = sqlite3_step(stmt);
         if (result == SQLITE_ROW) {
@@ -317,8 +315,35 @@ int autorizar(char* token, char* nick) {
 	if(admin == 1) {
 		return SQLITE_OK;
 	}
-	return SQLITE_ERROR;
-		
+	return SQLITE_ERROR;		
+}
+
+int tokenExiste(char* token) {
+	sqlite3_stmt *stmt;
+	 int correcto = 0;
+	 char sqlToken[] = "SELECT Token FROM Token WHERE Token = ?";
+	 int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL);
+	 if (result != SQLITE_OK) {
+        printf("Error al insertar la sentencia\n");
+        return result;
+    }
+	sqlite3_bind_text(stmt, 1, token, strlen(token), SQLITE_STATIC);
+	do {
+        result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW) {
+            return SQLITE_ERROR;
+        }
+    } while (result == SQLITE_ROW);
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	if (correcto == 1) {
+		return SQLITE_OK;
+	}
+	return SQLITE_OK;
 }
 
 int generarTablas() {
