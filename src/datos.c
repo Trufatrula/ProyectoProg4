@@ -5,7 +5,7 @@
 #include "token.h"
 #include "menu.h"
 
-#define TOKEN_TIME 10
+#define TOKEN_TIME 3600
 
 sqlite3* __baseDeDatosActual;
 
@@ -172,7 +172,7 @@ int iniciarSesion(char* nick, char* contrasena, char* token, int expira) {
 		do {
 			generateToken(to);
 		} while (tokenExiste(to));
-        t += 3600;
+        t += TOKEN_TIME;
         int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL);
         if (result != SQLITE_OK) {
 		    printf("Error preparing statement (INSERT)\n");
@@ -248,7 +248,7 @@ int actualizarToken(char* token) {
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-	t += 3600;
+	t += TOKEN_TIME;
 	char sqlTokenUpd[] = "UPDATE Token SET Expira = ? WHERE Expira < ? AND token = ?";
     result = sqlite3_prepare_v2(__baseDeDatosActual, sqlTokenUpd, -1, &stmt, NULL);
     if (result != SQLITE_OK) {
