@@ -58,23 +58,32 @@ void menuPrincipal() {
 	    }
     } while(o != 3);
 }
-void menuVerUsuario()
+/*void menuVerUsuario()
 {
     printf("\nBuscar al usuario por nickname: ");
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre,MAX_LINE);
-
+    Usuario usuario;
     ////////////////////////////////////////////////////////////////////////
     //Falta funcion para sacar el usuario seleccionado de la base de datos//
     ////////////////////////////////////////////////////////////////////////
-}
+
+    if(obtenerDatosDeUsuario(&usuario, nombre) != 0)
+    {
+        printf("El nombre de usuario no existe");
+    } else {
+        printf("Nombre: %s\n", usuario.nombre);
+        printf("Apellido: %s\n", usuario.apellido);
+        printf("Es admin: %i\n", usuario.admin);
+    }
+}*/
 
 void menuEdicionUsuariosAdmin() {
-    char* opciones[] = {"Añadir usuarios", "Modificar usuarios existentes", "Borrar usuarios", "Sácame de aquí"};
+    char* opciones[] = {"Añadir usuarios", "Ver/Modificar usuarios existentes", "Borrar usuarios", "Sácame de aquí"};
     int o;
     do {
-        o = opcion("De todas esas opciones, ¿Deseas añadir, modificar o borrar el usuario? Indiquelo con los numeros correspondientes", 4, opciones);
+        o = opcion("De todas esas opciones, ¿Deseas añadir, ver/modificar o borrar el usuario? Indiquelo con los numeros correspondientes", 4, opciones);
 	    switch (o) {
 	        case 0:
                 menuAnyadirUsuarios();
