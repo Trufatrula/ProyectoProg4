@@ -7,7 +7,6 @@
 
 #define MAX_LINE 20
 
-
 int opcion(char* mensaje, int cantidad, char** opciones) {
     printf("%s:\n", mensaje);
     for (int i = 0; i < cantidad; i++) {
@@ -56,6 +55,7 @@ void menuPrincipal() {
 	    }
     } while(o != 3);
 }
+
 /*void menuVerUsuario()
 {
     printf("\nBuscar al usuario por nickname: ");
@@ -104,22 +104,22 @@ void menuAnyadirUsuarios() {
     printf("Nombre: ");
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
-    clearIfNeeded(nombre,MAX_LINE);
+    clearIfNeeded(nombre, MAX_LINE);
 
     printf("\nApellido: ");
     char apellido[MAX_LINE];
     fgets(apellido, 20, stdin);
-    clearIfNeeded(apellido,MAX_LINE);
+    clearIfNeeded(apellido, MAX_LINE);
 
     printf("\nNombre usuario: ");
     char nickname[MAX_LINE];
     fgets(nickname, 20, stdin);
-    clearIfNeeded(nickname,MAX_LINE);
+    clearIfNeeded(nickname, MAX_LINE);
 
     printf("\nContraseña: ");
     char contrasenya[MAX_LINE];
     fgets(contrasenya, 20, stdin);
-    clearIfNeeded(contrasenya,MAX_LINE);
+    clearIfNeeded(contrasenya, MAX_LINE);
 
     char* opciones[] = {"Usuario", "Administrador"};
     int o = opcion("¿Que tipo de usuario quieres que sea? Indiquelo con los numeros correspondientes", 2, opciones);
@@ -128,86 +128,82 @@ void menuAnyadirUsuarios() {
     iniciarUsuario(&usuario, nombre, apellido, nickname, contrasenya, o);
     registrarUsuario(&usuario);
     liberarUsuario(&usuario);
-    
 }
-void menuModificarUsuario()
-{
+
+void menuModificarUsuario() {
     printf("\nSeleccione el usuario que quieres modificar (nickname): ");
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
-    clearIfNeeded(nombre,MAX_LINE);
+    clearIfNeeded(nombre, MAX_LINE);
     Usuario usuario;
-    if(obtenerDatosDeUsuario(&usuario, nombre) != 0)
-    {
+    if(obtenerDatosDeUsuario(&usuario, nombre) != 0) {
         printf("El nombre de usuario no existe");
     } else {
         printf("Nombre: %s\n", usuario.nombre);
         printf("Apellido: %s\n", usuario.apellido);
         printf("Es admin: %i\n", usuario.admin);
-        char* opciones[] = {"Nombre", "Apellido", "Admin", "Contraseña" "Nada"};
+        char* opciones[] = {"Nombre", "Apellido", "Admin", "Nada"};
         int o = opcion("¿Que valor quieres cambiar? Indiquelo con los numeros correspondientes", 4, opciones);
-        switch (o)
-        {
-        case 0:
-            printf("Introduce el nuevo nombre: ");
-            char nombre[MAX_LINE];
-            fgets(nombre, 20, stdin);
-            clearIfNeeded(nombre,MAX_LINE);
-            Usuario usuario0;
-            crearUsuario(&usuario0, nombre, usuario.apellido, usuario.nickname, usuario.hash, usuario.salt, usuario.admin);
-            actualizarUsuario(&usuario0);
-            liberarUsuario(&usuario0);
-            break;
-        case 1:
-            printf("Introduce el nuevo apellido: ");
-            char apellido[MAX_LINE];
-            fgets(apellido, 20, stdin);
-            clearIfNeeded(apellido,MAX_LINE);
-            Usuario usuario1;
-            crearUsuario(&usuario1, usuario.nombre, apellido, usuario.nickname, usuario.hash, usuario.salt, usuario.admin);
-            actualizarUsuario(&usuario1);
-            liberarUsuario(&usuario1);
-            break;
-        case 2:
-            printf("Introduce la nueva contraseña: ");
-            char contrasenya[MAX_LINE];
-            fgets(contrasenya, 20, stdin);
-            clearIfNeeded(contrasenya,MAX_LINE);
-            setContrasena(&usuario, contrasenya);
-            actualizarUsuario(&usuario);
-            break;
-        case 3:
-            printf("Introduce el nuevo valor de administrador: ");
-            char* opcionesAdmin[] = {"Usuario", "Administrador"};
-            int o2 = opcion("¿Que tipo de usuario quieres que sea? Indiquelo con los numeros correspondientes", 2, opcionesAdmin);
-            Usuario usuario3;
-            crearUsuario(&usuario3, nombre, usuario.apellido, usuario.nickname, usuario.hash, usuario.salt, o2);
-            actualizarUsuario(&usuario3);
-            liberarUsuario(&usuario3);
-            break;
-        default:
-            break;
+        switch (o) {
+            case 0:
+                printf("Introduce el nuevo nombre: ");
+                char nombre[MAX_LINE];
+                fgets(nombre, 20, stdin);
+                clearIfNeeded(nombre, MAX_LINE);
+                Usuario usuario0;
+                crearUsuario(&usuario0, nombre, usuario.apellido, usuario.nickname, usuario.hash, usuario.salt, usuario.admin);
+                actualizarUsuario(&usuario0);
+                liberarUsuario(&usuario0);
+                break;
+            case 1:
+                printf("Introduce el nuevo apellido: ");
+                char apellido[MAX_LINE];
+                fgets(apellido, 20, stdin);
+                clearIfNeeded(apellido, MAX_LINE);
+                Usuario usuario1;
+                crearUsuario(&usuario1, usuario.nombre, apellido, usuario.nickname, usuario.hash, usuario.salt, usuario.admin);
+                actualizarUsuario(&usuario1);
+                liberarUsuario(&usuario1);
+                break;
+            case 2:
+                printf("Introduce la nueva contraseña: ");
+                char contrasenya[MAX_LINE];
+                fgets(contrasenya, 20, stdin);
+                clearIfNeeded(contrasenya, MAX_LINE);
+                setContrasena(&usuario, contrasenya);
+                actualizarUsuario(&usuario);
+                break;
+            case 3:
+                printf("Introduce el nuevo valor de administrador: ");
+                char* opcionesAdmin[] = {"Usuario", "Administrador"};
+                int o2 = opcion("¿Que tipo de usuario quieres que sea? Indiquelo con los numeros correspondientes", 2, opcionesAdmin);
+                Usuario usuario3;
+                crearUsuario(&usuario3, nombre, usuario.apellido, usuario.nickname, usuario.hash, usuario.salt, o2);
+                actualizarUsuario(&usuario3);
+                liberarUsuario(&usuario3);
+                break;
+            default:
+                break;
         }
         liberarUsuario(&usuario);
     }
 }
-void menuBorrarUsuario()
-{
+
+void menuBorrarUsuario() {
     printf("\nBorrar el usuario que quieres modificar (nickname): ");
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
-    clearIfNeeded(nombre,MAX_LINE);
+    clearIfNeeded(nombre, MAX_LINE);
     eliminarUsuario(nombre);
 }
-void menuVerEstadistidasDeUsuario()
-{
+
+void menuVerEstadistidasDeUsuario() {
     printf("\nVer estadisticas del usuario (nickname): ");
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
-    clearIfNeeded(nombre,MAX_LINE);
+    clearIfNeeded(nombre, MAX_LINE);
     Usuario usuario;
-    if(obtenerDatosDeUsuario(&usuario, nombre) != 0)
-    {
+    if(obtenerDatosDeUsuario(&usuario, nombre) != 0) {
         printf("El nombre de usuario no existe");
     } else {
         printf("Datos del usuario:\n");
@@ -217,6 +213,7 @@ void menuVerEstadistidasDeUsuario()
         printf("Es admin: %i\n", usuario.admin);
     }
 }
+
 void clearIfNeeded(char *str, int max_line) {
     if ((strlen(str) == max_line-1) && (str[max_line-2] != '\n'))
 		while (getchar() != '\n');

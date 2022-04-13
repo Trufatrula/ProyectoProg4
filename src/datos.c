@@ -11,7 +11,7 @@ int registrarUsuario(Usuario* usuario) {
     //Aqui calculamos el salt y el token supongo
     sqlite3_stmt *stmt;
     char sqlUsuario[] = "INSERT INTO Usuario (Nombre, Apellido, Nick, Constrasenya, Salt, Admin) VALUES (?, ?, ?, ?, ?)";
-    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL) ;
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL);
     if (result != SQLITE_OK) {
 		printf("Error preparing statement (INSERT)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
@@ -40,7 +40,7 @@ int registrarUsuario(Usuario* usuario) {
 int actualizarUsuario(Usuario* usuario) {
     sqlite3_stmt *stmt;
     char sqlUsuario[] = "UPDATE Usuario SET Nombre = ?, Apellido = ?, Constrasenya = ?, Salt = ?, Admin = ? WHERE Nick = ?";
-    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL) ;
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL);
     if (result != SQLITE_OK) {
 		printf("Error preparing statement (UPDATE)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
@@ -69,7 +69,7 @@ int actualizarUsuario(Usuario* usuario) {
 int eliminarUsuario(char* nick) {
     sqlite3_stmt *stmt;
 	char sqlEliminar[] = "DELETE FROM Usuario WHERE Nick = ?";
-	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlEliminar, -1, &stmt, NULL) ;
+	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlEliminar, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
 		printf("Error preparing statement (DELETE)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
@@ -95,7 +95,7 @@ int iniciarSesion(char* nick, char* contrasena, char* token) {
     char hashComputado[65];
     int login = 0;
     char sqlUsuario[] = "SELECT Constrasenya, Salt FROM Usuario WHERE Nick = ?";
-    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL) ;
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuario, -1, &stmt, NULL);
     if (result != SQLITE_OK) {
 		printf("Error preparing statement (INSERT)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
@@ -126,8 +126,7 @@ int iniciarSesion(char* nick, char* contrasena, char* token) {
         time(&t);
         generateToken(token);
         t += 3600;
-        
-        int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL) ;
+        int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL);
         if (result != SQLITE_OK) {
 		    printf("Error preparing statement (INSERT)\n");
 		    printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
@@ -156,7 +155,7 @@ int iniciarSesion(char* nick, char* contrasena, char* token) {
 int cerrarSesion(char* token) {
 	sqlite3_stmt *stmt;
 	char sqlToken[] = "DELETE FROM Token WHERE Token = ?";
-	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL) ;
+	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
 		printf("Error preparing statement (DELETE)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
@@ -182,7 +181,7 @@ int actualizarToken(char* token) {
 	time_t t;
 	time(&t);
     char sqlTokenDel[] = "DELETE FROM Token WHERE Expira < ?";
-    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlTokenDel, -1, &stmt, NULL) ;
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlTokenDel, -1, &stmt, NULL);
     if (result != SQLITE_OK) {
 		printf("Error preparing statement (DELETE)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
@@ -236,13 +235,11 @@ int obtenerNickDeToken(char* token, char* nick) {
         return result;
     }
 	sqlite3_bind_text(stmt, 5, nick, strlen(nick), SQLITE_STATIC);
-
 	do {
 		result = sqlite3_step(stmt);
 		if(result == SQLITE_ROW) {
 			char* nicko = (char*) sqlite3_column_text(stmt,0);
-			if(strlen(nicko)< MAX_LINE)
-			{
+			if(strlen(nicko)< MAX_LINE) {
 				strcpy(nick,nicko);
 				correcto = 1;
 			}
@@ -273,7 +270,6 @@ int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
         return result;
     }
 	sqlite3_bind_text(stmt, 5, nick, strlen(nick), SQLITE_STATIC);
-
 	do {
         result = sqlite3_step(stmt);
         if (result == SQLITE_ROW) {
@@ -295,8 +291,7 @@ int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-	if (correcto == 1) 
-	{
+	if (correcto == 1) {
 		return SQLITE_OK;
 	}
 	return SQLITE_ERROR;
@@ -305,27 +300,21 @@ int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
 
 int autorizar(char* token, char* nick) {
 	char nicktoken[MAX_LINE];
-	if(obtenerNickDeToken(token,nicktoken) != SQLITE_OK)
-	{
+	if(obtenerNickDeToken(token, nicktoken) != SQLITE_OK) {
 		return SQLITE_ERROR;
 	}
-	if ( nick != NULL)
-	{
-		if(strcmp(nick,nicktoken) == 0)
-		{
-		return SQLITE_OK;
+	if ( nick != NULL) {
+		if(strcmp(nick, nicktoken) == 0) {
+			return SQLITE_OK;
 		}		
 	}
 	Usuario usuario;
-	if(obtenerDatosDeUsuario(&usuario,nicktoken) != SQLITE_OK)
-	{
+	if(obtenerDatosDeUsuario(&usuario, nicktoken) != SQLITE_OK) {
 		return SQLITE_ERROR;
 	}
-	
 	int admin = usuario.admin;
 	liberarUsuario(&usuario);
-	if(admin == 1)
-	{
+	if(admin == 1) {
 		return SQLITE_OK;
 	}
 	return SQLITE_ERROR;
@@ -343,7 +332,7 @@ int generarTablas() {
     Admin INTEGER NOT NULL,\
 	PRIMARY KEY(Nick))";
 
-    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuarios, -1, &stmt, NULL) ;
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUsuarios, -1, &stmt, NULL);
 
     if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
@@ -383,7 +372,7 @@ int generarTablas() {
 	Idioma	TEXT NOT NULL,\
 	PRIMARY KEY (Palabra))";
 
-    result = sqlite3_prepare_v2(__baseDeDatosActual, sqlDiccionario, -1, &stmt, NULL) ;
+    result = sqlite3_prepare_v2(__baseDeDatosActual, sqlDiccionario, -1, &stmt, NULL);
 
     if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
@@ -411,7 +400,7 @@ int generarTablas() {
 	PRIMARY KEY(Token)),\
 	FOREGIN KEY(User_Nick) REFERENCES Usuario(Nick) ON DELETE CASCADE";
 
-    result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL) ;
+    result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL);
     if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
         return result;
