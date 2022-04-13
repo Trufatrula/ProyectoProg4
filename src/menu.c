@@ -97,7 +97,7 @@ void menuEdicionUsuariosAdmin() {
                 menuBorrarUsuario();
 		    	break;
             default:
-            printf("Saliendo...");
+            printf("Saliendo...\n");
                 break;
 	    }
     } while(o != 3);
@@ -149,13 +149,13 @@ void menuModificarUsuario() {
     clearIfNeeded(nombre, MAX_LINE);
     Usuario usuario;
     if(obtenerDatosDeUsuario(&usuario, nombre) != 0) {
-        printf("El nombre de usuario no existe");
+        printf("El nombre de usuario no existe\n");
     } else {
         printf("Nombre: %s\n", usuario.nombre);
         printf("Apellido: %s\n", usuario.apellido);
         printf("Es admin: %i\n", usuario.admin);
-        char* opciones[] = {"Nombre", "Apellido", "Admin", "Nada"};
-        int o = opcion("¿Que valor quieres cambiar? Indiquelo con los numeros correspondientes", 4, opciones);
+        char* opciones[] = {"Nombre", "Apellido", "Contraseña", "Admin", "Nada"};
+        int o = opcion("¿Que valor quieres cambiar? Indiquelo con los numeros correspondientes", 5, opciones);
         switch (o) {
             case 0:
                 printf("Introduce el nuevo nombre: ");

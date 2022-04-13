@@ -17,7 +17,6 @@ void getToken(char* token){
 void guardarToken(char* nomFichero){
     FILE * fichero;
     fichero = fopen(nomFichero, "w");
-    printf(__tokenactual);
     fputs(__tokenactual, fichero);
     fclose(fichero);
 }
