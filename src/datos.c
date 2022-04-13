@@ -305,45 +305,31 @@ int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
 
 int autorizar(char* token, char* nick) {
 	char nicktoken[MAX_LINE];
-	if(obtenerNickDeToken(token,nick) != SQLITE_OK)
+	if(obtenerNickDeToken(token,nicktoken) != SQLITE_OK)
 	{
 		return SQLITE_ERROR;
 	}
-	if ( nick == NULL)
+	if ( nick != NULL)
 	{
-		Usuario usuario;
-		if(obtenerDatosDeUsuario(&usuario,nicktoken) != SQLITE_OK)
+		if(strcmp(nick,nicktoken) == 0)
 		{
-			return SQLITE_ERROR;
-		}
-		int admin = usuario.admin;
-		liberarUsuario(&usuario);
-		if(admin == 1)
-		{
-			return SQLITE_OK;
-		}
-		return SQLITE_ERROR;	
-	}
-
-	if(strcmp(nick,nicktoken) == 0)
-	{
 		return SQLITE_OK;
+		}		
 	}
 	Usuario usuario;
 	if(obtenerDatosDeUsuario(&usuario,nicktoken) != SQLITE_OK)
 	{
 		return SQLITE_ERROR;
 	}
+	
 	int admin = usuario.admin;
 	liberarUsuario(&usuario);
 	if(admin == 1)
 	{
 		return SQLITE_OK;
 	}
-	return SQLITE_ERROR;	
-	
-	
-    return 0;
+	return SQLITE_ERROR;
+		
 }
 
 int generarTablas() {
