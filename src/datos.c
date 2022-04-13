@@ -68,7 +68,7 @@ int actualizarUsuario(Usuario* usuario) {
 
 int eliminarUsuario(char* nick) {
     sqlite3_stmt *stmt;
-	char sqlEliminar[] = "DELETE FROM table	WHERE Nick = ?";
+	char sqlEliminar[] = "DELETE FROM Usuario WHERE Nick = ?";
 	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlEliminar, -1, &stmt, NULL) ;
 	if (result != SQLITE_OK) {
 		printf("Error preparing statement (DELETE)\n");
@@ -153,9 +153,57 @@ int iniciarSesion(char* nick, char* contrasena, char* token) {
 	return SQLITE_ERROR;
 }
 
-int actualizarToken(char* token) {
+int cerrarSesion(char* token) {
 
 	return 0;
+}
+
+int actualizarToken(char* token) {
+	sqlite3_stmt *stmt;
+	time_t t;
+	time(&t);
+    char sqlTokenDel[] = "DELETE FROM Token WHERE Expira < ?";
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlTokenDel, -1, &stmt, NULL) ;
+    if (result != SQLITE_OK) {
+		printf("Error preparing statement (DELETE)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+    sqlite3_bind_int64(stmt, 0, t);
+    result = sqlite3_step(stmt);
+	if (result != SQLITE_DONE) {
+		printf("Error eliminando datos\n");
+		return result;
+	}
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (DELETE)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	t += 3600;
+	char sqlTokenUpd[] = "UPDATE Token SET Expira = ? WHERE Expira < ? AND token = ?";
+    result = sqlite3_prepare_v2(__baseDeDatosActual, sqlTokenUpd, -1, &stmt, NULL);
+    if (result != SQLITE_OK) {
+		printf("Error preparing statement (DELETE)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+    sqlite3_bind_int64(stmt, 0, t);
+	sqlite3_bind_int64(stmt, 1, t);
+	sqlite3_bind_text(stmt, 2, token, strlen(token), SQLITE_STATIC);
+    result = sqlite3_step(stmt);
+	if (result != SQLITE_DONE) {
+		printf("Error eliminando datos\n");
+		return result;
+	}
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (DELETE)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	return SQLITE_ERROR;
 }
 
 int obtenerNickDeToken(char* token, char* nick) {
@@ -235,7 +283,6 @@ int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
 	return SQLITE_ERROR;
     
 }
-
 
 int autorizar(char* token, char* nick) {
 	char nicktoken[MAX_LINE];

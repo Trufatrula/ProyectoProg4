@@ -11,6 +11,7 @@ int registrarUsuario(Usuario* usuario);
 int actualizarUsuario(Usuario* usuario);
 int eliminarUsuario(char* nick);
 int iniciarSesion(char* nick, char* contrasena, char* token);
+int cerrarSesion(char* token);
 int actualizarToken(char* token);
 int obtenerNickDeToken(char* token, char* nick);
 int obtenerDatosDeUsuario(Usuario* usuario, char* nick);
