@@ -203,7 +203,7 @@ void menuBorrarUsuario()
 }
 void menuVerEstadistidasDeUsuario()
 {
-    printf("\nBorrar el usuario que quieres modificar (nickname): ");
+    printf("\nVer estadisticas del usuario (nickname): ");
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre,MAX_LINE);
