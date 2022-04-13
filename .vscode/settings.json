@@ -9,6 +9,7 @@
         "winerror.h": "c",
         "datos.h": "c",
         "token.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "limits.h": "c"
     }
 }
