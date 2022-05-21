@@ -3,8 +3,8 @@
 #include <string.h>
 #include <time.h>
 #include "token.h"
-#include "menu.h"
 
+#define MAX_STR_SIZE 20
 #define TOKEN_TIME 3600
 
 sqlite3* __baseDeDatosActual;
@@ -288,7 +288,7 @@ int obtenerNickDeToken(char* token, char* nick) {
 		result = sqlite3_step(stmt);
 		if(result == SQLITE_ROW) {
 			char* nicko = (char*) sqlite3_column_text(stmt,0);
-			if(strlen(nicko)< MAX_LINE) {
+			if(strlen(nicko) < MAX_STR_SIZE) {
 				strcpy(nick,nicko);
 				correcto = 1;
 			}
@@ -370,7 +370,7 @@ int usuarioExiste(char* nick) {
 }
 
 int autorizar(char* token, char* nick) {
-	char nicktoken[MAX_LINE];
+	char nicktoken[MAX_STR_SIZE];
 	if(obtenerNickDeToken(token, nicktoken) != SQLITE_OK) {
 		return SQLITE_ERROR;
 	}

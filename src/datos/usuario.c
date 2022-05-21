@@ -1,5 +1,5 @@
 #include "usuario.h"
-#include "utilidades.h"
+#include "../common/utilidades.h"
 #include <openssl/rand.h>
 #include <openssl/sha.h>
 #include <string.h>

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "menu.h"
-#include "consola.h"
-#include "datos.h"
+#include "../common/consola.h"
+#include "../datos/datos.h"
 
 
 int main(void) {
@@ -9,13 +9,8 @@ int main(void) {
 	abrirBD();
 	generarTablas();
 
-	if(menuSesion() == 1){
-		cerrarBD();
-		desactivarUTF8();
-		return 0;
-	}
-	menuPrincipal();
-	
+	menuPrincipalAdmin();
+
 	cerrarBD();
 	desactivarUTF8();
 	return 0;

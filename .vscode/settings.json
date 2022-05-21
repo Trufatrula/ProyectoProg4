@@ -10,6 +10,8 @@
         "datos.h": "c",
         "token.h": "c",
         "string.h": "c",
-        "limits.h": "c"
+        "limits.h": "c",
+        "usuario.h": "c",
+        "ostream": "cpp"
     }
 }

@@ -1,6 +1,10 @@
 #ifndef DATOS
 #define DATOS
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <sqlite3.h>
@@ -21,5 +25,9 @@ int tokenExiste(char* token);
 int generarTablas();
 int abrirBD();
 int cerrarBD();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

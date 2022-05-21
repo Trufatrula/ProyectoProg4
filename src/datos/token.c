@@ -1,5 +1,5 @@
 #include "token.h"
-#include "utilidades.h"
+#include "../common/utilidades.h"
 #include <openssl/rand.h>
 
 void generateToken(char* token) {
