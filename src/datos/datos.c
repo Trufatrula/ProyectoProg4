@@ -10,7 +10,6 @@
 sqlite3* __baseDeDatosActual;
 
 int registrarUsuario(Usuario* usuario) {
-    //Aqui calculamos el salt y el token supongo
 	if (usuarioExiste(usuario->nickname)) return SQLITE_ERROR;
     sqlite3_stmt *stmt;
     char sqlUsuario[] = "INSERT INTO Usuario (Nombre, Apellido, Nick, Contrasenya, Salt) VALUES (?, ?, ?, ?, ?)";
@@ -36,6 +35,27 @@ int registrarUsuario(Usuario* usuario) {
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
+
+	char sqlUserPoints[] = "INSERT INTO Puntuacion (User_Nick, Normal_Score, League_Points) VALUES (?, 0, 0)";
+	result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUserPoints, -1, &stmt, NULL);
+	if (result != SQLITE_OK) {
+		printf("Error preparing statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	sqlite3_bind_text(stmt, 1, usuario->nickname, strlen(usuario->nickname), SQLITE_STATIC);
+	result = sqlite3_step(stmt);
+	if (result != SQLITE_DONE) {
+		printf("Error insertando datos\n");
+		return result;
+	}
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	
 	return result;
 }
 
@@ -414,7 +434,7 @@ int tokenExiste(char* token) {
 int obtenerPuntuaciones(Puntuaciones* puntuaciones, char* nick) {
 	 sqlite3_stmt *stmt;
 	 int correcto = 0;
-	 char sqlPuntuaciones[] = "Normal_Score, League_Points FROM Puntuacion WHERE Nick =?";
+	 char sqlPuntuaciones[] = "SELECT Normal_Score, League_Points FROM Puntuacion WHERE User_Nick =?";
 	 int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPuntuaciones, -1, &stmt, NULL);
 	 if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");

@@ -12,6 +12,7 @@ void menuEdicionUsuariosAdmin();
 int menuAnyadirUsuariosAdmin();
 void menuModificarUsuarioAdmin();
 void menuBorrarUsuarioAdmin();
+void menuVerPuntuacionesAdmin();
 
 #ifdef __cplusplus
 }

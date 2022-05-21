@@ -16,8 +16,7 @@ void menuPrincipalAdmin() {
                 menuEdicionUsuariosAdmin();
 		    	break;
             case 1:
-                //menuVerEstadistidasUsuario();
-                printf("Aún no implementado\n");
+                menuVerPuntuacionesAdmin();
 		    	break;
             default:
                 break;
@@ -84,7 +83,7 @@ int menuAnyadirUsuariosAdmin() {
 }
 
 void menuModificarUsuarioAdmin() {
-    printf("\nSeleccione el usuario que quieres modificar (nickname): ");
+    printf("\nSeleccione el usuario que quieres ver sus puntuaciones (nickname): ");
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre, MAX_LINE);
@@ -129,6 +128,20 @@ void menuModificarUsuarioAdmin() {
                 break;
         }
         liberarUsuario(&usuario);
+    }
+}
+
+void menuVerPuntuacionesAdmin() {
+     printf("\nSeleccione el usuario que quieres modificar (nickname): ");
+    char nombre[MAX_LINE];
+    fgets(nombre, 20, stdin);
+    clearIfNeeded(nombre, MAX_LINE);
+    Puntuaciones puntuacion;
+    if(obtenerPuntuaciones(&puntuacion, nombre) != 0) {
+        printf("El nombre de usuario no existe\n");
+    } else {
+        printf("Puntuación normal: %d\n", puntuacion.Normal_Score);
+        printf("Puntuación ranked: %d\n", puntuacion.League_Points);
     }
 }
 
