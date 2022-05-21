@@ -10,6 +10,7 @@ extern "C" {
 #include <sqlite3.h>
 
 #include "usuario.h"
+#include "puntuaciones.h"
 
 int registrarUsuario(Usuario* usuario);
 int actualizarUsuario(Usuario* usuario);
@@ -22,6 +23,7 @@ int obtenerDatosDeUsuario(Usuario* usuario, char* nick);
 int usuarioExiste(char* nick);
 int autorizar(char* token, char* nick);
 int tokenExiste(char* token);
+int obtenerPuntuaciones(Puntuaciones* puntuaciones, char* nick);
 int generarTablas();
 int abrirBD();
 int cerrarBD();

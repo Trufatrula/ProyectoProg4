@@ -411,6 +411,39 @@ int tokenExiste(char* token) {
 	return SQLITE_OK;
 }
 
+int obtenerPuntuaciones(Puntuaciones* puntuaciones, char* nick) {
+	 sqlite3_stmt *stmt;
+	 int correcto = 0;
+	 char sqlPuntuaciones[] = "Normal_Score, League_Points FROM Puntuacion WHERE Nick =?";
+	 int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPuntuaciones, -1, &stmt, NULL);
+	 if (result != SQLITE_OK) {
+        printf("Error al insertar la sentencia\n");
+        return result;
+    }
+	sqlite3_bind_text(stmt, 1, nick, strlen(nick), SQLITE_STATIC);
+	do {
+        result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW) {
+            
+			int normal = (int) sqlite3_column_int(stmt,1);
+			int LP = (int) sqlite3_column_int(stmt,2);
+			correcto = 1;
+			crearPuntuacion(puntuaciones, normal, LP);
+			
+        }
+    } while (result == SQLITE_ROW);
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	if (correcto == 1) {
+		return SQLITE_OK;
+	}
+	return SQLITE_ERROR;
+}
+
 int generarTablas() {
     sqlite3_stmt *stmt;
 	char sqlUsuarios[] = "CREATE TABLE IF NOT EXISTS Usuario( \
