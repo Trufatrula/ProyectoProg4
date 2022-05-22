@@ -13,6 +13,7 @@ int menuAnyadirUsuariosAdmin();
 void menuModificarUsuarioAdmin();
 void menuBorrarUsuarioAdmin();
 void menuVerPuntuacionesAdmin();
+void menuCargarPalabrasAdmin();
 
 #ifdef __cplusplus
 }
