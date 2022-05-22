@@ -7,10 +7,10 @@
 #include "../datos/token.h"
 
 void menuPrincipalAdmin() {
-    char* opciones[] = {"Ver y editar usuarios existentes", "Ver estadisticas", "Salir"};
+    char* opciones[] = {"Ver y editar usuarios existentes", "Ver estadisticas","Cargar palabras", "Salir"};
     int o;
     do {
-        o = opcion("¿Deseas ver usuario, añadir/modificar/borrar usuarios existentes o ver estadisticas? Indiquelo con los numeros correspondientes", 3, opciones);
+        o = opcion("¿Deseas ver y editar usuarios existentes, ver estadisticas o cargar palabras? Indiquelo con los numeros correspondientes", 4, opciones);
         switch (o) {
 	        case 0:
                 menuEdicionUsuariosAdmin();
@@ -18,10 +18,13 @@ void menuPrincipalAdmin() {
             case 1:
                 menuVerPuntuacionesAdmin();
 		    	break;
+            case 2:
+                menuCargarPalabrasAdmin();
+                break;
             default:
                 break;
 	    }
-    } while(o != 2 && o != 3);
+    } while(o != 3);
 }
 
 void menuEdicionUsuariosAdmin() {
@@ -151,4 +154,20 @@ void menuBorrarUsuarioAdmin() {
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre, MAX_LINE);
     eliminarUsuario(nombre);
+}
+
+void menuCargarPalabrasAdmin() {
+    printf("\n¡Mete en la misma carpeta del proyecto un fichero CSV con el nombre palabras.csv!\nUna vez hecho eso seleccione SI para continuar.");
+    char* opciones[] = {"SI", "NO"};
+    int o;
+    do {
+        o = opcion("¿Deseas continuar? Indiquelo con los numeros correspondientes", 2, opciones);
+        switch (o) {
+	        case 0:
+                printf("Falta la funcion");
+		    	break;
+            default:
+                break;
+	    }
+    } while( o != 1);
 }
