@@ -67,9 +67,18 @@ unsigned long processFileCSV(FILE *f, char delim, char quote, CSVRow** rows) {
 }
 
 char* getValueCSV(CSV* csv, unsigned long row, unsigned long column) {
-    if (csv->rowCount < row) return NULL;
-    if (csv->row[row].flds < column) return NULL;
+    if (csv->rowCount <= row) return NULL;
+    if (csv->row[row].flds <= column) return NULL;
     return &csv->row[row].line[csv->row[row].fld[column]];
+}
+
+unsigned long getRowCountCSV(CSV* csv) {
+    return csv->rowCount;
+}
+
+unsigned long getColumnCountCSV(CSV* csv, unsigned long row) {
+    if (csv->rowCount <= row) return 0;
+    return csv->row[row].flds;
 }
 
 int loadCSV(CSV* csv, char* path, char delim, char quotes) {
