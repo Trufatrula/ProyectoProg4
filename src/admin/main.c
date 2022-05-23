@@ -8,7 +8,7 @@ int main(void) {
 	activarUTF8();
 	abrirBD();
 	generarTablas();
-
+	
 	menuPrincipalAdmin();
 
 	cerrarBD();

@@ -466,12 +466,24 @@ int obtenerPuntuaciones(Puntuaciones* puntuaciones, char* nick) {
 
 int borrarPalabras() {
 	sqlite3_stmt *stmt;
-	 char sqlBorrar[] = "DELETE * FROM Diccionario";
-	 int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlBorrar, -1, &stmt, NULL);
-	 if (result != SQLITE_OK) {
-        printf("Error al insertar la sentencia\n");
-        return result;
-    } 
+	char sqlBorrar[] = "DELETE FROM Diccionario";
+	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlBorrar, -1, &stmt, NULL);
+	if (result != SQLITE_OK) {
+		printf("Error preparing statement (DELETE)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	result = sqlite3_step(stmt);
+	if (result != SQLITE_DONE) {
+		printf("Error borrando datos\n");
+		return result;
+	}
+	result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (DELETE)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
 	return SQLITE_OK;
 }
 
@@ -614,6 +626,7 @@ int cerrarBD(sqlite3 *db) {
 
 int meterPalabraBD(char* palabra, char* tematica, char* idioma)
 {
+	if (existePalabra(palabra)) return SQLITE_ERROR;
 	sqlite3_stmt *stmt;
     char sqlPalabra[] = "INSERT INTO diccionario(Palabra, Tema, Idioma) VALUES (?, ?, ?)";
     int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPalabra, -1, &stmt, NULL);
@@ -637,4 +650,31 @@ int meterPalabraBD(char* palabra, char* tematica, char* idioma)
 		return result;
 	}
 	return result;
+}
+
+int existePalabra(char* palabra){
+	sqlite3_stmt *stmt;
+	int existe = 0;
+	char sqlPalabra[] = "SELECT Palabra FROM Diccionario WHERE Palabra = ?";
+	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPalabra, -1, &stmt, NULL);
+	if (result != SQLITE_OK) {
+        printf("Error al insertar la sentencia\n");
+        return result;
+    }
+	sqlite3_bind_text(stmt, 1, palabra, strlen(palabra), SQLITE_STATIC);
+	do {
+        result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW) {
+        	existe = 1;
+        }
+    } while (result == SQLITE_ROW);
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	if (existe) return SQLITE_ERROR;
+	return SQLITE_OK;
+	
 }
