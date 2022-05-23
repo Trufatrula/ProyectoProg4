@@ -5,9 +5,9 @@
 #include "../datos/datos.h"
 #include "cargarpalabras.h"
 
-int cargarPalabrasABaseDeDatosAdmin() {
+int cargarPalabrasABaseDeDatosAdmin(char delimitador, char comillas) {
     CSV csv;
-    if(loadCSV(&csv, "palabras.csv") == 1) {
+    if(loadCSVEx(&csv, "palabras.csv",delimitador,comillas) == 1) {
         return 1;
     }
 
@@ -31,5 +31,7 @@ int cargarPalabrasABaseDeDatosAdmin() {
             return 1;
         }
     }
+    freeCSV(&csv);
+    return 0;
 }
 

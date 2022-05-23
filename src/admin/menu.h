@@ -14,6 +14,7 @@ void menuModificarUsuarioAdmin();
 void menuBorrarUsuarioAdmin();
 void menuVerPuntuacionesAdmin();
 void menuCargarPalabrasAdmin();
+int menuSeleccionCargado();
 
 #ifdef __cplusplus
 }

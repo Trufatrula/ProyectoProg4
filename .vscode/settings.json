@@ -13,6 +13,7 @@
         "limits.h": "c",
         "usuario.h": "c",
         "ostream": "cpp",
-        "csv.h": "c"
+        "csv.h": "c",
+        "cargarpalabras.h": "c"
     }
 }

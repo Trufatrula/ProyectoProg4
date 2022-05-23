@@ -2,15 +2,15 @@
 #include "menu.h"
 #include "../common/consola.h"
 #include "../datos/datos.h"
+#include "cargarpalabras.h"
 
 
 int main(void) {
 	activarUTF8();
 	abrirBD();
 	generarTablas();
-	cargarPalabrasABaseDeDatosAdmin();
-
-	//menuPrincipalAdmin();
+	
+	menuPrincipalAdmin();
 
 	cerrarBD();
 	desactivarUTF8();

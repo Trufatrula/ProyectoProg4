@@ -5,6 +5,7 @@
 #include "../datos/datos.h"
 #include "../datos/usuario.h"
 #include "../datos/token.h"
+#include "cargarpalabras.h"
 
 void menuPrincipalAdmin() {
     char* opciones[] = {"Ver y editar usuarios existentes", "Ver estadisticas","Cargar palabras", "Salir"};
@@ -164,10 +165,30 @@ void menuCargarPalabrasAdmin() {
         o = opcion("¿Deseas continuar? Indiquelo con los numeros correspondientes", 2, opciones);
         switch (o) {
 	        case 0:
-                printf("Falta la funcion");
+                if(menuSeleccionCargado() == 1) return;
 		    	break;
             default:
                 break;
 	    }
     } while( o != 1);
+}
+
+int menuSeleccionCargado(){
+    char delim[MAX_LINE];
+    char comillas[MAX_LINE];
+    printf("\n¿Que delimitador va a utilizar el archivo csv? Por ejemplo: ',' o ';': ");
+    fgets(delim, 20, stdin);
+    clearIfNeeded(delim, MAX_LINE);
+    printf("\n¿Que comilla va a utilizar el archivo csv? Por ejemplo: '\"': ");
+    fgets(comillas, 20, stdin);
+    clearIfNeeded(comillas, MAX_LINE);
+    if(cargarPalabrasABaseDeDatosAdmin(delim[0],comillas[0])==1){
+        printf("Algo salio mal!\n");
+        return 0;
+    }else{
+        printf("Cargado correctamente!\n");
+        return 1;
+    }
+    
+    
 }
