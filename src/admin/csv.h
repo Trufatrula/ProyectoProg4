@@ -12,7 +12,8 @@ typedef struct {
     unsigned long rowCount;
 } CSV;
 
-int loadCSV(CSV* csv, char* path, char delim, char quotes);
+int loadCSVEx(CSV* csv, char* path, char delim, char quotes);
+int loadCSV(CSV* csv, char* path);
 void freeCSV(CSV* csv);
 char* getValueCSV(CSV* csv, unsigned long row, unsigned long column);
 unsigned long getRowCountCSV(CSV* csv);

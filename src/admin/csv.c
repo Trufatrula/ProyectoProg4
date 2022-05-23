@@ -81,7 +81,7 @@ unsigned long getColumnCountCSV(CSV* csv, unsigned long row) {
     return csv->row[row].flds;
 }
 
-int loadCSV(CSV* csv, char* path, char delim, char quotes) {
+int loadCSVEx(CSV* csv, char* path, char delim, char quotes) {
     FILE* f = NULL;
     if (!(f = fopen(path, "r"))) {
         return 1;
@@ -92,6 +92,10 @@ int loadCSV(CSV* csv, char* path, char delim, char quotes) {
         return 1;
     }
     return 0;
+}
+
+int loadCSV(CSV* csv, char* path) {
+    return loadCSVEx(csv, path, ',', '"');
 }
 
 void freeCSV(CSV* csv) {
