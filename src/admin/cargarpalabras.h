@@ -1,0 +1,4 @@
+#ifndef JALADCARGARPALABRAS
+#define JALADCARGARPALABRAS
+
+#endif

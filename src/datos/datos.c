@@ -600,3 +600,30 @@ int cerrarBD(sqlite3 *db) {
     __baseDeDatosActual = 0;
     return result;
 }
+
+int meterPalabraBD(char* palabra, char* tematica, char* idioma)
+{
+	sqlite3_stmt *stmt;
+    char sqlPalabra[] = "INSERT INTO diccionario(Palabra, Tema, Idioma) VALUES (?, ?, ?)";
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPalabra, -1, &stmt, NULL);
+    if (result != SQLITE_OK) {
+		printf("Error preparing statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+    sqlite3_bind_text(stmt, 1, palabra, strlen(palabra), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, tematica, strlen(tematica), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, idioma, strlen(idioma), SQLITE_STATIC);
+    result = sqlite3_step(stmt);
+	if (result != SQLITE_DONE) {
+		printf("Error insertando datos\n");
+		return result;
+	}
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	return result;
+}

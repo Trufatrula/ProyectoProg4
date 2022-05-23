@@ -27,6 +27,7 @@ int obtenerPuntuaciones(Puntuaciones* puntuaciones, char* nick);
 int generarTablas();
 int abrirBD();
 int cerrarBD();
+int meterPalabraBD(char* palabra, char* tematica, char* idioma);
 
 #ifdef __cplusplus
 }
