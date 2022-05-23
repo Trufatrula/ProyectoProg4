@@ -464,6 +464,17 @@ int obtenerPuntuaciones(Puntuaciones* puntuaciones, char* nick) {
 	return SQLITE_ERROR;
 }
 
+int borrarPalabras() {
+	sqlite3_stmt *stmt;
+	 char sqlBorrar[] = "DELETE * FROM Diccionario";
+	 int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlBorrar, -1, &stmt, NULL);
+	 if (result != SQLITE_OK) {
+        printf("Error al insertar la sentencia\n");
+        return result;
+    } 
+	return SQLITE_OK;
+}
+
 int generarTablas() {
     sqlite3_stmt *stmt;
 	char sqlUsuarios[] = "CREATE TABLE IF NOT EXISTS Usuario( \
