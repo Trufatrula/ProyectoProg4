@@ -31,5 +31,7 @@ int cargarPalabrasABaseDeDatosAdmin() {
             return 1;
         }
     }
+    freeCSV(&csv);
+    return 0;
 }
 
