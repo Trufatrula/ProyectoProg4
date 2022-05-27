@@ -7,10 +7,12 @@ int menuSesion() {
         char token[33];
         char nick[MAX_LINE];
         getToken(token);
+        /*
         if(obtenerNickDeToken(token, nick) == 0){
             printf("Sesion automaticamente iniciada como %s\n", nick);
             return 0;
         }
+        */
     }
     char* opciones[] = {"Registrarse", "Iniciar sesión", "Sácame de aquí"};
     int o = opcion("¿Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes", 3, opciones);
@@ -50,6 +52,7 @@ int menuIniciarSesion() {
     char* opcionCerrar[] = {"No", "Si"};
     int o = opcion("¿Quieres cerrar la sesion al salir? Indiquelo con los numeros correspondientes", 2, opcionCerrar);
 
+    /*
     if(iniciarSesion(nombre, contrasenya, token, o) == 0){
         establecerToken(token);
         if(o == 0){
@@ -60,6 +63,7 @@ int menuIniciarSesion() {
         printf("No se ha podido iniciar sesion, compruebe su usuario y contraseña");
         return 1;
     }
+    */
     
 
 
