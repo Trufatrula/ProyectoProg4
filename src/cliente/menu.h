@@ -9,6 +9,7 @@ extern "C" {
 
 int menuSesion();
 int menuIniciarSesion();
+int menuSeleccionJuego();
 
 #ifdef __cplusplus
 }
