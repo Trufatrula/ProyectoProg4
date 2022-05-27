@@ -1,6 +1,10 @@
 #include "juego.h"
 #include "string.h"
 #include <iostream>
+#include <cstring>
+#define RED "\e[0;31m"
+#define GRN "\e[0;32m"
+#define NC "\e[0m"
 
 using namespace std;
 
@@ -49,7 +53,19 @@ Partida::~Partida() {
     delete[] this->palabra;
 }
 
-int Partida::iniciarPartida() {
-
+int Partida::comprobarResultado(char* palabraUser, char* codigoServer) {
+    for (int i = 0; i < strlen(codigoServer); i++)
+    {   
+        char asa = palabraUser[i];
+        if(codigoServer[i]=='*') {
+            cout<<GRN <<palabraUser[i]<<NC;
+        } else if (codigoServer[i]=='-'){
+            cout<<RED <<palabraUser[i]<<NC;
+        } else if (codigoServer[i]=='/'){
+            cout<<NC <<palabraUser[i]<<NC;
+        }
+        
+    }
+    
 
 }

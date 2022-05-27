@@ -18,14 +18,14 @@ int menuSesion() {
     int o = opcion("¿Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes", 3, opciones);
 	switch (o) {
 	    case 0:
-            
+            /*
             if (menuAnyadirUsuarios() == 0){
                 printf("Iniciar sesión:\n");
                 return menuIniciarSesion();
             } else {
                 return 1;
             }
-            
+            */
 			break;
 	    case 1:
             return menuIniciarSesion();
@@ -50,7 +50,7 @@ int menuIniciarSesion() {
     clearIfNeeded(contrasenya, MAX_LINE);
     char* opcionCerrar[] = {"No", "Si"};
     int o = opcion("¿Quieres cerrar la sesion al salir? Indiquelo con los numeros correspondientes", 2, opcionCerrar);
-    
+    /*
     if(iniciarSesion(nombre, contrasenya, token, o) == 0){
         establecerToken(token);
         if(o == 0){
@@ -61,6 +61,6 @@ int menuIniciarSesion() {
         printf("No se ha podido iniciar sesion, compruebe su usuario y contraseña");
         return 1;
     }
-    
+    */
    return 0;
 }
