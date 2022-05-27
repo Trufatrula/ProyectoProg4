@@ -1,6 +1,5 @@
 #include <iostream>
 #include "juego.h"
-#define RED "\e[0;31m"
 int main() {
     //std::cout << "hola genteeeeeee\n";
     Partida p = Partida("cacahuete");

@@ -60,7 +60,7 @@ int menuIniciarSesion() {
         printf("No se ha podido iniciar sesion, compruebe su usuario y contraseña");
         return 1;
     }
-    */
+    
 
 
    return 0;
