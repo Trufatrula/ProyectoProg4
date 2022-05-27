@@ -7,12 +7,10 @@ int menuSesion() {
         char token[33];
         char nick[MAX_LINE];
         getToken(token);
-        /*
         if(obtenerNickDeToken(token, nick) == 0){
             printf("Sesion automaticamente iniciada como %s\n", nick);
             return 0;
         }
-        */
     }
     char* opciones[] = {"Registrarse", "Iniciar sesión", "Sácame de aquí"};
     int o = opcion("¿Desea registarse o iniciar sesión? Indiquelo con los numeros correspondientes", 3, opciones);
@@ -49,11 +47,10 @@ int menuIniciarSesion() {
     clearIfNeeded(contrasenya, MAX_LINE);
     char* opcionCerrar[] = {"No", "Si"};
     int o = opcion("¿Quieres cerrar la sesion al salir? Indiquelo con los numeros correspondientes", 2, opcionCerrar);
-    
     if(iniciarSesion(nombre, contrasenya, token, o) == 0){
         establecerToken(token);
         if(o == 0){
-            guardarToken("token.txt");
+            //guardarToken("token.txt");
         }
         return 0;
     } else {
@@ -77,10 +74,10 @@ int menuPrincipalJugador() {
                 //Hay que hacerlo
 			    break;
             case 2:
-                char token[33];
-                getToken(token);
-                cerrarSesion(token);
-                unlink("token.txt");
+                //char token[33];
+                //getToken(token);
+                //cerrarSesion(token);
+                //unlink("token.txt");
                 break;  
             default:
                 printf("Saliendo...");
