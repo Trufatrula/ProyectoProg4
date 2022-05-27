@@ -51,3 +51,7 @@ void binAHex(unsigned char* entrada, unsigned int size, char* salida) {
     }
     salida[hexLen] = 0;
 }
+
+void establecerColor(int color) {
+    printf("\n%i", color);
+}
