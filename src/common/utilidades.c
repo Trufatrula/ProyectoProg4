@@ -1,4 +1,5 @@
 #include "utilidades.h"
+#include <stdio.h>
 
 void hexABin(char* entrada, unsigned int size, unsigned char* salida) {
     unsigned int binLen = size / 2;

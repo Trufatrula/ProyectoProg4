@@ -19,7 +19,7 @@ class Partida {
         void setIntentos(int intentos);
         void setGanada(int ganada);
         char* getPalabra();
-        int iniciarPartida();
+        int comprobarResultado(char* palabraUser, char* codigoServer);
 };
 
 #endif
