@@ -11,8 +11,8 @@ extern "C" {
 
 #endif
 
-void activarUTF8();
-void desactivarUTF8();
+void prepararConsola();
+void restaurarConsola();
 
 #ifdef __cplusplus
 }
