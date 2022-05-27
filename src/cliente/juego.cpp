@@ -53,7 +53,7 @@ Partida::~Partida() {
     delete[] this->palabra;
 }
 
-int Partida::comprobarResultado(char* palabraUser, char* codigoServer) {
+void Partida::comprobarResultado(const char* palabraUser, const char* codigoServer) {
     for (int i = 0; i < strlen(codigoServer); i++)
     {   
         char asa = palabraUser[i];
@@ -66,6 +66,6 @@ int Partida::comprobarResultado(char* palabraUser, char* codigoServer) {
         }
         
     }
-    
+    cout << NC;
 
 }
