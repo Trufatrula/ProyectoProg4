@@ -1,4 +1,6 @@
 #include "tcom.h"
+#include <string.h>
+#include <stdlib.h>
 
 void setupAddrStruct(char* str, struct in_addr* addr) {
     unsigned long rs = inet_addr(str);
@@ -6,7 +8,7 @@ void setupAddrStruct(char* str, struct in_addr* addr) {
         printf("Resolving %s...\n", str);
         struct hostent* he = gethostbyname(str);
         if (he == NULL) {
-            printf("Cannot resolve %s. Error 0x%x\n", str, WSAGetLastError());
+            printf("Cannot resolve %s.\n", str);
             exit(5);
         }
         struct in_addr* ia = (struct in_addr*) he->h_addr_list[0];
@@ -23,14 +25,14 @@ void sendSizedMsg(SOCKET s, char* msg, unsigned long len) {
     unsigned long nlen = htonl(len);
     int ret;
     if (send(s, &nlen, sizeof(unsigned long), 0) == SOCKET_ERROR) {
-        printf("Cannot send the size of the data to be sent. Error: 0x%x\n", WSAGetLastError());
+        printf("Cannot send the size of the data to be sent.\n");
         exit(6);
     }
     while (sent < len) {
         slen = len - sent > TBUFF_SIZE ? TBUFF_SIZE : len - sent;
         ret = send(s, msg + sent, slen, 0);
         if (ret == SOCKET_ERROR) {
-            printf("Cannot send the data. Error 0x%x", WSAGetLastError());
+            printf("Cannot send the data.\n");
             exit(6);
         }
         if (ret > 0) {
@@ -47,7 +49,7 @@ char* receiveSizedMsg(SOCKET s, char* mabuff, unsigned long* ptrlen) {
     unsigned long rlen;
     int ret;
     if (recv(s, &size, sizeof(unsigned long), 0) == SOCKET_ERROR) {
-        printf("Cannot fetch receiving data size. Error 0x%x", WSAGetLastError());
+        printf("Cannot fetch receiving data size.\n");
         exit(6);
     }
     size = ntohl(size);
@@ -64,7 +66,7 @@ char* receiveSizedMsg(SOCKET s, char* mabuff, unsigned long* ptrlen) {
         rlen = size - received > TBUFF_SIZE ? TBUFF_SIZE : size - received;
         ret = recv(s, mabuff + received, rlen, 0);
         if (ret == SOCKET_ERROR) {
-            printf("Cannot receive the data. Error 0x%x", WSAGetLastError());
+            printf("Cannot receive the data.\n");
             exit(6);
         }
         if (ret > 0) {
