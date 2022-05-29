@@ -12,7 +12,7 @@ extern "C" {
 #define TBUFF_SIZE 1024
 
 void setupAddrStruct(char* str, struct in_addr* addr);
-void sendSizedMsg(SOCKET s, char* msg, unsigned long len);
+void sendSizedMsg(SOCKET s, const char* msg, unsigned long len);
 char* receiveSizedMsg(SOCKET s, char* mabuff, unsigned long* ptrlen);
 
 #ifdef __cplusplus
