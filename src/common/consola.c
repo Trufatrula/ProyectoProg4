@@ -17,7 +17,7 @@ void prepararConsola() {
     GetConsoleMode(h, &MODOANTIGUO);
     SetConsoleMode(h, MODOANTIGUO | ENABLE_PROCESSED_OUTPUT | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 }
-void desactivarUTF8() {
+void restaurarConsola() {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleOutputCP(CPANTIGUO);
     SetConsoleMode(h, MODOANTIGUO);
