@@ -38,3 +38,9 @@ target_link_libraries(WordleJALADServer PRIVATE sqlite3)
 add_subdirectory(libs/openssl EXCLUDE_FROM_ALL)
 target_link_libraries(WordleJALADAdmin PRIVATE crypto)
 target_link_libraries(WordleJALADServer PRIVATE crypto)
+
+# winsock2 for windows only
+if(WIN32)
+  target_link_libraries(WordleJALADServer wsock32 ws2_32)
+  target_link_libraries(WordleJALADClient wsock32 ws2_32)
+endif()
