@@ -41,6 +41,6 @@ target_link_libraries(WordleJALADServer PRIVATE crypto)
 
 # winsock2 for windows only
 if(WIN32)
-  target_link_libraries(WordleJALADServer wsock32 ws2_32)
-  target_link_libraries(WordleJALADClient wsock32 ws2_32)
+  target_link_libraries(WordleJALADServer PRIVATE ws2_32)
+  target_link_libraries(WordleJALADCliente PRIVATE ws2_32)
 endif()
