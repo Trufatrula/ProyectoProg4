@@ -3,9 +3,9 @@
 #include <stdlib.h>
 
 #ifdef __WIN32
-typedef char* socketsend_t;
+typedef char* sockdata_t;
 #else
-typedef void* socketsend_t;
+typedef void* sockdata_t;
 #endif
 
 void setupAddrStruct(char* str, struct in_addr* addr) {
@@ -25,18 +25,18 @@ void setupAddrStruct(char* str, struct in_addr* addr) {
     }
 }
 
-void sendSizedMsg(SOCKET s, const char* msg, unsigned long len) {
+void sendSizedMsg(SOCKET s, const void* msg, unsigned long len) {
     unsigned long sent = 0;
     unsigned long slen;
     unsigned long nlen = htonl(len);
     int ret;
-    if (send(s, (const socketsend_t) &nlen, sizeof(unsigned long), 0) == SOCKET_ERROR) {
+    if (send(s, (const sockdata_t) &nlen, sizeof(unsigned long), 0) == SOCKET_ERROR) {
         printf("Cannot send the size of the data to be sent.\n");
         exit(6);
     }
     while (sent < len) {
         slen = len - sent > TBUFF_SIZE ? TBUFF_SIZE : len - sent;
-        ret = send(s, (const socketsend_t) (msg + sent), slen, 0);
+        ret = send(s, (const sockdata_t) (msg + sent), slen, 0);
         if (ret == SOCKET_ERROR) {
             printf("Cannot send the data.\n");
             exit(6);
@@ -49,12 +49,12 @@ void sendSizedMsg(SOCKET s, const char* msg, unsigned long len) {
     }
 }
 
-char* receiveSizedMsg(SOCKET s, char* mabuff, unsigned long* ptrlen) {
+char* receiveSizedMsg(SOCKET s, void* mabuff, unsigned long* ptrlen) {
     unsigned long size;
     unsigned long received = 0;
     unsigned long rlen;
     int ret;
-    if (recv(s, (socketsend_t) &size, sizeof(unsigned long), 0) == SOCKET_ERROR) {
+    if (recv(s, (sockdata_t) &size, sizeof(unsigned long), 0) == SOCKET_ERROR) {
         printf("Cannot fetch receiving data size.\n");
         exit(6);
     }
@@ -70,7 +70,7 @@ char* receiveSizedMsg(SOCKET s, char* mabuff, unsigned long* ptrlen) {
     }
     while (received < size) {
         rlen = size - received > TBUFF_SIZE ? TBUFF_SIZE : size - received;
-        ret = recv(s, (socketsend_t) (mabuff + received), rlen, 0);
+        ret = recv(s, (sockdata_t) (mabuff + received), rlen, 0);
         if (ret == SOCKET_ERROR) {
             printf("Cannot receive the data.\n");
             exit(6);
