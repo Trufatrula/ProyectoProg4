@@ -7,8 +7,15 @@
 #define TOKENLOGIN   3
 #define PARTIDA      4
 #define PROBAR       5
-#define PROBARRESP   6
+#define INFOUSER     6
+#define UPDATEUSER   7
+#define USERDEL      8
+#define INFOPUNTOS   9
+#define UPDATEPASS   10
 #define CLIENTESALIR 64
 #define JALADERROR   128
+
+#define PARTIDA_OK    0
+#define PARTIDA_ERROR 1
 
 #endif
