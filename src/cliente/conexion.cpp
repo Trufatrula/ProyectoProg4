@@ -11,7 +11,6 @@ int conectar(const char* host, unsigned short puerto) {
     std::cout << "Iniciando WinSock..." << std::endl;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 		std::cerr << "Error iniciando WinSock" << std::endl;
-        restaurarConsola();
 		return -1;
 	}
     #endif

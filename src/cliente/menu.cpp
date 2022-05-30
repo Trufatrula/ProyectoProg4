@@ -54,30 +54,36 @@ int menuInicio() {
 int menuRegistro() {
     std::string nombre; 
     std::cout << "Nombre: "; 
-    std::cin >> nombre;
+    std::getline(std::cin, nombre);
     
     std::string apellido; 
     std::cout << "Apellido: "; 
-    std::cin >> apellido;
+    std::getline(std::cin, apellido);
     
     std::string nick; 
     std::cout << "Nick: "; 
-    std::cin >> nick;
+    std::getline(std::cin, nick);
 
     std::string contrasena; 
     std::cout << "Contraseña: "; 
-    std::cin >> contrasena;
+    std::getline(std::cin, contrasena);
 
     const char* opciones[] = {"No", "Si"};
     int o = opcion("¿Quieres que tu sesion expire al salir?", 2, opciones);
-
-    std::cout << nombre << apellido << nick << contrasena << o << std::endl;
-
     return 0;
 }
 
 int menuInicioSesion() {
-    
+    std::string nick; 
+    std::cout << "Nick: "; 
+    std::getline(std::cin, nick);
+
+    std::string contrasena; 
+    std::cout << "Contraseña: "; 
+    std::getline(std::cin, contrasena);
+
+    const char* opciones[] = {"No", "Si"};
+    int o = opcion("¿Quieres que tu sesion expire al salir?", 2, opciones);
     return 0;
 }
 
