@@ -150,7 +150,7 @@ int eliminarUsuario(char* nick) {
 	return result;
 }
 
-int iniciarSesion(char* nick, char* contrasena, char* token, int expira) {
+int iniciarSesion(const char* nick, const char* contrasena, char* token, int expira) {
     sqlite3_stmt *stmt;
     char hashComputado[65];
     int login = 0;

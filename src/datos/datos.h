@@ -15,7 +15,7 @@ extern "C" {
 int registrarUsuario(Usuario* usuario);
 int actualizarUsuario(Usuario* usuario);
 int eliminarUsuario(char* nick);
-int iniciarSesion(char* nick, char* contrasena, char* token, int expira);
+int iniciarSesion(const char* nick, const char* contrasena, char* token, int expira);
 int cerrarSesion(char* token);
 int actualizarToken(char* token);
 int obtenerNickDeToken(char* token, char* nick);
