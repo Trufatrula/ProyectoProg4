@@ -49,7 +49,7 @@ void sendSizedMsg(SOCKET s, const void* msg, unsigned long len) {
     }
 }
 
-char* receiveSizedMsg(SOCKET s, void* mabuff, unsigned long* ptrlen) {
+void receiveSizedMsg(SOCKET s, void** mabuff, unsigned long* ptrlen) {
     unsigned long size;
     unsigned long received = 0;
     unsigned long rlen;
@@ -62,15 +62,15 @@ char* receiveSizedMsg(SOCKET s, void* mabuff, unsigned long* ptrlen) {
     if (ptrlen != NULL) {
         *ptrlen = size;
     }
-    mabuff = realloc(mabuff, ((size_t) size) + 1);
-    memset(mabuff, 0, ((size_t) size) + 1);
+    *mabuff = realloc(*mabuff, ((size_t) size) + 1);
+    memset(*mabuff, 0, ((size_t) size) + 1);
     if (mabuff == 0) {
         printf("Cannot reallocate the memory to hold the reply.\n");
         exit(10);
     }
     while (received < size) {
         rlen = size - received > TBUFF_SIZE ? TBUFF_SIZE : size - received;
-        ret = recv(s, (sockdata_t) (mabuff + received), rlen, 0);
+        ret = recv(s, (sockdata_t) (*mabuff + received), rlen, 0);
         if (ret == SOCKET_ERROR) {
             printf("Cannot receive the data.\n");
             exit(6);
@@ -81,5 +81,4 @@ char* receiveSizedMsg(SOCKET s, void* mabuff, unsigned long* ptrlen) {
             break;
         }
     }
-    return mabuff;
 }

@@ -13,7 +13,7 @@ extern "C" {
 
 void setupAddrStruct(char* str, struct in_addr* addr);
 void sendSizedMsg(SOCKET s, const void* msg, unsigned long len);
-char* receiveSizedMsg(SOCKET s, void* mabuff, unsigned long* ptrlen);
+void receiveSizedMsg(SOCKET s, void** mabuff, unsigned long* ptrlen);
 
 #ifdef __cplusplus
 }
