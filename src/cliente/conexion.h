@@ -9,6 +9,9 @@ extern "C" {
 
 extern SOCKET socket_cliente;
 
+int conectar(const char* host, unsigned short puerto);
+int desconectar();
+
 #ifdef __cplusplus
 }
 #endif
