@@ -9,7 +9,7 @@
 #include "conexion.h"
 
 #define HOST "localhost"
-#define PUERTO 6969
+#define PUERTO 6000
 
 int menuInicio() {
     const char* opciones[] = {"Registro", "Inicio de Sesión", "Sacame de aquí"};

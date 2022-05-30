@@ -29,7 +29,7 @@ int conectar(const char* host, unsigned short puerto) {
 
 	//CONNECT to remote server
 	if (connect(socket_cliente, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR) {
-		std::cerr << "Error al conectarse al servidor" << std::endl;
+		std::cerr << "Error al conectarse al servidor" << errno << std::endl;
 		closesocket(socket_cliente);
         #ifdef __WIN32
 		WSACleanup();

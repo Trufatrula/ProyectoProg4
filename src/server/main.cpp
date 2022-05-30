@@ -6,7 +6,7 @@
 #include "../sockets/tcom.h"
 #include "sesion.h"
 
-#define PUERTO 6969
+#define PUERTO 6000
 #define HOST   "localhost"
 
 void gestor(SOCKET s) {
@@ -45,9 +45,9 @@ int main() {
     std::cout << "Socket creado" << std::endl;
 
     server.sin_family = AF_INET;
-    server.sin_port = PUERTO;
+    server.sin_port = htons(PUERTO);
     setupAddrStruct(HOST, &server.sin_addr);
-
+    
     if (bind(srvsock, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR) {
 		std::cerr << "No se ha podido bindear el socket" << std::endl;
 		closesocket(srvsock);
@@ -61,7 +61,7 @@ int main() {
 
     std::cout << "Socket bindeado al puerto y el host" << std::endl;
 
-    if (listen(srvsock, 64) == SOCKET_ERROR) {
+    if (listen(srvsock, 0) == SOCKET_ERROR) {
 		std::cerr << "No se puede poner el socket a escucha" << std::endl;
 		closesocket(srvsock);
         #ifdef __WIN32
@@ -77,6 +77,7 @@ int main() {
     while (true) {
         socklen_t stsize = sizeof(struct sockaddr);
         struct sockaddr_in addr;
+        std::cout << "a";
         SOCKET s = accept(srvsock, (struct sockaddr*) &addr, &stsize);
         if (s == INVALID_SOCKET) {
 		    std::cerr << "No se ha podido aceptar la conexión" << std::endl;
