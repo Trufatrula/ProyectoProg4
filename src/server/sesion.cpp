@@ -5,6 +5,7 @@
 #include "../datos/usuario.h"
 #include "../datos/puntuaciones.h"
 #include <mutex>
+#include <iostream>
 
 std::mutex clientMutex;
 
@@ -46,12 +47,14 @@ bool Sesion::recibir() {
             if(result){
                 buffer2 = (unsigned char*) malloc(34);
                 buffer2[0] = LOGIN;
+                std::cout<<"Log in realizado correctamente"<<std::endl;
                 strcpy((char*) (buffer2 + 1), this->token);
                 sendSizedMsg(this->socket, buffer2, 34);
                 free(buffer2);
             } else {
                 buffer2 = (unsigned char*) malloc(1);
                 buffer2[0] = JALADERROR;
+                std::cout<<"Error en el Login"<<std::endl;
                 sendSizedMsg(this->socket, buffer2, 1);
                 free(buffer2);
             }
@@ -70,13 +73,15 @@ bool Sesion::recibir() {
             result = this->registerCliente(usuario, password, nombre, apellido, expira);
             if(result){
                 buffer2 = (unsigned char*) malloc(34);
-                buffer2[0] = LOGIN;
+                buffer2[0] = REGISTER;
+                std::cout<<"Registrado correctamente"<<std::endl;
                 strcpy((char*) (buffer2 + 1), this->token);
                 sendSizedMsg(this->socket, buffer2, 34);
                 free(buffer2);
             } else {
                 buffer2 = (unsigned char*) malloc(1);
                 buffer2[0] = JALADERROR;
+                std::cout<<"Error a la hora de registrar"<<std::endl;
                 sendSizedMsg(this->socket, buffer2, 1);
                 free(buffer2);
             }
@@ -90,17 +95,21 @@ bool Sesion::recibir() {
                 strcpy(this->token, token);
                 this->logeado = true;
                 buffer2[0] = TOKENLOGIN;
+                std::cout<<"TokenLoegin correcto"<<std::endl;
             }else{
                 buffer2[0] = JALADERROR;
+                std::cout<<"Error al cargar el token"<<std::endl;
             }
             free(buffer2);
             break;
         case PARTIDA:
             if (this->logeado && this->intentos == 0) {
                 this->nuevaPartida((char**) &buffer2);
+                std::cout<<"Partida creada correctamente"<<std::endl;
             } else {
                 buffer2 = (unsigned char*) malloc(1);
                 buffer2[0] = JALADERROR;
+                std::cout<<"Error en creacion de nueva partida"<<std::endl;
                 sendSizedMsg(this->socket, buffer2, 1);
             }
             free(buffer2);
@@ -108,9 +117,11 @@ bool Sesion::recibir() {
         case PROBAR:
             if (this->logeado && this->intentos-- > 0) {
                 this->testPalabra((char*) (buffer + 1), (char**) &buffer2);
+                std::cout<<"Testeo de palabra realizado correctamente"<<std::endl;
             } else {
                 buffer2 = (unsigned char*) malloc(1);
                 buffer2[0] = JALADERROR;
+                std::cout<<"Error al testear la palabra"<<std::endl;
                 sendSizedMsg(this->socket, buffer2, 1);
             }
             free(buffer2);
@@ -121,11 +132,13 @@ bool Sesion::recibir() {
                 if (obtenerNickDeToken(this->token, usuario) != SQLITE_OK) {
                     buffer2 = (unsigned char*) malloc(1);
                     buffer2[0] = JALADERROR;
+                    std::cerr<<"Error al cargar la informacion del usuario -1-"<<std::endl;
                     sendSizedMsg(this->socket, buffer2, 1);
                 } else {
                     if (obtenerDatosDeUsuario(&u, usuario) == SQLITE_OK) {
                         buffer2 = (unsigned char*) malloc(1 + strlen(u.nombre) + strlen(u.apellido) + 2);
                         buffer2[0] = INFOUSER;
+                        std::cout<<"Cargado de informacion del usuario correcto"<<std::endl;
                         p = buffer2 + 1;
                         strcpy((char*) p, u.nombre);
                         p += strlen(u.nombre) + 1;
@@ -135,6 +148,7 @@ bool Sesion::recibir() {
                     } else {
                         buffer2 = (unsigned char*) malloc(1);
                         buffer2[0] = JALADERROR;
+                        std::cerr<<"Error al cargar la informacion del usuario -2-"<<std::endl;
                         sendSizedMsg(this->socket, buffer2, 1);
                     }
                 }
@@ -142,6 +156,7 @@ bool Sesion::recibir() {
             } else {
                 buffer2 = (unsigned char*) malloc(1);
                 buffer2[0] = JALADERROR;
+                std::cerr<<"Error al cargar la informacion del usuario -3-"<<std::endl;
                 sendSizedMsg(this->socket, buffer2, 1);
             }
             free(buffer2);
@@ -152,6 +167,7 @@ bool Sesion::recibir() {
                 usuario = (char*) malloc(20);
                 if (obtenerNickDeToken(this->token, usuario) != SQLITE_OK) {
                     buffer2[0] = JALADERROR;
+                    std::cerr<<"Error al actualizar el usuario -1-"<<std::endl;
                 } else {
                     if (obtenerDatosDeUsuario(&u, usuario) == SQLITE_OK) {
                         p = buffer + 1;
@@ -161,18 +177,22 @@ bool Sesion::recibir() {
                         crearUsuario(&u2, nombre, apellido, u.nickname, u.hash, u.salt);
                         if (actualizarUsuario(&u2) != SQLITE_OK) {
                             buffer2[0] = JALADERROR;
+                            std::cerr<<"Error al actualizar el usuario -2-"<<std::endl;
                         } else {
                             buffer2[0] = UPDATEUSER;
+                            std::cout<<"Usuario actualizado correctamente"<<std::endl;
                         }
                         liberarUsuario(&u);
                         liberarUsuario(&u2);
                     } else {
                         buffer2[0] = JALADERROR;
+                        std::cerr<<"Error al actualizar usuario -3-"<<std::endl;
                     }
                 }
                 free(usuario);
             } else {
                 buffer2[0] = JALADERROR;
+                std::cerr<<"Error al actualizar el usuario -4-"<<std::endl;
             }
             sendSizedMsg(this->socket, buffer2, 1);
             free(buffer2);
@@ -183,6 +203,7 @@ bool Sesion::recibir() {
                 usuario = (char*) malloc(20);
                 if (obtenerNickDeToken(this->token, usuario) != SQLITE_OK) {
                     buffer2[0] = JALADERROR;
+                    std::cerr<<"Error al actualizar la contraseña -1-"<<std::endl;
                 } else {
                     if (obtenerDatosDeUsuario(&u, usuario) == SQLITE_OK) {
                         p = buffer + 1;
@@ -190,18 +211,22 @@ bool Sesion::recibir() {
                         setContrasena(&u, password);
                         if (actualizarUsuario(&u) != SQLITE_OK) {
                             buffer2[0] = JALADERROR;
+                            std::cerr<<"Error al actualizar la contraseña -2-"<<std::endl;
                         } else {
                             buffer2[0] = UPDATEPASS;
+                            std::cout<<"Contraseña actualizada correctamente"<<std::endl;
                         }
                         liberarUsuario(&u);
                         liberarUsuario(&u2);
                     } else {
                         buffer2[0] = JALADERROR;
+                        std::cerr<<"Error al actualizar la contraseña -3-"<<std::endl;
                     }
                 }
                 free(usuario);
             } else {
                 buffer2[0] = JALADERROR;
+                std::cerr<<"Error al actualizar la contraseña -4-"<<std::endl;
             }
             sendSizedMsg(this->socket, buffer2, 1);
             free(buffer2);
@@ -212,13 +237,16 @@ bool Sesion::recibir() {
                 usuario = (char*) malloc(20);
                 if (obtenerNickDeToken(this->token, usuario) != SQLITE_OK) {
                     buffer2[0] = JALADERROR;
+                    std::cerr<<"Error al borrar el usuario"<<std::endl;
                 } else {
                     buffer2[0] = USERDEL;
+                    std::cerr<<"Usuario eliminado correctamente"<<std::endl;
                     eliminarUsuario(usuario);
                 }
                 free(usuario);
             } else {
                 buffer2[0] = JALADERROR;
+                std::cerr<<"Error al borrar usuario -2-"<<std::endl;
             }
             sendSizedMsg(this->socket, buffer2, 1);
             free(buffer2);
@@ -230,17 +258,20 @@ bool Sesion::recibir() {
                 if (obtenerNickDeToken(this->token, usuario) != SQLITE_OK) {
                     buffer2 = (unsigned char*) malloc(1);
                     buffer2[0] = JALADERROR;
+                    std::cerr<<"Error al obtener puntos"<<std::endl;
                     sendSizedMsg(this->socket, buffer2, 1);
                 } else {
                     if (obtenerPuntuaciones(&punt, usuario) != SQLITE_OK) {
                         buffer2 = (unsigned char*) malloc(1 + sizeof(int));
                         buffer2[0] = INFOPUNTOS;
+                        std::cout<<"Informacion de puntos obtenida correctamente"<<std::endl;
                         memcpy(buffer2 + 1, &punt.Normal_Score, sizeof(int));
                         sendSizedMsg(this->socket, buffer2, 1 + sizeof(int));
                         free(buffer2);
                     } else {
                         buffer2 = (unsigned char*) malloc(1);
                         buffer2[0] = JALADERROR;
+                        std::cerr<<"Error al obtener puntos -2-"<<std::endl;
                         sendSizedMsg(this->socket, buffer2, 1);
                     }
                 }
@@ -248,12 +279,14 @@ bool Sesion::recibir() {
             } else {
                 buffer2 = (unsigned char*) malloc(1);
                 buffer2[0] = JALADERROR;
+                std::cerr<<"Error al obtener puntos -3-"<<std::endl;
                 sendSizedMsg(this->socket, buffer2, 1);
             }
             free(buffer2);
             break;
         case CLIENTESALIR:
             free(buffer);
+            std::cout<<"Salir usuario"<<std::endl;
             return false;
         default:
             break;
