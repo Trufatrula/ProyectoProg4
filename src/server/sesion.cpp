@@ -19,7 +19,7 @@ Sesion::Sesion(SOCKET s) {
 
 
 bool Sesion::recibir() {
-    unsigned char *buffer , *p;
+    unsigned char *buffer , *buffer2, *p;
     char *usuario, *password;
     bool result;
     int expira;
@@ -35,7 +35,18 @@ bool Sesion::recibir() {
             p+= strlen(password)+1;
             expira = *p;
             result = this->iniciarSesion(usuario,password, expira);
-
+            if(result){
+                buffer2 = (unsigned char*) malloc(34);
+                buffer2[0] = LOGIN;
+                strcpy((char*) (buffer2 + 1), this->token);
+                sendSizedMsg(this->socket, buffer2, 34);
+                free(buffer2);
+            } else {
+                buffer2 = (unsigned char*) malloc(1);
+                buffer2[0] = JALADERROR;
+                sendSizedMsg(this->socket, buffer2, 1);
+                free(buffer2);
+            }
             break;
         case REGISTER:
 
@@ -50,11 +61,12 @@ bool Sesion::recibir() {
 
             break;
         case CLIENTESALIR:
-        
+            free(buffer);
             return false;
         default:
             break;
     }
+    free(buffer);
     return true;
     
     
