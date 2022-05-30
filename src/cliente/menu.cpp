@@ -1,5 +1,6 @@
 #include "menu.h"
 #include <iostream>
+#include <string>
 #include "../menu/menu.h"
 
 int menuInicio() {
@@ -24,11 +25,30 @@ int menuInicio() {
             break;
         }
     } while(o != 2);
-    return 0;
 }
 
 int menuRegistro() {
+    std::string nombre; 
+    std::cout << "Nombre: "; 
+    std::cin >> nombre;
     
+    std::string apellido; 
+    std::cout << "Apellido: "; 
+    std::cin >> apellido;
+    
+    std::string nick; 
+    std::cout << "Nick: "; 
+    std::cin >> nick;
+
+    std::string contrasena; 
+    std::cout << "Contraseña: "; 
+    std::cin >> contrasena;
+
+    const char* opciones[] = {"No", "Si"};
+    int o = opcion("¿Quieres que tu sesion expire al salir?", 2, opciones);
+
+    std::cout << nombre << apellido << nick << contrasena << o << std::endl;
+
     return 0;
 }
 
