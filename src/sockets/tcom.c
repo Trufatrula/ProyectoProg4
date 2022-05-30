@@ -8,7 +8,7 @@ typedef char* sockdata_t;
 typedef void* sockdata_t;
 #endif
 
-void setupAddrStruct(char* str, struct in_addr* addr) {
+void setupAddrStruct(const char* str, struct in_addr* addr) {
     unsigned long rs = inet_addr(str);
     if (rs == INADDR_ANY || rs == INADDR_NONE) {
         printf("Resolving %s...\n", str);

@@ -8,11 +8,6 @@
 #define PUERTO 6969
 #define HOST   "localhost"
 
-typedef struct {
-    SOCKET socket;
-    sockaddr_in addr;
-} ConexionCliente;
-
 int main() {
     prepararConsola();
     abrirBD();
@@ -74,9 +69,9 @@ int main() {
     
     while (true) {
         socklen_t stsize = sizeof(struct sockaddr);
-        ConexionCliente* cliente = (ConexionCliente*) malloc(sizeof(ConexionCliente));
-        cliente->socket = accept(srvsock, (struct sockaddr*) &cliente->addr, &stsize);
-        if (cliente->socket == INVALID_SOCKET) {
+        struct sockaddr_in addr;
+        SOCKET socket = accept(srvsock, (struct sockaddr*) &addr, &stsize);
+        if (socket == INVALID_SOCKET) {
 		    std::cerr << "No se ha podido aceptar la conexión" << std::endl;
 		    closesocket(srvsock);
             #ifdef __WIN32
