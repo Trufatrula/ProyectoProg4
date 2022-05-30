@@ -20,6 +20,7 @@ int menuInicio() {
             }
             break;
         default:
+            return 0;
             break;
         }
     } while(o != 2);
@@ -27,6 +28,7 @@ int menuInicio() {
 }
 
 int menuRegistro() {
+    
     return 0;
 }
 
@@ -35,6 +37,28 @@ int menuInicioSesion() {
 }
 
 int menuCliente() {
+    const char* opciones[] = {"Jugar", "Ver puntuaciones", "Cerrar sesión", "Sácame de aquí"};
+    int o;
+    do {
+        o = opcion("Bienvenido, ¿Qué quiere hacer hoy?", 4, opciones);
+        switch (o)
+        {
+        case 0:
+            if (menuJuego() == 1) {
+                return 1;
+            }
+            break;
+        case 1:
+            //verPuntuaciones
+            break;
+        case 2:
+
+            break;
+        default:
+            return 0;
+            break;
+        }
+    } while(o != 3);
     return 0;
 }
 
