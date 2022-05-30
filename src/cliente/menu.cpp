@@ -24,6 +24,7 @@ int menuInicio() {
             break;
         }
     } while(o != 2);
+    return 0;
 }
 
 int menuRegistro() {

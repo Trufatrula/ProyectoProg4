@@ -3,7 +3,9 @@
 
 int main() {
     prepararConsola();
-    std::cout << "uwu\n";
+    
+    
+
     restaurarConsola();
     return 0;
 }

@@ -24,6 +24,7 @@ int usuarioExiste(const char* nick);
 int autorizar(const char* token, const char* nick);
 int tokenExiste(const char* token);
 int obtenerPuntuaciones(Puntuaciones* puntuaciones, const char* nick);
+int actualizarPuntuaciones(const char* nickUser, int puntuacion);
 int borrarPalabras();
 int generarTablas();
 int abrirBD();
