@@ -4,9 +4,16 @@
 #include "../datos/datos.h"
 #include "../sockets/incluir.h"
 #include "../sockets/tcom.h"
+#include "sesion.h"
 
 #define PUERTO 6969
 #define HOST   "localhost"
+
+void gestor(SOCKET s) {
+    Sesion sesion(s);
+    while (sesion.recibir()) {}
+    closesocket(s);
+}
 
 int main() {
     prepararConsola();
@@ -70,8 +77,8 @@ int main() {
     while (true) {
         socklen_t stsize = sizeof(struct sockaddr);
         struct sockaddr_in addr;
-        SOCKET socket = accept(srvsock, (struct sockaddr*) &addr, &stsize);
-        if (socket == INVALID_SOCKET) {
+        SOCKET s = accept(srvsock, (struct sockaddr*) &addr, &stsize);
+        if (s == INVALID_SOCKET) {
 		    std::cerr << "No se ha podido aceptar la conexión" << std::endl;
 		    closesocket(srvsock);
             #ifdef __WIN32
@@ -81,7 +88,7 @@ int main() {
             restaurarConsola();
 		    return -1;
 	    }
-        
+        std::thread hilo(gestor, s);
     }
 
     closesocket(srvsock);
