@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <thread>
 #include "../common/consola.h"
 #include "../datos/datos.h"
@@ -74,10 +75,10 @@ int main() {
 
     std::cout << "Escuchando en " << HOST << ":" << PUERTO << std::endl;
     
+    std::vector<std::thread*> hilos;
     while (true) {
         socklen_t stsize = sizeof(struct sockaddr);
         struct sockaddr_in addr;
-        std::cout << "a";
         SOCKET s = accept(srvsock, (struct sockaddr*) &addr, &stsize);
         if (s == INVALID_SOCKET) {
 		    std::cerr << "No se ha podido aceptar la conexión" << std::endl;
@@ -89,7 +90,14 @@ int main() {
             restaurarConsola();
 		    return -1;
 	    }
-        std::thread hilo(gestor, s);
+        std::thread* hilo = new std::thread(gestor, s);
+        hilos.push_back(hilo);
+        
+    }
+
+    for (std::thread* t : hilos) {
+        t->join();
+        delete t;
     }
 
     closesocket(srvsock);

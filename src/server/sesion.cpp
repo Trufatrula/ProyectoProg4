@@ -25,8 +25,7 @@ Sesion::Sesion(SOCKET s) {
 
 
 bool Sesion::recibir() {
-    std::lock_guard<std::mutex> lock(clientMutex);
-    unsigned char *buffer , *buffer2, *p;
+    unsigned char *buffer = 0 , *buffer2 = 0, *p;
     char *usuario, *password, *nombre, *apellido, *token;
     bool result;
     int expira;
@@ -34,6 +33,7 @@ bool Sesion::recibir() {
     Puntuaciones punt;
     unsigned long l;
     if(receiveSizedMsg(this->socket, &buffer,&l) == 1) return false;
+    std::lock_guard<std::mutex> lock(clientMutex);
     switch (*buffer)
     {
         case LOGIN:
@@ -100,6 +100,7 @@ bool Sesion::recibir() {
                 buffer2[0] = JALADERROR;
                 std::cerr<<"Error al cargar el token"<<std::endl;
             }
+            sendSizedMsg(this->socket, buffer2, 1);
             free(buffer2);
             break;
         case PARTIDA:
@@ -317,7 +318,6 @@ bool Sesion::registerCliente(const char* usuario, const char* password, const ch
     int r = registrarUsuario(&u);
     liberarUsuario(&u);
     if(r != SQLITE_OK) return false;
-    this->logeado = true;
     return this->iniciarSesionCliente(usuario, password, expira);
 }
 
@@ -325,6 +325,7 @@ bool Sesion::iniciarSesionCliente(const char* usuario, const char* password, int
     int r = iniciarSesion(usuario, password, this->token, expira);
     if( r == SQLITE_OK) {
         this->logeado = true;
+        return true;
     }
     return false;
 }

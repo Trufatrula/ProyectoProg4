@@ -14,7 +14,7 @@
 int menuInicio() {
     const char* opciones[] = {"Registro", "Inicio de Sesión", "Sacame de aquí"};
     int o;
-    char msg[34], *r;
+    char msg[34], *r = 0;
     unsigned long l;
     if (cargarToken("token.txt") == 0) {
         if (conectar(HOST, PUERTO) == 1) {
@@ -80,7 +80,7 @@ int menuRegistro() {
 
     size_t len = 5 + nombre.size() + apellido.size() + nick.size() + contrasena.size() + sizeof(char);
     unsigned long lenr;
-    unsigned char* msg = (unsigned char*) malloc(len), *r;
+    unsigned char* msg = (unsigned char*) malloc(len), *r = 0;
     char* p;
     msg[0] = REGISTER;
     p = (char*) (msg + 1);
@@ -116,7 +116,7 @@ int menuInicioSesion() {
 
     size_t len = 3 + nick.size() + contrasena.size() + sizeof(char);
     unsigned long lenr;
-    unsigned char* msg = (unsigned char*) malloc(len), *r;
+    unsigned char* msg = (unsigned char*) malloc(len), *r = 0;
     char* p;
     msg[0] = LOGIN;
     p = (char*) (msg + 1);
