@@ -54,7 +54,7 @@ bool Sesion::recibir() {
             } else {
                 buffer2 = (unsigned char*) malloc(1);
                 buffer2[0] = JALADERROR;
-                std::cout<<"Error en el Login"<<std::endl;
+                std::cerr<<"Error en el Login"<<std::endl;
                 sendSizedMsg(this->socket, buffer2, 1);
                 free(buffer2);
             }
@@ -81,7 +81,7 @@ bool Sesion::recibir() {
             } else {
                 buffer2 = (unsigned char*) malloc(1);
                 buffer2[0] = JALADERROR;
-                std::cout<<"Error a la hora de registrar"<<std::endl;
+                std::cerr<<"Error a la hora de registrar"<<std::endl;
                 sendSizedMsg(this->socket, buffer2, 1);
                 free(buffer2);
             }
@@ -98,7 +98,7 @@ bool Sesion::recibir() {
                 std::cout<<"TokenLoegin correcto"<<std::endl;
             }else{
                 buffer2[0] = JALADERROR;
-                std::cout<<"Error al cargar el token"<<std::endl;
+                std::cerr<<"Error al cargar el token"<<std::endl;
             }
             free(buffer2);
             break;
@@ -109,7 +109,7 @@ bool Sesion::recibir() {
             } else {
                 buffer2 = (unsigned char*) malloc(1);
                 buffer2[0] = JALADERROR;
-                std::cout<<"Error en creacion de nueva partida"<<std::endl;
+                std::cerr<<"Error en creacion de nueva partida"<<std::endl;
                 sendSizedMsg(this->socket, buffer2, 1);
             }
             free(buffer2);
@@ -121,7 +121,7 @@ bool Sesion::recibir() {
             } else {
                 buffer2 = (unsigned char*) malloc(1);
                 buffer2[0] = JALADERROR;
-                std::cout<<"Error al testear la palabra"<<std::endl;
+                std::cerr<<"Error al testear la palabra"<<std::endl;
                 sendSizedMsg(this->socket, buffer2, 1);
             }
             free(buffer2);
