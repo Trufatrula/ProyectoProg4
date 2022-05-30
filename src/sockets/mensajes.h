@@ -11,7 +11,8 @@
 #define UPDATEUSER   7
 #define USERDEL      8
 #define INFOPUNTOS   9
-#define UPDATEPASS   10
+#define LOGOUT       10
+#define UPDATEPASS   11
 #define CLIENTESALIR 64
 #define JALADERROR   128
 

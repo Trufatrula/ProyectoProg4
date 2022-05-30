@@ -252,6 +252,19 @@ bool Sesion::recibir() {
             free(buffer2);
             free(buffer);
             return false;
+        case LOGOUT:
+            buffer2 = (unsigned char*) malloc(1);
+            if (this->logeado) {
+                buffer2[0] = LOGOUT;
+                cerrarSesion(this->token);
+            } else {
+                buffer2[0] = JALADERROR;
+                std::cerr<<"Error al borrar usuario -2-"<<std::endl;
+            }
+            sendSizedMsg(this->socket, buffer2, 1);
+            free(buffer2);
+            free(buffer);
+            return false;
         case INFOPUNTOS:
             if (this->logeado) {
                 usuario = (char*) malloc(20);
