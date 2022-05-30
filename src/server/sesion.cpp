@@ -19,7 +19,50 @@ Sesion::Sesion(SOCKET s) {
 
 
 bool Sesion::recibir() {
-    char* buffer;
+    unsigned char *buffer , *p;
+    char *usuario, *password;
+    bool result;
+    int expira;
+    unsigned long l;
+    if(receiveSizedMsg(this->socket, &buffer,&l) == 1) return false;
+    switch (*buffer)
+    {
+        case LOGIN:
+            p = buffer + 1;
+            usuario = (char*) p;
+            p += strlen(usuario)+1;
+            password = (char*) p;
+            p+= strlen(password)+1;
+            expira = *p;
+            result = this->iniciarSesion(usuario,password, expira);
+
+            break;
+        case REGISTER:
+
+            break;
+        case TOKENLOGIN:
+
+            break;
+        case PARTIDA:
+
+            break;
+        case PROBAR:
+
+            break;
+        case CLIENTESALIR:
+        
+            return false;
+        default:
+            break;
+    }
+    return true;
+    
+    
+
+}
+
+bool Sesion::iniciarSesion(const char* usuario, const char* password, int expira){
+
 }
         
 void Sesion::nuevaPartida() {
