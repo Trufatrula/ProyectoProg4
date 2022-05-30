@@ -7,7 +7,7 @@ extern "C" {
 
 #define MAX_LINE 20
 
-int opcion(char* mensaje, int cantidad, char** opciones);
+int opcion(const char* mensaje, int cantidad, const char** opciones);
 int menuAnyadirUsuarios();
 void menuModificarUsuario();
 void menuBorrarUsuario();

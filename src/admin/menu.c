@@ -8,7 +8,7 @@
 #include "cargarpalabras.h"
 
 void menuPrincipalAdmin() {
-    char* opciones[] = {"Ver y editar usuarios existentes", "Ver estadisticas","Cargar palabras", "Salir"};
+    const char* opciones[] = {"Ver y editar usuarios existentes", "Ver estadisticas","Cargar palabras", "Salir"};
     int o;
     do {
         o = opcion("¿Deseas ver y editar usuarios existentes, ver estadisticas o cargar palabras? Indiquelo con los numeros correspondientes", 4, opciones);
@@ -29,7 +29,7 @@ void menuPrincipalAdmin() {
 }
 
 void menuEdicionUsuariosAdmin() {
-    char* opciones[] = {"Añadir usuarios", "Ver/Modificar usuarios existentes", "Borrar usuarios", "Salir"};
+    const char* opciones[] = {"Añadir usuarios", "Ver/Modificar usuarios existentes", "Borrar usuarios", "Salir"};
     int o;
     do {
         o = opcion("De todas esas opciones, ¿Deseas añadir, ver/modificar o borrar el usuario? Indiquelo con los numeros correspondientes", 4, opciones);
@@ -97,7 +97,7 @@ void menuModificarUsuarioAdmin() {
     } else {
         printf("Nombre: %s\n", usuario.nombre);
         printf("Apellido: %s\n", usuario.apellido);
-        char* opciones[] = {"Nombre", "Apellido", "Contraseña", "Nada"};
+        const char* opciones[] = {"Nombre", "Apellido", "Contraseña", "Nada"};
         int o = opcion("¿Que valor quieres cambiar? Indiquelo con los numeros correspondientes", 4, opciones);
         switch (o) {
             case 0:
@@ -158,7 +158,7 @@ void menuBorrarUsuarioAdmin() {
 
 void menuCargarPalabrasAdmin() {
     printf("\n¡Mete en la misma carpeta del proyecto un fichero CSV con el nombre palabras.csv!\nUna vez hecho eso seleccione SI para continuar.");
-    char* opciones[] = {"SI", "NO"};
+    const char* opciones[] = {"SI", "NO"};
     int o;
     do {
         o = opcion("¿Deseas continuar? Indiquelo con los numeros correspondientes", 2, opciones);
