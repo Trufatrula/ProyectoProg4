@@ -10,6 +10,13 @@ int main(void) {
 	abrirBD();
 	generarTablas();
 	
+	char a[100];
+	char b[100];
+	char c[100];
+
+	getPalabraRandom(a, b, c);
+	printf("%s %s %s\n", a, b, c);
+
 	menuPrincipalAdmin();
 
 	cerrarBD();
