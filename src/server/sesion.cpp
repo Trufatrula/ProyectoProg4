@@ -1,6 +1,7 @@
 #include "sesion.h"
 #include "../sockets/tcom.h"
 #include "../sockets/mensajes.h"
+#include "../datos/datos.h"
 
 
 Sesion::Sesion(const Sesion& s) {
@@ -34,7 +35,7 @@ bool Sesion::recibir() {
             password = (char*) p;
             p+= strlen(password)+1;
             expira = *p;
-            result = this->iniciarSesion(usuario,password, expira);
+            result = this->iniciarSesionCliente(usuario,password, expira);
             if(result){
                 buffer2 = (unsigned char*) malloc(34);
                 buffer2[0] = LOGIN;
@@ -73,8 +74,10 @@ bool Sesion::recibir() {
 
 }
 
-bool Sesion::iniciarSesion(const char* usuario, const char* password, int expira){
-
+bool Sesion::iniciarSesionCliente(const char* usuario, const char* password, int expira){
+    int r = iniciarSesion(usuario, password, this->token, expira);
+    if( r == SQLITE_OK) return true;
+    return false;
 }
         
 void Sesion::nuevaPartida() {
