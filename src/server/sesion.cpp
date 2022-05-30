@@ -1,12 +1,9 @@
 #include "sesion.h"
+#include "../sockets/tcom.h"
+#include "../sockets/mensajes.h"
 
 
 Sesion::Sesion(const Sesion& s) {
-    if(s.palabra != NULL) {
-        this->palabra = new char[strlen(s.palabra)+1];
-        strcpy(this->palabra, s.palabra);
-    }
-    
     this->setToken(s.token);
     this->estado=s.estado;
     this->intentos=s.intentos;
@@ -21,6 +18,13 @@ Sesion::Sesion(SOCKET s) {
 }
 
 
-Sesion::~Sesion() {
-    if (this->palabra != NULL) delete[] this->palabra;
+bool Sesion::recibir() {
+    char* buffer;
+}
+        
+void Sesion::nuevaPartida() {
+
+}  
+void Sesion::testPalabra(const std::string& palabra) {
+
 }
