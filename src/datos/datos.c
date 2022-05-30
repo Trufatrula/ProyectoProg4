@@ -88,7 +88,7 @@ int actualizarUsuario(Usuario* usuario) {
 	return result;
 }
 
-int eliminarUsuario(char* nick) {
+int eliminarUsuario(const char* nick) {
     sqlite3_stmt *stmt;
 	char sqlEliminar[] = "DELETE FROM Usuario WHERE Nick = ?";
 	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlEliminar, -1, &stmt, NULL);
@@ -220,7 +220,7 @@ int iniciarSesion(const char* nick, const char* contrasena, char* token, int exp
 	return SQLITE_ERROR;
 }
 
-int cerrarSesion(char* token) {
+int cerrarSesion(const char* token) {
 	sqlite3_stmt *stmt;
 	char sqlToken[] = "DELETE FROM Token WHERE Token = ?";
 	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlToken, -1, &stmt, NULL);
@@ -244,7 +244,7 @@ int cerrarSesion(char* token) {
 	return result;
 }
 
-int actualizarToken(char* token) {
+int actualizarToken(const char* token) {
 	sqlite3_stmt *stmt;
 	time_t t;
 	time(&t);
@@ -292,7 +292,7 @@ int actualizarToken(char* token) {
 	return result;
 }
 
-int obtenerNickDeToken(char* token, char* nick) {
+int obtenerNickDeToken(const char* token, char* nick) {
 	 sqlite3_stmt *stmt;
 	 int correcto = 0;
 	 char sqlUsuario[] = "SELECT User_Nick FROM Token WHERE Token = ?";
@@ -325,7 +325,7 @@ int obtenerNickDeToken(char* token, char* nick) {
 	return SQLITE_ERROR;
 }
 
-int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
+int obtenerDatosDeUsuario(Usuario* usuario, const char* nick) {
 	 sqlite3_stmt *stmt;
 	 int correcto = 0;
 	 char sqlUsuario[] = "SELECT * FROM Usuario WHERE Nick =?";
@@ -361,7 +361,7 @@ int obtenerDatosDeUsuario(Usuario* usuario, char* nick) {
 	return SQLITE_ERROR;
 }
 
-int usuarioExiste(char* nick) {
+int usuarioExiste(const char* nick) {
 	sqlite3_stmt *stmt;
 	 int correcto = 0;
 	 char sqlNick[] = "SELECT Nick FROM Usuario WHERE Nick = ?";
@@ -387,7 +387,7 @@ int usuarioExiste(char* nick) {
 	return SQLITE_OK;
 }
 
-int autorizar(char* token, char* nick) {
+int autorizar(const char* token, const char* nick) {
 	char nicktoken[MAX_STR_SIZE];
 	if(obtenerNickDeToken(token, nicktoken) != SQLITE_OK) {
 		return SQLITE_ERROR;
@@ -405,7 +405,7 @@ int autorizar(char* token, char* nick) {
 	return SQLITE_ERROR;		
 }
 
-int tokenExiste(char* token) {
+int tokenExiste(const char* token) {
 	sqlite3_stmt *stmt;
 	 int correcto = 0;
 	 char sqlToken[] = "SELECT Token FROM Token WHERE Token = ?";
@@ -431,7 +431,7 @@ int tokenExiste(char* token) {
 	return SQLITE_OK;
 }
 
-int obtenerPuntuaciones(Puntuaciones* puntuaciones, char* nick) {
+int obtenerPuntuaciones(Puntuaciones* puntuaciones, const char* nick) {
 	 sqlite3_stmt *stmt;
 	 int correcto = 0;
 	 char sqlPuntuaciones[] = "SELECT Normal_Score, League_Points FROM Puntuacion WHERE User_Nick =?";
