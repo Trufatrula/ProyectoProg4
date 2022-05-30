@@ -18,7 +18,11 @@ class Sesion {
 
         Sesion(SOCKET socket);
         Sesion(const Sesion& s);
-        ~Sesion();
+
+        bool recibir();
+        
+        void nuevaPartida();
+        void testPalabra(const std::string& palabra);
 
         inline void setToken(const unsigned char* token) {memcpy(this->token, token,16);}
         inline void setPalabra(const std::string& str) {this->palabra = str;}
