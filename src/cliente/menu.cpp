@@ -161,6 +161,33 @@ int menuCliente() {
     return 0;
 }
 
+int menuEditarCliente() {
+    const char* opciones[] = {"Borrar usuario", "Editar usuario", "Editar constraseña", "Me arrepiento..."};
+    int o;
+    do {
+        o = opcion("¿De qué forma quieres editar tu usuario?", 4, opciones);
+        switch (o)
+        {
+        case 0:
+            //Server borra
+            break;
+        case 1:
+            //Server edita
+            break;
+        case 2:
+            //Server edita contraseña
+            break;
+        case 3:
+            //adios
+            break;
+        default:
+            return 0;
+            break;
+        }
+    } while(o != 4);
+    return 0;
+}
+
 int menuJuego() {
     return 0;
 }

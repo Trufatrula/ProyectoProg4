@@ -5,6 +5,7 @@ int menuInicio();
 int menuRegistro();
 int menuInicioSesion();
 int menuCliente();
+int menuEditarCliente();
 int menuJuego();
 
 #endif
