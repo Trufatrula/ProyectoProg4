@@ -321,13 +321,13 @@ void Sesion::testPalabra(char* p, char** buffer) {
         char* p = *buffer + 2;
         for (std::size_t i = 0; i < this->palabra.size(); i++, p++) {
             found = false;
-            if (this->palabra[i] == p[i]) {
+            if (tolower(this->palabra[i]) == tolower(p[i)]) {
                 *p = '*';
                 continue;
             }
             win = false;
             for (std::size_t j = 0; j < this->palabra.size(); j++) {
-                if (p[i] == this->palabra[j]) {
+                if (tolower(p[i]) == tolower(this->palabra[j])) {
                     *p = '/';
                     found = true;
                     break;
