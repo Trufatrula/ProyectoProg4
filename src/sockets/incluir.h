@@ -3,6 +3,7 @@
 
 #ifdef __WIN32
 typedef int socklen_t;
+#undef _WINSOCKAPI_ //hack
 #include <winsock2.h>
 #else
 #include <unistd.h>
