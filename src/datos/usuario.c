@@ -10,7 +10,7 @@ void generarSalt(char* salt) {
     binAHex(buffer, 16, salt);
 }
 
-void hashContrasena(char* contrasena, char* salt, char* hash) {
+void hashContrasena(const char* contrasena, const char* salt, char* hash) {
     unsigned char saltBuffer[16];
     unsigned char hashBuffer[SHA256_DIGEST_LENGTH];
     SHA256_CTX context;
@@ -22,7 +22,7 @@ void hashContrasena(char* contrasena, char* salt, char* hash) {
     binAHex(hashBuffer, SHA256_DIGEST_LENGTH, hash);
 }
 
-void crearUsuario(Usuario* usuario, char* nombre, char* apellido, char* nickname, char* hash, char* salt) {
+void crearUsuario(Usuario* usuario, const char* nombre, const char* apellido, const char* nickname, const char* hash, const char* salt) {
     usuario->nombre = (char*) malloc(strlen(nombre) + 1);
     usuario->apellido = (char*) malloc(strlen(apellido) + 1);
     usuario->nickname = (char*) malloc(strlen(nickname) + 1);
@@ -35,7 +35,7 @@ void crearUsuario(Usuario* usuario, char* nombre, char* apellido, char* nickname
     strcpy(usuario->salt, salt);
 }
 
-void iniciarUsuario(Usuario* usuario, char* nombre, char* apellido, char* nickname, char* contrasena) {
+void iniciarUsuario(Usuario* usuario, const char* nombre, const char* apellido, const char* nickname, const char* contrasena) {
     usuario->nombre = (char*) malloc(strlen(nombre) + 1);
     usuario->apellido = (char*) malloc(strlen(apellido) + 1);
     usuario->nickname = (char*) malloc(strlen(nickname) + 1);
@@ -48,7 +48,7 @@ void iniciarUsuario(Usuario* usuario, char* nombre, char* apellido, char* nickna
     hashContrasena(contrasena, usuario->salt, usuario->hash);
 }
 
-void setContrasena(Usuario* usuario, char* contrasena) {
+void setContrasena(Usuario* usuario, const char* contrasena) {
     hashContrasena(contrasena, usuario->salt, usuario->hash);
 }
 

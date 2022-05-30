@@ -1,7 +1,7 @@
 #include "utilidades.h"
 #include <stdio.h>
 
-void hexABin(char* entrada, unsigned int size, unsigned char* salida) {
+void hexABin(const char* entrada, unsigned int size, unsigned char* salida) {
     unsigned int binLen = size / 2;
     for (unsigned int i = 0, j = 0; i < binLen; i++, j += 2) {
         char c = entrada[j], c2 = entrada[j + 1];
@@ -28,7 +28,7 @@ void hexABin(char* entrada, unsigned int size, unsigned char* salida) {
     }
 }
 
-void binAHex(unsigned char* entrada, unsigned int size, char* salida) {
+void binAHex(const unsigned char* entrada, unsigned int size, char* salida) {
     unsigned long hexLen = size * 2;
     for (unsigned int i = 0, j = 0; i < hexLen; i+=2, j++) {
         unsigned char n = entrada[j] >> 4, n2 = entrada[j] & 0x0f;
@@ -53,6 +53,3 @@ void binAHex(unsigned char* entrada, unsigned int size, char* salida) {
     salida[hexLen] = 0;
 }
 
-void establecerColor(int color) {
-    printf("\n%i", color);
-}

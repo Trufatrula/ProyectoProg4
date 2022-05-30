@@ -5,9 +5,9 @@
 extern "C" {
 #endif
 
-void hexABin(char* entrada, unsigned int size, unsigned char* salida);
-void binAHex(unsigned char* entrada, unsigned int size, char* salida);
-void establecerColor(int color);
+void hexABin(const char* entrada, unsigned int size, unsigned char* salida);
+void binAHex(const unsigned char* entrada, unsigned int size, char* salida);
+
 
 #ifdef __cplusplus
 }

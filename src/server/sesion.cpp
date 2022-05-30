@@ -2,6 +2,7 @@
 #include "../sockets/tcom.h"
 #include "../sockets/mensajes.h"
 #include "../datos/datos.h"
+#include "../datos/usuario.h"
 
 
 Sesion::Sesion(const Sesion& s) {
@@ -21,7 +22,7 @@ Sesion::Sesion(SOCKET s) {
 
 bool Sesion::recibir() {
     unsigned char *buffer , *buffer2, *p;
-    char *usuario, *password;
+    char *usuario, *password, *nombre, *apellido;
     bool result;
     int expira;
     unsigned long l;
@@ -50,6 +51,29 @@ bool Sesion::recibir() {
             }
             break;
         case REGISTER:
+            p = buffer + 1;
+            usuario = (char*) p;
+            p += strlen(usuario) + 1;
+            password = (char*) p;
+            p += strlen(password) + 1;
+            nombre = (char*) p;
+            p += strlen(nombre) + 1;
+            apellido = (char*) p;
+            p += strlen(apellido) + 1;
+            expira = *p;
+            result = this->registerCliente(usuario, password, nombre, apellido, expira);
+            if(result){
+                buffer2 = (unsigned char*) malloc(34);
+                buffer2[0] = LOGIN;
+                strcpy((char*) (buffer2 + 1), this->token);
+                sendSizedMsg(this->socket, buffer2, 34);
+                free(buffer2);
+            } else {
+                buffer2 = (unsigned char*) malloc(1);
+                buffer2[0] = JALADERROR;
+                sendSizedMsg(this->socket, buffer2, 1);
+                free(buffer2);
+            }
 
             break;
         case TOKENLOGIN:
@@ -72,6 +96,14 @@ bool Sesion::recibir() {
     
     
 
+}
+
+bool Sesion::registerCliente(const char* usuario, const char* password, const char* nombre, const char* apellido, int expira){
+    Usuario u;
+    iniciarUsuario(&u, nombre, apellido,usuario, password);
+    int r = registrarUsuario(&u);
+    if(r != SQLITE_OK) return false;
+    return this->iniciarSesionCliente(usuario, password, expira);
 }
 
 bool Sesion::iniciarSesionCliente(const char* usuario, const char* password, int expira){
