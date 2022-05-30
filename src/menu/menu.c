@@ -6,7 +6,7 @@
 
 #define MAX_LINE 20
 
-int opcion(char* mensaje, int cantidad, char** opciones) {
+int opcion(const char* mensaje, int cantidad, const char** opciones) {
     printf("%s:\n", mensaje);
     for (int i = 0; i < cantidad; i++) {
         printf(" %i. %s\n", i + 1, opciones[i]);
