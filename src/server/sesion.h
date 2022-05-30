@@ -21,7 +21,7 @@ class Sesion {
 
         bool recibir();
 
-        bool iniciarSesion(const char* usuario, const char* password, int expira);
+        bool iniciarSesionCliente(const char* usuario, const char* password, int expira);
         
         void nuevaPartida();
         void testPalabra(const std::string& palabra);
