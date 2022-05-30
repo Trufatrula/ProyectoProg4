@@ -1,6 +1,7 @@
 #include <iostream>
 #include "juego.h"
-#include <winsock2.h>
+#include "../sockets/incluir.h"
+#include "../sockets/tcom.h"
 #include "../common/consola.h"
 
 #define PUERTO 6969
@@ -34,15 +35,18 @@ int main() {
 
 
 
-    //server.sin_addr.s_addr = inet_addr(SERVER_IP);
+    
 	server.sin_family = AF_INET;
 	server.sin_port = htons(PUERTO);
+    setupAddrStruct(HOST, &server.sin_addr);
 
 	//CONNECT to remote server
 	if (connect(srvsock, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR) {
-		std::cerr << "Connection error: " << WSAGetLastError() << std::endl;
+		std::cerr << "Error al conectarse al servidor" << std::endl;
 		closesocket(srvsock);
+        #ifdef __WIN32
 		WSACleanup();
+        #endif
 		return -1;
 	}
 
