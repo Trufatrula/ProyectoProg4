@@ -145,7 +145,6 @@ void menuVerPuntuacionesAdmin() {
         printf("El nombre de usuario no existe\n");
     } else {
         printf("Puntuación normal: %d\n", puntuacion.Normal_Score);
-        printf("Puntuación ranked: %d\n", puntuacion.League_Points);
     }
 }
 

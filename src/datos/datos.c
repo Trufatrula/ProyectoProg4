@@ -447,9 +447,8 @@ int obtenerPuntuaciones(Puntuaciones* puntuaciones, const char* nick) {
         if (result == SQLITE_ROW) {
             
 			int normal = (int) sqlite3_column_int(stmt,1);
-			int LP = (int) sqlite3_column_int(stmt,2);
 			correcto = 1;
-			crearPuntuacion(puntuaciones, normal, LP);
+			crearPuntuacion(puntuaciones, normal);
 			
         }
     } while (result == SQLITE_ROW);
