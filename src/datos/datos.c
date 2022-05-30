@@ -37,7 +37,7 @@ int registrarUsuario(Usuario* usuario) {
 		return result;
 	}
 
-	char sqlUserPoints[] = "INSERT INTO Puntuacion (User_Nick, Normal_Score, League_Points) VALUES (?, 0, 0)";
+	char sqlUserPoints[] = "INSERT INTO Puntuacion (User_Nick, Normal_Score) VALUES (?, 0)";
 	result = sqlite3_prepare_v2(__baseDeDatosActual, sqlUserPoints, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
 		printf("Error preparing statement (INSERT)\n");
@@ -435,7 +435,7 @@ int tokenExiste(const char* token) {
 int obtenerPuntuaciones(Puntuaciones* puntuaciones, const char* nick) {
 	 sqlite3_stmt *stmt;
 	 int correcto = 0;
-	 char sqlPuntuaciones[] = "SELECT Normal_Score, League_Points FROM Puntuacion WHERE User_Nick =?";
+	 char sqlPuntuaciones[] = "SELECT Normal_Score FROM Puntuacion WHERE User_Nick =?";
 	 int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPuntuaciones, -1, &stmt, NULL);
 	 if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
@@ -522,8 +522,7 @@ int generarTablas() {
 
     char sqlPuntuacion[] = "CREATE TABLE IF NOT EXISTS Puntuacion (\
 	User_Nick TEXT NOT NULL,\
-	Normal_Score INTEGER NOT NULL,\
-	League_Points INTEGER NOT NULL)";
+	Normal_Score INTEGER NOT NULL)";
 
     result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPuntuacion, -1, &stmt, NULL) ;  //No estoy seguro del parámetro 3 de la función, si debe ser strlen(sql), strlen(sql)+1, strlen(sql)-1
 

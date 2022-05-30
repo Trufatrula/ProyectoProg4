@@ -1,8 +1,7 @@
 #include "puntuaciones.h"
 #include <stdlib.h>
 
-void crearPuntuacion(Puntuaciones* puntuacion, int normal, int LP) {
+void crearPuntuacion(Puntuaciones* puntuacion, int normal) {
     puntuacion->Normal_Score = normal;
-    puntuacion->League_Points = LP;
 
 }

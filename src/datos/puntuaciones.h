@@ -7,11 +7,10 @@ extern "C" {
 
 typedef struct {
     int Normal_Score;
-    int League_Points;
 
 } Puntuaciones;
 
-void crearPuntuacion(Puntuaciones* puntuacion, int normal, int LP);
+void crearPuntuacion(Puntuaciones* puntuacion, int normal);
 
 #ifdef __cplusplus
 }
