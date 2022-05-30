@@ -10,6 +10,7 @@ void generarSalt(char* salt) {
     binAHex(buffer, 16, salt);
 }
 
+
 void hashContrasena(const char* contrasena, const char* salt, char* hash) {
     unsigned char saltBuffer[16];
     unsigned char hashBuffer[SHA256_DIGEST_LENGTH];
