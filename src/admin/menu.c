@@ -87,7 +87,7 @@ int menuAnyadirUsuariosAdmin() {
 }
 
 void menuModificarUsuarioAdmin() {
-    printf("\nSeleccione el usuario que quieres ver sus puntuaciones (nickname): ");
+    printf("\nSeleccione el usuario que quieres modificar (nickname): ");
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre, MAX_LINE);
@@ -136,7 +136,7 @@ void menuModificarUsuarioAdmin() {
 }
 
 void menuVerPuntuacionesAdmin() {
-     printf("\nSeleccione el usuario que quieres modificar (nickname): ");
+     printf("\nSeleccione el usuario que quieres ver sus puntuaciones (nickname): ");
     char nombre[MAX_LINE];
     fgets(nombre, 20, stdin);
     clearIfNeeded(nombre, MAX_LINE);
