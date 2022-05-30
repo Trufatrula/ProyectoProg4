@@ -25,7 +25,7 @@ void setupAddrStruct(char* str, struct in_addr* addr) {
     }
 }
 
-int sendSizedMsg(SOCKET s, const void* msg, unsigned long len) {
+int sendSizedMsg(SOCKET s, const unsigned char* msg, unsigned long len) {
     unsigned long sent = 0;
     unsigned long slen;
     unsigned long nlen = htonl(len);
@@ -50,7 +50,7 @@ int sendSizedMsg(SOCKET s, const void* msg, unsigned long len) {
     return 0;
 }
 
-int receiveSizedMsg(SOCKET s, void** mabuff, unsigned long* ptrlen) {
+int receiveSizedMsg(SOCKET s, unsigned char** mabuff, unsigned long* ptrlen) {
     unsigned long size;
     unsigned long received = 0;
     unsigned long rlen;
