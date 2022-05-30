@@ -4,7 +4,7 @@
 int main() {
     prepararConsola();
     //std::cout << "hola genteeeeeee\n";
-    Partida p = Partida("cacahuete");
+    Partida p = Partida();
     p.comprobarResultado("cacahuete","*/*--**//");
     //std::cout << RED "Jorge la xupa"  << std::endl;
     restaurarConsola();

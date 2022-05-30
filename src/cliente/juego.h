@@ -6,10 +6,9 @@ class Partida {
         int puntuacion;
         int intentos;
         int ganada;
-        char* palabra;
 
     public:
-        Partida(const char* palabra);
+        Partida();
         Partida(const Partida& p);
         ~Partida();
         int getPuntuacion();
@@ -18,7 +17,6 @@ class Partida {
         void setPuntuacion(int puntuacion);
         void setIntentos(int intentos);
         void setGanada(int ganada);
-        char* getPalabra();
         void comprobarResultado(const char* palabraUser, const char* codigoServer);
 };
 

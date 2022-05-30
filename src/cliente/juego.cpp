@@ -31,18 +31,16 @@ void Partida::setGanada(int ganada) {
     }
 }
 
-char* Partida::getPalabra() {
-    return this->palabra;
-}
 
-Partida::Partida(const char* palabra) {
-    this->palabra = new char[strlen(palabra)+1];
-    strcpy(this->palabra, palabra);
+
+Partida::Partida() {
+    /*this->palabra = new char[strlen(palabra)+1];
+    strcpy(this->palabra, palabra);*/
 }
 
 Partida::Partida(const Partida& p) {
-    this->palabra = new char[strlen(p.palabra)+1];
-    strcpy(this->palabra, p.palabra);
+    /*this->palabra = new char[strlen(p.palabra)+1];
+    strcpy(this->palabra, p.palabra);*/
 
     this->puntuacion=p.puntuacion;
     this->intentos=p.intentos;
@@ -50,7 +48,7 @@ Partida::Partida(const Partida& p) {
 }
 
 Partida::~Partida() {
-    delete[] this->palabra;
+
 }
 
 void Partida::comprobarResultado(const char* palabraUser, const char* codigoServer) {
