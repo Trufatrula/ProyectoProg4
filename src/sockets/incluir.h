@@ -11,6 +11,7 @@ typedef int socklen_t;
 #include <sys/socket.h>
 #include <netinet/in.h>
 #define SOCKET_ERROR -1
+#define INVALID_SOCKET -1
 typedef int SOCKET;
 #define closesocket close
 #define SD_BOTH SHUT_RDWR
