@@ -1,6 +1,7 @@
 #include "datos.h"
 #include <stdio.h>
 #include <string.h>
+#include <openssl/rand.h>
 #include <time.h>
 #include "token.h"
 
@@ -677,4 +678,54 @@ int existePalabra(char* palabra){
 	if (existe) return SQLITE_ERROR;
 	return SQLITE_OK;
 	
+}
+
+int getPalabraRandom(char* palabra, char* categoria, char* idioma) {
+	sqlite3_stmt *stmt;
+	char sqlPalabra[] = "SELECT count(*) FROM Diccionario";
+	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPalabra, -1, &stmt, NULL);
+	if (result != SQLITE_OK) {
+        printf("Error al insertar la sentencia\n");
+        return result;
+    }
+	int npalabras;
+	do {
+        result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW) {
+        	npalabras = sqlite3_column_int(stmt, 0);
+        }
+    } while (result == SQLITE_ROW);
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	char sql2[] = "SELECT * FROM Diccionario";
+	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPalabra, -1, &stmt, NULL);
+	if (result != SQLITE_OK) {
+        printf("Error al insertar la sentencia\n");
+        return result;
+    }
+	int r;
+	RAND_bytes((unsigned char*) &r, sizeof(int));
+	r %= npalabras;
+	do {
+        result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW) {
+        	if (r-- != 0) continue;
+			strcpy(palabra, sqlite3_column_text(stmt, 0));
+			strcpy(categoria, sqlite3_column_text(stmt, 1));
+			strcpy(idioma, sqlite3_column_text(stmt, 2));
+			break;
+        }
+    } while (result == SQLITE_ROW);
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (INSERT)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	if (r != 0) return SQLITE_ERROR;
+	return SQLITE_OK;
 }

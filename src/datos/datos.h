@@ -30,6 +30,7 @@ int abrirBD();
 int cerrarBD();
 int meterPalabraBD(char* palabra, char* tematica, char* idioma);
 int existePalabra(char* palabra);
+int getPalabraRandom(char* palabra, char* categoria, char* idioma);
 
 #ifdef __cplusplus
 }
