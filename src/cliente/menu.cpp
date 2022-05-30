@@ -20,6 +20,7 @@ int menuInicio() {
             }
             break;
         default:
+            return 0;
             break;
         }
     } while(o != 2);
