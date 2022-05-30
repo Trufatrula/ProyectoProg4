@@ -1,9 +1,17 @@
 #ifndef SESION
 #define SESION
 
-void establecerToken(char* token);
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void establecerToken(const char* token);
 void getToken(char* token);
-void guardarToken(char* fichero);
-int cargarToken(char* fichero);
+void guardarToken(const char* fichero);
+int cargarToken(const char* fichero);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
