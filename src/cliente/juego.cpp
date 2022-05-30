@@ -66,3 +66,16 @@ void Partida::comprobarResultado(const char* palabraUser, const char* codigoServ
     cout << NC;
 
 }
+
+void Partida::iniciar() {
+    std::cout << "Has iniciado una partida. La temática de la palabra es TEMATICA y la longitud es de LONGITUD por lo que tienes LONGITUD intentos." << endl;
+    //Servidor hace cosas lolo
+}
+
+void Partida::testPalabra() {
+    std::string palabra;
+    std::cout << "Introduce tu palabra" << endl;
+    std::getline(std::cin, palabra);
+    //Servidor hace cosas////
+    //comprobarResultado(palabra, cosa del server);       Necesitamos lo del server
+}

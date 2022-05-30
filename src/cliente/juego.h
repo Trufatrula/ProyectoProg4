@@ -18,6 +18,8 @@ class Partida {
         void setIntentos(int intentos);
         void setGanada(int ganada);
         void comprobarResultado(const char* palabraUser, const char* codigoServer);
+        void iniciar(); //Te prntea la categoria longitud intentos
+        void testPalabra();
 };
 
 #endif
