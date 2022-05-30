@@ -81,7 +81,7 @@ int main() {
             restaurarConsola();
 		    return -1;
 	    }
-        //hilo e incoming
+        
     }
 
     closesocket(srvsock);
