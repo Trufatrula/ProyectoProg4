@@ -1,10 +1,12 @@
 #include <iostream>
 #include "juego.h"
-#define RED "\e[0;31m"
+#include "../common/consola.h"
 int main() {
+    prepararConsola();
     //std::cout << "hola genteeeeeee\n";
     Partida p = Partida("cacahuete");
     p.comprobarResultado("cacahuete","*/*--**//");
     //std::cout << RED "Jorge la xupa"  << std::endl;
+    restaurarConsola();
     return 0;
 }

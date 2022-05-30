@@ -15,6 +15,9 @@
         "ostream": "cpp",
         "csv.h": "c",
         "cargarpalabras.h": "c",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "tcom.h": "c",
+        "incluir.h": "c",
+        "new": "cpp"
     }
 }

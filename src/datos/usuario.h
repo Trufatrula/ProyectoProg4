@@ -1,6 +1,10 @@
 #ifndef USUARIO
 #define USUARIO
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct{
     char* nombre;
     char* apellido;
@@ -17,5 +21,9 @@ void crearUsuario(Usuario* usuario, char* nombre, char* apellido, char* nickname
 void iniciarUsuario(Usuario* usuario, char* nombre, char* apellido, char* nickname, char* contrasena);
 void setContrasena(Usuario* usuario, char* contrasena);
 void liberarUsuario(Usuario* usuario);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

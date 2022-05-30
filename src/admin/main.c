@@ -6,14 +6,14 @@
 
 
 int main(void) {
-	activarUTF8();
+	prepararConsola();
 	abrirBD();
 	generarTablas();
 	
 	menuPrincipalAdmin();
 
 	cerrarBD();
-	desactivarUTF8();
+	restaurarConsola();
 	return 0;
 }
 
