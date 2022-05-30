@@ -7,7 +7,7 @@
 #define HOST   "localhost"
 
 int main() {
-    
+
     prepararConsola();
     sockaddr_in server;
     SOCKET srvsock;
@@ -46,9 +46,7 @@ int main() {
 		return -1;
 	}
 
-	printf("Connection stablished with: %s (%d)\n", inet_ntoa(server.sin_addr),
-			ntohs(server.sin_port));
-
+    std::cout << "Connection stablished with: " << inet_ntoa(server.sin_addr) << "(" << ntohs(server.sin_port) << ")" << std::endl;
 
 
 
