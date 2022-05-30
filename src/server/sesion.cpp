@@ -1,52 +1,26 @@
 #include "sesion.h"
 
 
-
-
-bool Sesion::getEstado() {
-    return this->estado;
-}
-
-void Sesion::setEstado(bool estado) {
-    this->estado = estado;
-
-}
-
-char* Sesion::getPalabra() {
-    return this->palabra;
-}
-
-void Sesion::setPalabra(char* palabra) {
-    this->palabra = palabra;
-}
-
-int Sesion::getIntentos() {
-return this->intentos;
-}
-
-void Sesion::setIntentos(int intentos) {
-    this->intentos = intentos;
-}
-
-
 Sesion::Sesion(const Sesion& s) {
-
-    //this->token = new char[strlen(s.token)+1];
-    for (int i = 0; i < strlen(s.token)+1; i++)
-    {
-      //  strcpy(this->token,s.token[i]);
+    if(s.palabra != NULL) {
+        this->palabra = new char[strlen(s.palabra)+1];
+        strcpy(this->palabra, s.palabra);
     }
     
+    this->setToken(s.token);
     this->estado=s.estado;
-    this->palabra=s.palabra;
     this->intentos=s.intentos;
+    this->socket = s.socket;    
+}
 
-
+Sesion::Sesion(SOCKET s) {
+    this->socket = s;
+    this->estado = false;
+    this->intentos = 0;
+    memset(this->token, 0, 16);
 }
 
 
 Sesion::~Sesion() {
-
-    delete[] this->token;
-    delete[] this->palabra;
+    if (this->palabra != NULL) delete[] this->palabra;
 }
