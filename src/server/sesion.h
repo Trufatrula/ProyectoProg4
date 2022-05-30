@@ -2,12 +2,14 @@
 #define JALADSESION
 
 #include "../sockets/incluir.h"
+#include <memory.h>
+#include <string>
 
 class Sesion {
     private:
-        char token[16];
+        unsigned char token[16];
         bool estado;
-        char* palabra;
+        std::string palabra;
         int intentos;
         SOCKET socket;
 
@@ -18,16 +20,11 @@ class Sesion {
         Sesion(const Sesion& s);
         ~Sesion();
 
+        inline void setToken(const unsigned char* token) {memcpy(this->token, token,16);}
+        inline void setPalabra(const std::string& str) {this->palabra = str;}
+
         
-        bool getEstado();
-        void setEstado(bool estado);
-        
-        char* getPalabra();
-        void setPalabra(char* palabra);
-        
-        int getIntentos();
-        void setIntentos(int intentos);
-        
+       
         
 
 
