@@ -464,6 +464,34 @@ int obtenerPuntuaciones(Puntuaciones* puntuaciones, const char* nick) {
 	return SQLITE_ERROR;
 }
 
+
+actualizarPuntuaciones(const char* nickUser, int puntuacion) {
+	sqlite3_stmt *stmt;
+    char sqlPuntuacion[] = "UPDATE Puntuacion SET User_Nick = ?, Normal_Score = ?";
+    int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPuntuacion, -1, &stmt, NULL);
+    if (result != SQLITE_OK) {
+		printf("Error preparing statement (UPDATE)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+    sqlite3_bind_text(stmt, 1, nickUser, strlen(nickUser), SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 2, puntuacion);
+    
+    result = sqlite3_step(stmt);
+	if (result != SQLITE_DONE) {
+		printf("Error insertando datos\n");
+		return result;
+	}
+    result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizando statement (UPDATE)\n");
+		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
+		return result;
+	}
+	return result;
+}
+
+
 int borrarPalabras() {
 	sqlite3_stmt *stmt;
 	char sqlBorrar[] = "DELETE FROM Diccionario";
