@@ -22,7 +22,7 @@ Sesion::Sesion(SOCKET s) {
 
 bool Sesion::recibir() {
     unsigned char *buffer , *buffer2, *p;
-    char *usuario, *password, *nombre, *apellido;
+    char *usuario, *password, *nombre, *apellido, *token;
     bool result;
     int expira;
     unsigned long l;
@@ -77,7 +77,16 @@ bool Sesion::recibir() {
 
             break;
         case TOKENLOGIN:
-
+            p = buffer +1;
+            token = (char*) p;
+            buffer2 = (unsigned char*) malloc(1);
+            if(actualizarToken(token) == SQLITE_OK){
+                strcpy(this->token, token);
+                buffer2[0] = TOKENLOGIN;
+            }else{
+                buffer2[0] = JALADERROR;
+            }
+            free(buffer2);
             break;
         case PARTIDA:
 
