@@ -25,21 +25,21 @@ void setupAddrStruct(char* str, struct in_addr* addr) {
     }
 }
 
-void sendSizedMsg(SOCKET s, const void* msg, unsigned long len) {
+int sendSizedMsg(SOCKET s, const void* msg, unsigned long len) {
     unsigned long sent = 0;
     unsigned long slen;
     unsigned long nlen = htonl(len);
     int ret;
     if (send(s, (const sockdata_t) &nlen, sizeof(unsigned long), 0) == SOCKET_ERROR) {
         printf("Cannot send the size of the data to be sent.\n");
-        exit(6);
+        return 1;
     }
     while (sent < len) {
         slen = len - sent > TBUFF_SIZE ? TBUFF_SIZE : len - sent;
         ret = send(s, (const sockdata_t) (msg + sent), slen, 0);
         if (ret == SOCKET_ERROR) {
             printf("Cannot send the data.\n");
-            exit(6);
+            return 1;
         }
         if (ret > 0) {
             sent += ret;
@@ -47,16 +47,17 @@ void sendSizedMsg(SOCKET s, const void* msg, unsigned long len) {
             break;
         }
     }
+    return 0;
 }
 
-void receiveSizedMsg(SOCKET s, void** mabuff, unsigned long* ptrlen) {
+int receiveSizedMsg(SOCKET s, void** mabuff, unsigned long* ptrlen) {
     unsigned long size;
     unsigned long received = 0;
     unsigned long rlen;
     int ret;
     if (recv(s, (sockdata_t) &size, sizeof(unsigned long), 0) == SOCKET_ERROR) {
         printf("Cannot fetch receiving data size.\n");
-        exit(6);
+        return 1;
     }
     size = ntohl(size);
     if (ptrlen != NULL) {
@@ -66,14 +67,14 @@ void receiveSizedMsg(SOCKET s, void** mabuff, unsigned long* ptrlen) {
     memset(*mabuff, 0, ((size_t) size) + 1);
     if (mabuff == 0) {
         printf("Cannot reallocate the memory to hold the reply.\n");
-        exit(10);
+        return 1;
     }
     while (received < size) {
         rlen = size - received > TBUFF_SIZE ? TBUFF_SIZE : size - received;
         ret = recv(s, (sockdata_t) (*mabuff + received), rlen, 0);
         if (ret == SOCKET_ERROR) {
             printf("Cannot receive the data.\n");
-            exit(6);
+            return 1;
         }
         if (ret > 0) {
             received += ret;
@@ -81,4 +82,5 @@ void receiveSizedMsg(SOCKET s, void** mabuff, unsigned long* ptrlen) {
             break;
         }
     }
+    return 0;
 }
