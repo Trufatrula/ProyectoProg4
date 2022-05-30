@@ -702,7 +702,7 @@ int getPalabraRandom(char* palabra, char* categoria, char* idioma) {
 		return result;
 	}
 	char sql2[] = "SELECT * FROM Diccionario";
-	int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPalabra, -1, &stmt, NULL);
+	result = sqlite3_prepare_v2(__baseDeDatosActual, sql2, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
         printf("Error al insertar la sentencia\n");
         return result;
@@ -714,9 +714,9 @@ int getPalabraRandom(char* palabra, char* categoria, char* idioma) {
         result = sqlite3_step(stmt);
         if (result == SQLITE_ROW) {
         	if (r-- != 0) continue;
-			strcpy(palabra, sqlite3_column_text(stmt, 0));
-			strcpy(categoria, sqlite3_column_text(stmt, 1));
-			strcpy(idioma, sqlite3_column_text(stmt, 2));
+			strcpy(palabra, (char*) sqlite3_column_text(stmt, 0));
+			strcpy(categoria, (char*) sqlite3_column_text(stmt, 1));
+			strcpy(idioma, (char*) sqlite3_column_text(stmt, 2));
 			break;
         }
     } while (result == SQLITE_ROW);
