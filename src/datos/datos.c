@@ -465,7 +465,7 @@ int obtenerPuntuaciones(Puntuaciones* puntuaciones, const char* nick) {
 }
 
 
-actualizarPuntuaciones(const char* nickUser, int puntuacion) {
+int actualizarPuntuaciones(const char* nickUser, int puntuacion) {
 	sqlite3_stmt *stmt;
     char sqlPuntuacion[] = "UPDATE Puntuacion SET User_Nick = ?, Normal_Score = ?";
     int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPuntuacion, -1, &stmt, NULL);
