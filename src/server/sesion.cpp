@@ -379,6 +379,7 @@ void Sesion::testPalabra(char* p, char** buffer) {
         }
         *ptr = 0;
         if (win) {
+            this->intentos = 0;
             char nick[20];
             Puntuaciones punt;
             if (obtenerNickDeToken(this->token, nick) != SQLITE_OK) {
