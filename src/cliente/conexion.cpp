@@ -11,7 +11,7 @@ int conectar(const char* host, unsigned short puerto) {
     std::cout << "Iniciando WinSock..." << std::endl;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 		std::cerr << "Error iniciando WinSock" << std::endl;
-		return -1;
+		return 1;
 	}
     #endif
 
@@ -29,12 +29,12 @@ int conectar(const char* host, unsigned short puerto) {
 
 	//CONNECT to remote server
 	if (connect(socket_cliente, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR) {
-		std::cerr << "Error al conectarse al servidor" << errno << std::endl;
+		std::cerr << "Error al conectarse al servidor" << std::endl;
 		closesocket(socket_cliente);
         #ifdef __WIN32
 		WSACleanup();
         #endif
-		return -1;
+		return 1;
 	}
 
     return 0;

@@ -17,15 +17,15 @@ int menuInicio() {
     int o;
     char msg[34], *r = 0;
     unsigned long l;
-    if (cargarToken("token.txt") == 0) {
-        if (conectar(HOST, PUERTO) == 1) {
+    if (conectar(HOST, PUERTO) == 1) {
+            std::cout << "No se ha podido conectar al servidor" << std::endl;
             return 1;
         }
+    if (cargarToken("token.txt") == 0) {
         msg[0] = TOKENLOGIN;
         getToken(msg + 1);
         sendSizedMsg(socket_cliente, (unsigned char*) msg, 34);
         receiveSizedMsg(socket_cliente, (unsigned char**) &r, &l);
-        desconectar();
         if (l == 1 && r[0] == TOKENLOGIN) {
             free(r);
             return 0;
@@ -33,7 +33,7 @@ int menuInicio() {
         free(r);
     }
 
-    conectar(HOST, PUERTO);
+    
     do {
         o = opcion("Bienvenido, ¿quiere registrarse o iniciar sesión?", 3, opciones);
         switch (o)
@@ -239,9 +239,21 @@ int menuCliente() {
                 return 0;
             }
         case 3: //cerra sesion
+            msg[0] = LOGOUT;
+            sendSizedMsg(socket_cliente, msg, 1);
+            receiveSizedMsg(socket_cliente, &r, &l);
+            if (r[0] != LOGOUT) {
+                std::cout << "No se ha podido cerrar sesión" << std::endl;
+                free(r);
+                break;
+            }
+            free(r);
             unlink("token.txt");
+            return 0;
             break;
         default:
+            msg[0] = CLIENTESALIR;
+            sendSizedMsg(socket_cliente, msg, 1);
             return 0;
             break;
         }
