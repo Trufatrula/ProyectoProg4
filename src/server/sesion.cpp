@@ -218,7 +218,6 @@ bool Sesion::recibir() {
                             std::cout<<"Contraseña actualizada correctamente"<<std::endl;
                         }
                         liberarUsuario(&u);
-                        liberarUsuario(&u2);
                     } else {
                         buffer2[0] = JALADERROR;
                         std::cerr<<"Error al actualizar la contraseña -3-"<<std::endl;

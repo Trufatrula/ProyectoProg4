@@ -95,10 +95,17 @@ int menuRegistro() {
     *p = (char) o;
     sendSizedMsg(socket_cliente, msg, len);
     receiveSizedMsg(socket_cliente, &r, &lenr);
-    if (r[0] != REGISTER) return 1;
-    if (lenr != 34) return 1;
+    if (r[0] != REGISTER) {
+        free(r);
+        return 1;
+    }
+    if (lenr != 34) {
+        free(r);
+        return 1;
+    }
     establecerToken((char*) (r + 1));
     if (o == 1) guardarToken("token.txt");
+    free(r);
     return 0;
 }
 
@@ -127,19 +134,83 @@ int menuInicioSesion() {
     *p = (char) o;
     sendSizedMsg(socket_cliente, msg, len);
     receiveSizedMsg(socket_cliente, &r, &lenr);
-    if (r[0] != LOGIN) return 1;
-    if (lenr != 34) return 1;
+    if (r[0] != LOGIN) {
+        free(r);
+        return 1;
+    }
+    if (lenr != 34) {
+        free(r);
+        return 1;
+    }
     establecerToken((char*) (r + 1));
     if (o == 1) guardarToken("token.txt");
+    free(r);
+    return 0;
+}
 
+int menuEditarNombreApellido() {
+    std::string nombre; 
+    std::cout << "Nuevo nombre: "; 
+    std::getline(std::cin, nombre);
+    
+    std::string apellido; 
+    std::cout << "Nuevo apellido: "; 
+    std::getline(std::cin, apellido);
+
+    size_t len = 3 + nombre.size() + apellido.size();
+    unsigned long lenr;
+    unsigned char* msg = (unsigned char*) malloc(len), *r = 0;
+    char* p;
+    msg[0] = UPDATEUSER;
+    p = (char*) (msg + 1);
+    strcpy(p, nombre.c_str());
+    p +=  nombre.size() + 1;
+    strcpy(p, apellido.c_str());
+    sendSizedMsg(socket_cliente, msg, len);
+    receiveSizedMsg(socket_cliente, &r, &lenr);
+    if (r[0] != UPDATEUSER) {
+        free(r);
+        return 1;
+    }
+    if (lenr != 1) {
+        free(r);
+        return 1;
+    }
+    free(r);
+    return 0;
+}
+
+int menuEditarContrasena() {
+    std::string pass; 
+    std::cout << "Nueva contraseña: "; 
+    std::getline(std::cin, pass);
+
+    size_t len = 2 + pass.size();
+    unsigned long lenr;
+    unsigned char* msg = (unsigned char*) malloc(len), *r = 0;
+    char* p;
+    msg[0] = UPDATEPASS;
+    p = (char*) (msg + 1);
+    strcpy(p, pass.c_str());
+    sendSizedMsg(socket_cliente, msg, len);
+    receiveSizedMsg(socket_cliente, &r, &lenr);
+    if (r[0] != UPDATEPASS) {
+        free(r);
+        return 1;
+    }
+    if (lenr != 1) {
+        free(r);
+        return 1;
+    }
+    free(r);
     return 0;
 }
 
 int menuCliente() {
-    const char* opciones[] = {"Jugar", "Ver puntuaciones", "Cerrar sesión", "Sácame de aquí"};
+    const char* opciones[] = {"Jugar", "Ver puntuaciones", "Editar usuario", "Cerrar sesión", "Sácame de aquí"};
     int o;
     do {
-        o = opcion("Bienvenido, ¿Qué quiere hacer hoy?", 4, opciones);
+        o = opcion("Bienvenido, ¿Qué quiere hacer hoy?", 5, opciones);
         switch (o)
         {
         case 0:
@@ -150,8 +221,11 @@ int menuCliente() {
         case 1:
             //verPuntuaciones
             break;
-        case 2:
-
+        case 2: 
+            if (menuEditarCliente() == 2) {
+                return 0;
+            }
+        case 3: //cerra sesion
             break;
         default:
             return 0;
@@ -162,6 +236,8 @@ int menuCliente() {
 }
 
 int menuEditarCliente() {
+    unsigned char msg[1], *r = 0;
+    unsigned long l;
     const char* opciones[] = {"Borrar usuario", "Editar usuario", "Editar constraseña", "Me arrepiento..."};
     int o;
     do {
@@ -169,13 +245,31 @@ int menuEditarCliente() {
         switch (o)
         {
         case 0:
-            //Server borra
+            msg[0] = USERDEL;
+            sendSizedMsg(socket_cliente, msg, 1);
+            receiveSizedMsg(socket_cliente, &r, &l);
+            if (r[0] == USERDEL) {
+                std::cout << "Usuario borrado. Saliendo..." << std::endl;
+                free(r);
+                return 2;
+            } else {
+                free(r);
+                std::cout << "No se ha podido borrar el usuario" << std::endl;
+            }
             break;
         case 1:
-            //Server edita
+            if (menuEditarNombreApellido() == 1) {
+                std::cout << "No se han podido editar los datos del usuario" << std::endl;
+            } else {
+                std::cout << "Se han editado los datos del usuario" << std::endl;
+            }
             break;
         case 2:
-            //Server edita contraseña
+             if (menuEditarContrasena() == 1) {
+                std::cout << "No se ha podido editar la contraseña" << std::endl;
+            } else {
+                std::cout << "Se ha editado la contraseña" << std::endl;
+            }
             break;
         case 3:
             //adios
@@ -184,7 +278,7 @@ int menuEditarCliente() {
             return 0;
             break;
         }
-    } while(o != 4);
+    } while(o != 3);
     return 0;
 }
 
