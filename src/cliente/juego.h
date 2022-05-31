@@ -5,6 +5,7 @@ class Partida {
     private:
         int puntuacion;
         int intentos;
+        unsigned long size;
         int ganada;
 
     public:

@@ -77,7 +77,7 @@ int menuRegistro() {
     std::getline(std::cin, contrasena);
 
     const char* opciones[] = {"No", "Si"};
-    int o = opcion("¿Quieres que tu sesion expire al salir?", 2, opciones);
+    int o = opcion("¿Quieres que tu sesion no expire al salir?", 2, opciones);
 
     size_t len = 5 + nombre.size() + apellido.size() + nick.size() + contrasena.size() + sizeof(char);
     unsigned long lenr;
@@ -120,7 +120,7 @@ int menuInicioSesion() {
     std::getline(std::cin, contrasena);
 
     const char* opciones[] = {"No", "Si"};
-    int o = opcion("¿Quieres que tu sesion expire al salir?", 2, opciones);
+    int o = opcion("¿Quieres que tu sesion no expire al salir?", 2, opciones);
 
     size_t len = 3 + nick.size() + contrasena.size() + sizeof(char);
     unsigned long lenr;
@@ -239,6 +239,7 @@ int menuCliente() {
                 return 0;
             }
         case 3: //cerra sesion
+            unlink("token.txt");
             break;
         default:
             return 0;
@@ -298,6 +299,10 @@ int menuEditarCliente() {
 int menuJuego() {
     Partida partida;
     if (partida.iniciar() == 1) return 1;
-
+    int res;
+    do {
+        partida.setIntentos(partida.getIntentos() - 1);
+        res = partida.testPalabra();
+    } while (res == 0 && partida.getIntentos() > 0);
     return 0;
 }

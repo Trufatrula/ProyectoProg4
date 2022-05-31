@@ -88,16 +88,38 @@ int Partida::iniciar() {
     idioma = p;
     p += strlen(idioma) + 1;
     memcpy(&this->intentos, p, sizeof(size_t));
-    free(r);
+    this->size = this->intentos;
     std::cout << "Has iniciado una partida. La temática de la palabra es " << categoria << ", el idioma es " << idioma << " y la longitud es de " << this->intentos << " por lo que tienes " << this->intentos << " intentos." << endl;
+    free(r);
     return 0;
 }
 
 int Partida::testPalabra() {
     std::string palabra;
-    std::cout << "Introduce tu palabra" << endl;
-    std::getline(std::cin, palabra);
-    return 0;
-    //Servidor hace cosas////
-    //comprobarResultado(palabra, cosa del server);       Necesitamos lo del server
+    do {
+        std::cout << "Introduce tu palabra (" << this->size << " caracteres): ";
+        std::getline(std::cin, palabra);
+    } while (palabra.size() != this->size);
+    char* msg = (char*) malloc(2 + palabra.size());
+    unsigned long l;
+    msg[0] = PROBAR;
+    strcpy(msg + 1, palabra.c_str());
+    sendSizedMsg(socket_cliente, (unsigned char*) msg, 2 + palabra.size());
+    receiveSizedMsg(socket_cliente, (unsigned char**) &msg, &l);
+    if (msg[0] != PROBAR) {
+        free(msg);
+        std::cerr << "Ha ocurrido un error durante la partida. Lo sentimos." << std::endl;
+        return 1;
+    }
+    this->comprobarResultado(palabra.c_str(), msg + 1);
+    std::cout << std::endl;
+    for (size_t i = 0; i < strlen(msg + 1); i++) {
+        if ((msg + 1)[i] != '*') {
+            free(msg);
+            return 0;
+        }
+    }
+    free(msg);
+    std::cout << "HAS GANADO!!!!!" << std::endl;
+    return 1;
 }

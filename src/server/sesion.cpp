@@ -353,33 +353,31 @@ void Sesion::testPalabra(char* p, char** buffer) {
     bool win = true;
     if (strlen(p) != this->palabra.size()) {
         *buffer = (char*) malloc(2);
-        *buffer[0] = PARTIDA;
-        *buffer[1] = PARTIDA_ERROR;
-        sendSizedMsg(this->socket, (unsigned char*) *buffer, 2);
+        *buffer[0] = JALADERROR;
+        sendSizedMsg(this->socket, (unsigned char*) *buffer, 1);
     } else {
         bool found = false;
-        *buffer = (char*) malloc(2 + strlen(p) + 1);
-        *buffer[0] = PARTIDA;
-        *buffer[1] = PARTIDA_OK;
-        char* p = *buffer + 2;
-        for (std::size_t i = 0; i < this->palabra.size(); i++, p++) {
+        *buffer = (char*) malloc(1 + strlen(p) + 1);
+        *buffer[0] = PROBAR;
+        char* ptr = *buffer + 1;
+        for (std::size_t i = 0; i < this->palabra.size(); i++, ptr++) {
             found = false;
             if (tolower(this->palabra[i]) == tolower(p[i])) {
-                *p = '*';
+                *ptr = '*';
                 continue;
             }
             win = false;
             for (std::size_t j = 0; j < this->palabra.size(); j++) {
                 if (tolower(p[i]) == tolower(this->palabra[j])) {
-                    *p = '/';
+                    *ptr = '/';
                     found = true;
                     break;
                 }
             }
             if (found) continue;
-            *p = '-';
+            *ptr = '-';
         }
-        *p = 0;
+        *ptr = 0;
         if (win) {
             char nick[20];
             Puntuaciones punt;
@@ -398,6 +396,6 @@ void Sesion::testPalabra(char* p, char** buffer) {
                 }
             }
         }
-        sendSizedMsg(this->socket, (unsigned char*) *buffer, 2 + strlen(p) + 1);
+        sendSizedMsg(this->socket, (unsigned char*) *buffer, 1 + strlen(p) + 1);
     }
 }
