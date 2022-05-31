@@ -304,5 +304,8 @@ int menuJuego() {
         partida.setIntentos(partida.getIntentos() - 1);
         res = partida.testPalabra();
     } while (res == 0 && partida.getIntentos() > 0);
+    if (partida.getIntentos() == 0 && partida.getGanada() == 0) {
+        std::cout << "Te has quedado sin intentos" << std::endl;
+    }
     return 0;
 }

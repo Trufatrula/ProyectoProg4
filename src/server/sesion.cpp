@@ -386,9 +386,9 @@ void Sesion::testPalabra(char* p, char** buffer) {
                 sendSizedMsg(this->socket, (unsigned char*) *buffer, 1);
                 return;
             } else {
-                if (obtenerPuntuaciones(&punt, nick) != SQLITE_OK) {
+                if (obtenerPuntuaciones(&punt, nick) == SQLITE_OK) {
                     punt.Normal_Score += this->intentos + 1;
-                    
+                    actualizarPuntuaciones(nick, punt.Normal_Score);
                 } else {
                     *buffer[0] = JALADERROR;
                     sendSizedMsg(this->socket, (unsigned char*) *buffer, 1);

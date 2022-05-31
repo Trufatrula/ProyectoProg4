@@ -28,6 +28,10 @@ void Partida::setIntentos(int intentos) {
     this->intentos=intentos;
 }
 
+int Partida::getGanada() {
+    return this->ganada;
+}
+
 void Partida::setGanada(int ganada) {
     if(ganada==0 && ganada==1){
         this->ganada=ganada;
@@ -120,6 +124,7 @@ int Partida::testPalabra() {
         }
     }
     free(msg);
+    this->ganada = 1;
     std::cout << "HAS GANADO!!!!!" << std::endl;
     return 1;
 }

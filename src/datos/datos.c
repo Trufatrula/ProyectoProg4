@@ -467,15 +467,15 @@ int obtenerPuntuaciones(Puntuaciones* puntuaciones, const char* nick) {
 
 int actualizarPuntuaciones(const char* nickUser, int puntuacion) {
 	sqlite3_stmt *stmt;
-    char sqlPuntuacion[] = "UPDATE Puntuacion SET User_Nick = ?, Normal_Score = ?";
+    char sqlPuntuacion[] = "UPDATE Puntuacion SET Normal_Score = ? WHERE User_Nick = ?";
     int result = sqlite3_prepare_v2(__baseDeDatosActual, sqlPuntuacion, -1, &stmt, NULL);
     if (result != SQLITE_OK) {
 		printf("Error preparing statement (UPDATE)\n");
 		printf("%s\n", sqlite3_errmsg(__baseDeDatosActual));
 		return result;
 	}
-    sqlite3_bind_text(stmt, 1, nickUser, strlen(nickUser), SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 2, puntuacion);
+    sqlite3_bind_int(stmt, 1, puntuacion);
+	sqlite3_bind_text(stmt, 2, nickUser, strlen(nickUser), SQLITE_STATIC);
     
     result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
