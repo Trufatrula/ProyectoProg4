@@ -274,13 +274,12 @@ bool Sesion::recibir() {
                     std::cerr<<"Error al obtener puntos"<<std::endl;
                     sendSizedMsg(this->socket, buffer2, 1);
                 } else {
-                    if (obtenerPuntuaciones(&punt, usuario) != SQLITE_OK) {
+                    if (obtenerPuntuaciones(&punt, usuario) == SQLITE_OK) {
                         buffer2 = (unsigned char*) malloc(1 + sizeof(int));
                         buffer2[0] = INFOPUNTOS;
                         std::cout<<"Informacion de puntos obtenida correctamente"<<std::endl;
                         memcpy(buffer2 + 1, &punt.Normal_Score, sizeof(int));
                         sendSizedMsg(this->socket, buffer2, 1 + sizeof(int));
-                        free(buffer2);
                     } else {
                         buffer2 = (unsigned char*) malloc(1);
                         buffer2[0] = JALADERROR;
@@ -334,14 +333,12 @@ void Sesion::nuevaPartida(char** buffer) {
     char categoria[100];
     char idioma[20];
     getPalabraRandom(palabra, categoria, idioma);
-    unsigned long l = strlen(palabra) + strlen(categoria) + strlen(idioma) + sizeof(size_t) + 4;
+    unsigned long l = strlen(categoria) + strlen(idioma) + sizeof(size_t) + 3;
     this->palabra = std::string(palabra);
     *buffer = (char*) malloc(l);
     char* p = *buffer;
     *p = PARTIDA;
     p++;
-    strcpy(p, palabra);
-    p += strlen(palabra) + 1;
     strcpy(p, categoria);
     p += strlen(categoria) + 1;
     strcpy(p, idioma);

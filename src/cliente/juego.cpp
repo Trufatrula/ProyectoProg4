@@ -2,6 +2,9 @@
 #include "string.h"
 #include <iostream>
 #include <cstring>
+#include "../sockets/mensajes.h"
+#include "../sockets/tcom.h"
+#include "conexion.h"
 #define RED "\e[0;31m"
 #define GRN "\e[0;32m"
 #define NC "\e[0m"
@@ -67,15 +70,34 @@ void Partida::comprobarResultado(const char* palabraUser, const char* codigoServ
 
 }
 
-void Partida::iniciar() {
-    std::cout << "Has iniciado una partida. La temática de la palabra es TEMATICA y la longitud es de LONGITUD por lo que tienes LONGITUD intentos." << endl;
-    //Servidor hace cosas lolo
+int Partida::iniciar() {
+    unsigned char msg[1], *r = 0;
+    char *p, *categoria, *idioma;
+    unsigned long l;
+    msg[0] = PARTIDA;
+    sendSizedMsg(socket_cliente, msg, 1);
+    receiveSizedMsg(socket_cliente, &r, &l);
+    if (r[0] != PARTIDA) {
+        std::cerr << "No se ha inicado la partida" << std::endl;
+        free(r);
+        return 1;
+    }
+    p = (char*) (r + 1);
+    categoria = p;
+    p += strlen(categoria) + 1;
+    idioma = p;
+    p += strlen(idioma) + 1;
+    memcpy(&this->intentos, p, sizeof(size_t));
+    free(r);
+    std::cout << "Has iniciado una partida. La temática de la palabra es " << categoria << ", el idioma es " << idioma << " y la longitud es de " << this->intentos << " por lo que tienes " << this->intentos << " intentos." << endl;
+    return 0;
 }
 
-void Partida::testPalabra() {
+int Partida::testPalabra() {
     std::string palabra;
     std::cout << "Introduce tu palabra" << endl;
     std::getline(std::cin, palabra);
+    return 0;
     //Servidor hace cosas////
     //comprobarResultado(palabra, cosa del server);       Necesitamos lo del server
 }

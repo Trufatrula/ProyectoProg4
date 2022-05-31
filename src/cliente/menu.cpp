@@ -6,6 +6,7 @@
 #include "../sockets/tcom.h"
 #include "../sockets/mensajes.h"
 #include "sesion.h"
+#include "juego.h"
 #include "conexion.h"
 
 #define HOST "localhost"
@@ -207,6 +208,9 @@ int menuEditarContrasena() {
 }
 
 int menuCliente() {
+    unsigned char msg[1], *r = 0;
+    unsigned long l;
+    int puntos;
     const char* opciones[] = {"Jugar", "Ver puntuaciones", "Editar usuario", "Cerrar sesión", "Sácame de aquí"};
     int o;
     do {
@@ -219,7 +223,16 @@ int menuCliente() {
             }
             break;
         case 1:
-            //verPuntuaciones
+            msg[0] = INFOPUNTOS;
+            sendSizedMsg(socket_cliente, msg, 1);
+            receiveSizedMsg(socket_cliente, &r, &l);
+            if (r[0] == INFOPUNTOS) {
+                memcpy(&puntos, r + 1, sizeof(int));
+                std::cout << "Tienes " << puntos << " puntos." << std::endl;
+            } else {
+                std::cout << "No se ha podido obtener tu puntuación" << std::endl;
+            }
+            free(r);
             break;
         case 2: 
             if (menuEditarCliente() == 2) {
@@ -283,5 +296,8 @@ int menuEditarCliente() {
 }
 
 int menuJuego() {
+    Partida partida;
+    if (partida.iniciar() == 1) return 1;
+
     return 0;
 }
